@@ -1,8 +1,57 @@
-<html>
+<html lang="ja">
 <head>
-  <title>github pages test</title>
-</head>
-<body>
-  <h1>github pages test</h1>
+<meta charset="UTF-8">
+<title>≡0x0)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
+<style type="text/css"><!--
+
+body{color:white;background-color:black;width:100%;margin:0 auto;}
+*{-webkit-appearance:none;font:13px sans-serif;border-radius:0;}
+#cn{display:flex;width:80%;margin:0 auto;}
+textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;padding:3px 5px;resize:vertical;line-break:anywhere;}
+button{width:20%;height:21px;margin:0;padding:0;}
+--></style>
+</head><body>
+<form>
+<textarea rows=12 cols=17 name="pr" id="pr" class="pr"></textarea>
+<div id="cn"><button type=button onclick="a()">「</button><button type=button onclick="l()">←</button><button type=button onclick="r()">→</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button></div>
+</form>
+
+<script>//<!--
+
+function a() { //…………文頭
+	p.setSelectionRange(0,0);
+	p.scrollTop = 0;
+}
+
+function l() { //…………左
+	p.selectionStart--;
+	p.selectionEnd--;
+}
+
+function r() { //…………右
+	p.selectionStart++;
+}
+
+function z() { //…………文末
+	s = p.value;
+	s = s.length;
+	p.setSelectionRange(s,s);
+	p.scrollTop = p.scrollHeight;
+}
+
+function v() { //…………鳩
+	s = p.value;
+	a = p.selectionEnd;
+	p.value = s.slice(0,a);
+	p.value = p.value + "♡";
+	p.value = p.value + s.slice(a);
+	p.selectionStart = a + 1;
+}
+
+p = document.getElementById("pr");
+
+//--></script>
+
 </body>
 </html>
