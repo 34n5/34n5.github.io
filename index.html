@@ -11,6 +11,7 @@ body{color:white;background-color:black;width:100%;margin:0 auto;}
 textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;padding:3px 5px;resize:vertical;line-break:anywhere;}
 button{width:20%;height:21px;margin:0;padding:0;}
 --></style>
+<link rel="manifest" href="manifest.json">
 </head><body>
 <form>
 <textarea rows=12 cols=17 name="pr" id="pr" class="pr"></textarea>
@@ -42,15 +43,23 @@ function z() { //…………文末
 
 function v() { //…………鳩
 	s = p.value;
-	a = p.selectionEnd;
-	p.value = s.slice(0,a);
+	q = p.selectionEnd;
+	p.value = s.slice(0,q);
 	p.value = p.value + "♡";
-	p.value = p.value + s.slice(a);
-	p.selectionStart = a + 1;
+	p.value = p.value + s.slice(q);
+	p.selectionStart = q + 1;
 }
 
 p = document.getElementById("pr");
 
+// service workerの登録関係
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('service_worker.js').then(function(registration) {
+    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+}).catch(function(err) {
+    console.log('ServiceWorker registration failed: ', err);
+});
+}
 
 //--></script>
 
