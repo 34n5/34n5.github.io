@@ -7,18 +7,33 @@
 
 body{color:white;background-color:black;width:100%;margin:0 auto;}
 *{-webkit-appearance:none;font:13px sans-serif;border-radius:0;}
-#cn{display:flex;width:80%;margin:0 auto;}
+#cn{width:80%;margin:0 auto;}
 textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;padding:3px 5px;resize:vertical;line-break:anywhere;}
-button{width:20%;height:21px;margin:0;padding:0;}
+button{width:20%;height:26px;margin:0;padding:0;}
 --></style>
 <link rel="manifest" href="manifest.json">
 </head><body ondblclick=";">
 <form>
 <textarea rows=12 cols=17 name="pr" id="pr" class="pr"></textarea>
-<div id="cn"><button type=button onclick="a()">「</button><button type=button onclick="l()">←</button><button type=button onclick="r()">→</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button></div>
+<div id="cn"><button type=button onclick="a()">「</button><button type=button onclick="l()">←</button><button type=button onclick="r()">→</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><button type=button onclick="si()">ほ</button><button type=button onclick="li()">ひ</button></div>
 </form>
 
 <script>//<!--
+
+function a() { //…………保存
+	s = p.value;
+	localStorage.setItem('pvalue',s);
+	alert("いちほ");
+}
+
+function a() { //…………開く
+	if (window.confirm("ひらく？")) {
+		s = p.value;
+		p.value = localStorage.getItem('pvalue');
+		localStorage.setItem('pvalue',s);
+		alert("ひらいた&いちほ");
+	}
+}
 
 function a() { //…………文頭
 	p.setSelectionRange(0,0);
