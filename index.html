@@ -35,10 +35,10 @@ function gi() { //…………開く
 		s = p.value;
 		p.value = localStorage.getItem('pvalue');
 		if(s == ""){
+			alert("ひらいた");
+		}else{
 			localStorage.setItem('pvalue',s);
 			alert("ひらいた&いちほ");
-		}else{
-			alert("ひらいた");
 		}
 	}
 }
