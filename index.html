@@ -22,16 +22,24 @@ button{width:20%;height:26px;margin:0;padding:0;}
 
 function si() { //…………保存
 	s = p.value;
-	localStorage.setItem('pvalue',s);
-	alert("いちほ");
+	if(s == ""){
+		alert("からぽ");
+	}else{
+		localStorage.setItem('pvalue',s);
+		alert("いちほ");
+	}
 }
 
 function gi() { //…………開く
 	if (window.confirm("ひらく？")) {
 		s = p.value;
 		p.value = localStorage.getItem('pvalue');
-		localStorage.setItem('pvalue',s);
-		alert("ひらいた&いちほ");
+		if(s == ""){
+			localStorage.setItem('pvalue',s);
+			alert("ひらいた&いちほ");
+		}else{
+			alert("ひらいた");
+		}
 	}
 }
 
