@@ -15,18 +15,18 @@ button{width:20%;height:26px;margin:0;padding:0;}
 </head><body ondblclick=";">
 <form>
 <textarea rows=12 cols=17 name="pr" id="pr" class="pr"></textarea>
-<div id="cn"><button type=button onclick="a()">「</button><button type=button onclick="l()">←</button><button type=button onclick="r()">→</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><button type=button onclick="si()">ほ</button><button type=button onclick="li()">ひ</button></div>
+<div id="cn"><button type=button onclick="a()">「</button><button type=button onclick="l()">←</button><button type=button onclick="r()">→</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><button type=button onclick="si()">ほ</button><button type=button onclick="gi()">ひ</button></div>
 </form>
 
 <script>//<!--
 
-function a() { //…………保存
+function si() { //…………保存
 	s = p.value;
 	localStorage.setItem('pvalue',s);
 	alert("いちほ");
 }
 
-function a() { //…………開く
+function gi() { //…………開く
 	if (window.confirm("ひらく？")) {
 		s = p.value;
 		p.value = localStorage.getItem('pvalue');
