@@ -1,0 +1,289 @@
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>≡0v0) { ﾊﾄｶﾞﾃﾞﾙﾖ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
+<style type="text/css"><!--
+
+body{color:white;background-color:black;width:100%;margin:0 auto;}
+*{-webkit-appearance:none;font:13px sans-serif;border-radius:0;}
+#cn,#pn{width:80%;margin:0 auto;}
+#pn,#vw{display:none;}
+textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
+#vw{color:white;background-color:#313131;position:absolute;padding:1em;}
+p{font-size:15px;margin:24px 0;padding:0;line-break:anywhere;}
+button,input{color:white;background-color:#216651;font-weight:bold;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border:solid 1px black;}
+h1{color:c7ffa9;background-color:#111;font-weight:bold;text-align:center;margin:0;padding:3px;position:fixed;top:0;left:0;width:100%;}
+h1 button{width:21px;height:21px;border-radius:50%;}
+--></style>
+<link rel="manifest" href="m.json">
+</head><body ondblclick=";">
+<form>
+<div id="vw"></div>
+<textarea rows=12 cols=17 name="pr" id="pr" class="pr" onchange="bu()"></textarea>
+<div id="pn"><button type=button onclick="a()">「</button><button type=button onclick="l()">←</button><button type=button onclick="r()">→</button><button type=button onclick="z()">」</button><button type=button onclick="o()">▼</button><button type=button onclick="t()">≪</button><button type=button onclick="u()">↑</button><button type=button onclick="d()">↓</button><button type=button onclick="m()">≫</button><button type=button onclick="v()">ｖ</button></div>
+<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><input type="number" name="cr" id="cr" class="cr" max=20 min=5 value=12 onchange="rc()"><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button></div>
+</form>
+
+<script>//<!--
+
+function o() { //……メニュー
+	s = document.getElementById("pn").style.display;
+	if(s == "block"){
+		document.getElementById("pn").style.display = "none";
+		document.getElementById("cn").style.display = "block";
+	}else{
+		document.getElementById("pn").style.display = "block";
+		document.getElementById("cn").style.display = "none";
+	}
+}
+
+function rc() { //……行数操作
+	s = document.getElementById("cr").value;
+	p.rows = s;
+	localStorage.setItem('prows',s);
+}
+
+function si() { //……保存
+	s = p.value;
+	if(s == ""){
+		alert("ﾅｲﾖｰ");
+	}else{
+		if(window.confirm("ｲﾁﾎ?")){
+			localStorage.setItem('pvalue',s);
+			alert("ﾎｿﾞﾝ");
+		}
+	}
+}
+
+function gi() { //……復帰
+	s = localStorage.getItem('pvalue');
+	if(s == ""){
+		alert("ﾅｲﾖｰ");
+	}else{
+		if (window.confirm("ﾓﾄﾞｽ?")) {
+			s = p.value;
+			p.value = localStorage.getItem('pvalue');
+			if(s == ""){
+				alert("ﾓﾄﾞｼﾀ");
+			}else{
+				localStorage.setItem('pvalue',s);
+				alert("ｲﾚｶｴ");
+			}
+		}
+	}
+}
+
+function c() { //……全文コピー
+	if(window.confirm("ｺﾋﾟﾙ?")){
+		q = p.selectionEnd;
+		p.select();
+		try{
+			document.execCommand('copy');
+			alert("ｺﾋﾟｯﾀ");
+		}catch(e){
+			alert("ﾃﾞｷﾅｶｯﾀ\n" + e);
+		}
+		p.setSelectionRange(q,q);
+	}
+}
+
+function t() { //……左端
+	s = p.value;
+	q = p.selectionEnd;
+	
+	s1 = s.slice(0,q);
+	s1 = s1.split("\n");
+	s1.reverse();
+	s1 = s1[0].length; //行頭～キャレット文字数
+	s1 = s1 % pw;
+	q = q - s1;
+	p.setSelectionRange(q,q);
+}
+
+function m() { //……右端
+	s = p.value;
+	q = p.selectionEnd;
+	
+	s1 = s.slice(0,q);
+	s1 = s1.split("\n");
+	s1.reverse();
+	s1 = s1[0].length; //行頭～キャレット
+	s1 = s1 % pw; //左端～キャレット
+	
+	s2 = s.slice(q);
+	s2 = s2.split("\n");
+	s2 = s2[0].length; //キャレット～行末
+	
+	if(s2 + s1 > pw){
+		s2 = pw - s1;
+	}
+	
+	q = q + s2;
+	p.setSelectionRange(q,q);
+}
+
+function a() { //……文頭
+	p.setSelectionRange(0,0);
+	p.scrollTop = 0;
+}
+
+function l() { //……左
+	p.selectionStart--;
+	p.selectionEnd = p.selectionStart;
+}
+
+function r() { //……右
+	p.selectionStart++;
+	p.selectionEnd = p.selectionStart;
+}
+
+function z() { //……文末
+	s = p.value;
+	s = s.length;
+	p.setSelectionRange(s,s);
+	p.scrollTop = p.scrollHeight;
+}
+
+function v() { //……鳩
+	s = p.value;
+	q = p.selectionEnd;
+	p.value = s.slice(0,q);
+	p.value = p.value + "♡";
+	p.value = p.value + s.slice(q);
+	p.selectionStart = q + 1;
+	p.selectionEnd = p.selectionStart;
+}
+
+function u() { //……上キー
+	s = p.value;
+	q = p.selectionEnd;
+	
+	s1 = s.slice(0,q);
+	s1 = s1.split("\n");
+	s1.reverse();
+	s2 = 0;
+	if(s1[1]){
+		s2 = s1[1].length; //キャレット前行文字数
+	}
+	s1 = s1[0].length; //行頭～キャレット文字数
+	
+	if(s1 >= pw){
+		q = q - pw; //行内で移動可能
+	}else{
+		if(s2 % pw > s1){
+			q = q - (s2 % pw) - 1; //前行へ
+		}else{
+			q = q - s1 - 1; //前行末へ
+		}
+	}
+	if(q < 0) q = 0; //文頭へ
+	p.setSelectionRange(q,q);
+}
+
+function d() { //……下キー
+	s = p.value;
+	q = p.selectionEnd;
+	
+	s1 = s.slice(0,q);
+	s1 = s1.split("\n");
+	s1.reverse();
+	s1 = s1[0].length; //行頭～キャレット文字数
+	
+	s2 = s.slice(q);
+	s2 = s2.split("\n");
+	s3 = 0;
+	if(s2[1]){
+		s3 = s2[1].length; //キャレット次行文字数
+	}
+	s2 = s2[0].length; //キャレット～行末文字数	
+	
+	if(s2 >= pw){
+		q = q + pw; //行内で移動可能
+	}else{
+		if(s2 + (s1 % pw) > pw){
+			q = q + s2; //行末へ
+		}else{
+			if(s3 > s1 % pw){
+				q = q + s2 + (s1 % pw) + 1; //次行へ
+			}else{
+				q = q + s2 + s3 + 1; //次行末へ
+			}
+		}
+	}
+	p.setSelectionRange(q,q);
+
+}
+
+function h() { //……整形＆プレビュー
+	s = p.value;
+	s = s.replace(/^\n+/,"");
+	s = s.replace(/\n+$/,"");
+	s = s.replace(/^/gm,"　");
+	s = s.replace(/([！？♡])/g,"$1　");
+	s = s.replace(/　([「『！？♡』」）])/g,"$1");
+	s = s.replace(/　$/gm,"");
+	s = s.replace(/……/gm,"…");
+	s = s.replace(/…/gm,"……");
+	s = s.replace(/</gm,"&lt;");
+	s = s.replace(/>/gm,"&gt;");
+	s = s.replace(/\n/gm,"<br>");
+	s = "<h1>Preview [" + s.length +"]　<button type=button onclick=\"x()\">×</button>　<button type=button onclick=\"hm()\">「</button><button type=button onclick=\"pu()\">↑</button><button type=button onclick=\"pd()\">↓</button><button type=button onclick=\"ed()\">」</button></h1><p>" + s + "</p>";
+	w.innerHTML = s;
+	w.style.display = "block";
+}
+
+function hm() { //……プレビューhome
+	window.scrollTo(0,0);
+}
+
+function pu() { //……プレビューpageup
+	s = window.innerHeight;
+	s = (s -27) * -1;
+	window.scrollBy(0,s);
+}
+
+function pd() { //……プレビューpagedown
+	s = window.innerHeight;
+	s = s -51;
+	window.scrollBy(0,s);
+}
+
+function ed() { //……プレビューend
+	window.scrollTo(0,document.body.scrollHeight);
+}
+
+function x() { //……プレビューを閉じる
+	w.style.display = "none";
+}
+
+function bu() { //……自動バックアップ
+	s = p.value;
+	if(s != ""){
+			localStorage.setItem('pvalue_bu',s);
+	}
+}
+
+p = document.getElementById("pr"); //テキストエリアオブジェクト
+pw = p.clientWidth;
+pw = Math.floor(pw / 14); //1行の文字数（全角）
+w = document.getElementById("vw"); //プレビュー用オブジェクト
+
+s = localStorage.getItem('prows'); //行数復帰
+document.getElementById("cr").value = s;
+p.rows = s;
+
+s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
+if(p.value == "" && s != null && s != ""){
+		p.value = s;
+}else{
+	s = localStorage.getItem('pvalue'); //保存から復帰
+	if(p.value == "" && s != null && s != ""){
+		p.value = s;
+	}
+}
+
+//--></script>
+
+</body>
+</html>
