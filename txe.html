@@ -12,9 +12,9 @@ body{color:white;background-color:black;width:100%;margin:0 auto;}
 textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
 #vw{color:white;background-color:#313131;position:absolute;padding:1em;}
 p{font-size:15px;margin:24px 0;padding:0;line-break:anywhere;}
-button,input{color:white;background-color:#216651;font-weight:bold;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border:solid 1px black;}
+button,input{color:white;background-color:#216651;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border:solid 1px black;}
 h1{color:c7ffa9;background-color:#111;font-weight:bold;text-align:center;margin:0;padding:3px;position:fixed;top:0;left:0;width:100%;}
-h1 button{width:31px;height:31px;border-radius:50%;}
+h1 button{width:31px;height:31px;}
 --></style>
 <link rel="manifest" href="m.json">
 </head><body ondblclick=";">
@@ -270,8 +270,10 @@ pw = Math.floor(pw / 14); //1行の文字数（全角）
 w = document.getElementById("vw"); //プレビュー用オブジェクト
 
 s = localStorage.getItem('prows'); //行数復帰
-document.getElementById("cr").value = s;
-p.rows = s;
+if(s => 5 && s =< 20){
+	document.getElementById("cr").value = s;
+	p.rows = s;
+}
 
 s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
 if(p.value == "" && s != null && s != ""){
