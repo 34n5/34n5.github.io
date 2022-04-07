@@ -270,7 +270,7 @@ pw = Math.floor(pw / 14); //1行の文字数（全角）
 w = document.getElementById("vw"); //プレビュー用オブジェクト
 
 s = localStorage.getItem('prows'); //行数復帰
-if(s => 5 && s =< 20){
+if(s >= 5 && s <= 20){
 	document.getElementById("cr").value = s;
 	p.rows = s;
 }
