@@ -5,9 +5,9 @@
 	"start_url": "txe.html",
 	"icons": [
 		{
-			"src": "i.png",
+			"src": "i.jpg",
 			"sizes": "192x192",
-			"type": "image/png"
+			"type": "image/jpg"
 		}
 	]
 }
