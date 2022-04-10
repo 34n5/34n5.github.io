@@ -1,13 +1,13 @@
 {
 	"short_name": "≡0v0)",
-	"name": "鳩が出るェデタ→",
+	"name": "はとでりゃー",
 	"display": "standalone",
 	"start_url": "txe.html",
 	"icons": [
 		{
-			"src": "i.jpg",
+			"src": "i.png",
 			"sizes": "192x192",
-			"type": "image/jpg"
+			"type": "image/png"
 		}
 	]
 }
