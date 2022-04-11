@@ -4,37 +4,105 @@
 <title>≡0v0) { ﾊﾄｶﾞﾃﾞﾙﾖ</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
 <style type="text/css"><!--
-
 body{color:white;background-color:black;width:100%;margin:0 auto;}
 *{-webkit-appearance:none;font:13px sans-serif;border-radius:0;}
 #cn,#pn{width:80%;margin:0 auto;}
-#pn,#vw{display:none;}
+#pn,#vw{display:none;line-height:1.25;}
 textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
 #vw{color:white;background-color:#313131;position:absolute;padding:1em;}
 p{font-size:15px;margin:24px 0;padding:0;line-break:anywhere;}
 button,input{color:white;background-color:#216651;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border:solid 1px black;}
-h1{color:c7ffa9;background-color:#111;font-weight:bold;text-align:center;margin:0;padding:3px;position:fixed;top:0;left:0;width:100%;}
-h1 button{width:31px;height:31px;}
+h1{color:c7ffa9;background-color:#111;text-align:center;margin:0;padding:3px;position:fixed;top:0;left:0;width:100%;}
+h1 button{width:26px;height:26px;}
 --></style>
 <link rel="manifest" href="m.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head><body ondblclick=";">
 <form>
 <div id="vw"></div>
 <textarea rows=12 cols=17 name="pr" id="pr" class="pr" onchange="bu()"></textarea>
-<div id="pn"><button type=button onclick="a()">「</button><button type=button onclick="l()">←</button><button type=button onclick="r()">→</button><button type=button onclick="z()">」</button><button type=button onclick="o()">▼</button><button type=button onclick="t()">≪</button><button type=button onclick="u()">↑</button><button type=button onclick="d()">↓</button><button type=button onclick="m()">≫</button><button type=button onclick="v()">ｖ</button></div>
-<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><input type="number" name="cr" id="cr" class="cr" max=20 min=5 value=12 onchange="rc()"><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button></div>
+<div id="pn"><button type=button onclick="o()">切替▼</button>
+<br><input type="number" name="cr" id="cr" class="cr" max=20 min=5 value=12>テキストエリア高さ(行)
+<br><input type="number" name="ft" id="ft" class="ft" max=39 min=8 value=13>フォントサイズ(px)
+<br><input type="number" name="ls" id="ls" class="ls" max=9 min=0 value=1>字間(px)
+<br><input type="color" name="fc" id="fc" class="fc" value="#ffffff">文字色
+<br><input type="color" name="bc" id="bc" class="bc" value="#212121">背景色
+<br><input type="number" name="bh" id="bh" class="bh" max=45 min=11 value=26>ボタン高さ(px)
+<br>上記設定を<button type=button onclick="st()">変更</button>
+<br><button type=button onclick="o()">切替▼</button>
+<br>
+<br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ
+<br>「ﾊﾄﾃﾞﾘｬｰ」
+<br>
+<br>-動作確認：iOS15.4.1 + Safari
+<br>-ホーム画面に追加すると単独アプリっぽく使える気がする
+<br>
+<br>!!!不意のデータクリアに備えて別途保存を推奨
+<br>
+<br>-textareaのonchangeで自動保存→リロード時に復元
+<br>-[手動保存/手動復元]と[自動保存/リロード復元]は別データ
+<br>-データ保持はブラウザのlocalStorageを使用
+<br>
+<br>-ｶﾝﾑﾘﾊﾞﾄﾁｬﾝｶﾜｲｲﾖ
+<br>
+<br>
+<br>
+<br>
+<br>キャッシュを破棄してページを<button type=button onclick="location.reload(true)">再読込</button>
+<br>
+<br>ローカルストレージを<button type=button onclick="adel()">全削除</button>
+<br>※他サイトのデータは消えません</div>
+<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><button type=button></button><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button></div>
 </form>
 
 <script>//<!--
+
+function adel() { //……ストレージ全削除
+	if(window.confirm("本当に全削除しますか？")){
+		localStorage.clear();
+	}
+}
+
+function st() { //……設定変更
+	s = document.getElementById("cr").value; //テキストエリア高さ(行)
+	p.rows = s;
+	localStorage.setItem('prows',s);
+	s = document.getElementById("ft").value; //フォントサイズ(px)
+	p.style.fontSize = s + "px";
+	localStorage.setItem('pfs',s);
+	pw = s - 0;
+	s = document.getElementById("ls").value; //字間(px)
+	p.style.letterSpacing = s + "px";
+	localStorage.setItem('pls',s);
+	pw = pw + (s - 0);
+	s = document.getElementById("fc").value; //文字色
+	p.style.color = s;
+	localStorage.setItem('pfc',s);
+	s = document.getElementById("bc").value; //背景色
+	p.style.backgroundColor = s;
+	localStorage.setItem('pbc',s);
+	s = document.getElementById("bh").value; //ボタン高さ(px)
+	for (s1 = 5; s1 < 20; s1++) {
+		document.getElementsByTagName("button")[s1].style.height = s + "px";
+	}
+//	document.getElementsByTagName("input")[6].style.height = s + "px";
+	localStorage.setItem('pbh',s);
+	
+	s = pw;
+	pw = p.clientWidth;
+	pw = Math.floor(pw / s); //1行の文字数（全角）
+}
 
 function o() { //……メニュー
 	s = document.getElementById("pn").style.display;
 	if(s == "block"){
 		document.getElementById("pn").style.display = "none";
 		document.getElementById("cn").style.display = "block";
+		localStorage.setItem('pn',0);
 	}else{
 		document.getElementById("pn").style.display = "block";
 		document.getElementById("cn").style.display = "none";
+		localStorage.setItem('pn',1);
 	}
 }
 
@@ -254,6 +322,7 @@ function ed() { //……プレビューend
 }
 
 function x() { //……プレビューを閉じる
+	w.innerHTML = 0;
 	w.style.display = "none";
 }
 
@@ -262,17 +331,62 @@ function bu() { //……自動バックアップ
 	if(s != ""){
 			localStorage.setItem('pvalue_bu',s);
 	}
+	pwc();
+}
+
+function pwc() { //……1行の文字数（全角）
+	pw = document.getElementById("ft").value - 0;
+	s =  document.getElementById("ls").value -0;
+	s = s + pw;
+
+	pw = p.clientWidth;
+	pw = Math.floor(pw / s);
 }
 
 p = document.getElementById("pr"); //テキストエリアオブジェクト
-pw = p.clientWidth;
-pw = Math.floor(pw / 14); //1行の文字数（全角）
 w = document.getElementById("vw"); //プレビュー用オブジェクト
 
-s = localStorage.getItem('prows'); //行数復帰
+s = localStorage.getItem('prows'); //行数
 if(s >= 5 && s <= 20){
 	document.getElementById("cr").value = s;
 	p.rows = s;
+}
+s = localStorage.getItem('pfs'); //フォントサイズ
+if(s >= 8 && s <= 39){
+	document.getElementById("ft").value = s;
+	p.style.fontSize = s + "px";
+}
+s = localStorage.getItem('pls'); //字間
+if(s >= 0 && s <= 9 && s != null){
+	document.getElementById("ls").value = s;
+	p.style.letterSpacing = s + "px";
+}
+pw = /^#[\da-f]{6}$/i;
+s = localStorage.getItem('pfc'); //文字色
+if(pw.test(s)){
+	document.getElementById("fc").value = s;
+	p.style.color = s;
+}
+s = localStorage.getItem('pbc'); //背景色
+if(pw.test(s)){
+	document.getElementById("bc").value = s;
+	p.style.backgroundColor = s;
+}
+s = localStorage.getItem('pbh'); //ボタン高さ
+if(s >= 11 && s <= 45){
+	document.getElementById("bh").value = s;
+	for (s1 = 5; s1 < 21; s1++) {
+		document.getElementsByTagName("button")[s1].style.height = s + "px";
+	}
+	//document.getElementsByTagName("input")[6].style.height = s + "px";
+}
+
+pwc();
+
+s = localStorage.getItem('pn'); //メニュー状態復帰
+if(s > 0){
+		document.getElementById("pn").style.display = "block";
+		document.getElementById("cn").style.display = "none";
 }
 
 s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
