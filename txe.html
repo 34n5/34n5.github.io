@@ -375,14 +375,17 @@ if(pw.test(s)){
 s = localStorage.getItem('pbh'); //ボタン高さ
 if(s >= 11 && s <= 45){
 	document.getElementById("bh").value = s;
-	for (s1 = 5; s1 < 21; s1++) {
+	s1 = 5
+	while(s1 < 21){
 		document.getElementsByTagName("button")[s1].style.height = s + "px";
+		s1++;
 	}
-	
-alert(s);
+//	for (s1 = 5; s1 < 21; s1++) {
+//		document.getElementsByTagName("button")[s1].style.height = s + "px";
+//	}
 	//document.getElementsByTagName("input")[6].style.height = s + "px";
 }
-
+alert(s1);
 pwc();
 
 s = localStorage.getItem('pn'); //メニュー状態復帰
