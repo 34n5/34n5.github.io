@@ -336,7 +336,7 @@ function bu() { //……自動バックアップ
 
 function pwc() { //……1行の文字数（全角）
 	pw = document.getElementById("ft").value - 0;
-	s =  document.getElementById("ls").value -0;
+	s =  document.getElementById("ls").value - 0;
 	s = s + pw;
 
 	pw = p.clientWidth;
@@ -381,7 +381,7 @@ if(s >= 11 && s <= 45){
 	//document.getElementsByTagName("input")[6].style.height = s + "px";
 }
 
-pwc();
+//pwc();
 
 s = localStorage.getItem('pn'); //メニュー状態復帰
 if(s > 0){
