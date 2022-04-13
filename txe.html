@@ -32,7 +32,7 @@ h1 button{width:26px;height:26px;}
 <br><button type=button onclick="o()">切替▼</button>
 <br>
 <br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ
-<br>「ﾊﾄﾃﾞﾘｬｰ」1854
+<br>「ﾊﾄﾃﾞﾘｬｰ」2002
 <br>
 <br>-動作確認：iOS15.4.1 + Safari
 <br>-ホーム画面に追加すると単独アプリっぽく使える気がする
@@ -373,6 +373,7 @@ if(pw.test(s)){
 	p.style.backgroundColor = s;
 }
 s = localStorage.getItem('pbh'); //ボタン高さ
+alert(s);
 if(s >= 11 && s <= 45){
 	document.getElementById("bh").value = s;
 	for (s1 = 5; s1 < 21; s1++) {
@@ -381,7 +382,6 @@ if(s >= 11 && s <= 45){
 	//document.getElementsByTagName("input")[6].style.height = s + "px";
 }
 
-alert(s);
 pwc();
 
 s = localStorage.getItem('pn'); //メニュー状態復帰
