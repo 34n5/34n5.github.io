@@ -346,17 +346,17 @@ function pwc() { //……1行の文字数（全角）
 p = document.getElementById("pr"); //テキストエリアオブジェクト
 w = document.getElementById("vw"); //プレビュー用オブジェクト
 
-s = localStorage.getItem('prows'); //行数
+s = localStorage.getItem('prows') - 0; //行数
 if(s >= 5 && s <= 20){
 	document.getElementById("cr").value = s;
 	p.rows = s;
 }
-s = localStorage.getItem('pfs'); //フォントサイズ
+s = localStorage.getItem('pfs') - 0; //フォントサイズ
 if(s >= 8 && s <= 39){
 	document.getElementById("ft").value = s;
 	p.style.fontSize = s + "px";
 }
-s = localStorage.getItem('pls'); //字間
+s = localStorage.getItem('pls') - 0; //字間
 if(s >= 0 && s <= 9 && s != null){
 	document.getElementById("ls").value = s;
 	p.style.letterSpacing = s + "px";
@@ -372,7 +372,7 @@ if(pw.test(s)){
 	document.getElementById("bc").value = s;
 	p.style.backgroundColor = s;
 }
-s = localStorage.getItem('pbh'); //ボタン高さ
+s = localStorage.getItem('pbh') - 0; //ボタン高さ
 if(s >= 11 && s <= 45){
 	document.getElementById("bh").value = s;
 	for (s1 = 5; s1 < 21; s1++) {
@@ -382,7 +382,7 @@ if(s >= 11 && s <= 45){
 
 pwc();
 
-s = localStorage.getItem('pn'); //メニュー状態復帰
+s = localStorage.getItem('pn') - 0; //メニュー状態復帰
 if(s > 0){
 		document.getElementById("pn").style.display = "block";
 		document.getElementById("cn").style.display = "none";
