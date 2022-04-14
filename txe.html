@@ -259,6 +259,7 @@ function l() { //……左
 }
 
 function r() { //……右
+	alert(p.selectionStart + "/" + p.selectionEnd);
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			if(p.selectionStart == p.selectionEnd){
@@ -270,6 +271,7 @@ function r() { //……右
 		}else{
 			p.selectionEnd++;
 		}
+	}else{
 		p.selectionStart++;
 		p.selectionEnd++;
 	}
@@ -277,7 +279,7 @@ function r() { //……右
 
 function z() { //……文末
 	s = p.value;
-	s = s.length;
+	q = s.length;
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			p.setSelectionRange(p.selectionEnd,s,"forward");
