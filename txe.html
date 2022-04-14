@@ -253,13 +253,11 @@ function l() { //……左
 			}
 		}
 	}else{
-		p.selectionStart--;
 		p.selectionEnd--;
 	}
 }
 
 function r() { //……右
-	alert(p.selectionStart + "/" + p.selectionEnd);
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			if(p.selectionStart == p.selectionEnd){
@@ -273,7 +271,6 @@ function r() { //……右
 		}
 	}else{
 		p.selectionStart++;
-		p.selectionEnd++;
 	}
 }
 
