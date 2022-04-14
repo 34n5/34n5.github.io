@@ -6,7 +6,7 @@
 <style type="text/css"><!--
 body{color:white;background-color:black;width:100%;margin:0 auto;}
 *{-webkit-appearance:none;font:13px sans-serif;border-radius:0;}
-#cn,#pn{width:80%;margin:0 auto;}
+#cn,#pn{width:80%;margin:0 auto;position:relative}
 #pn,#vw{display:none;line-height:1.25;}
 textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
 #vw{color:white;background-color:#313131;position:absolute;padding:1em;}
@@ -14,6 +14,7 @@ p{font-size:15px;margin:24px 0;padding:0;line-break:anywhere;}
 button,input{color:white;background-color:#216651;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border:solid 1px black;}
 h1{color:c7ffa9;background-color:#111;text-align:center;margin:0;padding:3px;position:fixed;top:0;left:0;width:100%;}
 h1 button{width:26px;height:26px;}
+#bm{color:#212151;background-color:#c9c951;position:absolute;top:0;left:-1.5em;width:1.5em;text-align:center;visibility:hidden;}
 --></style>
 <link rel="manifest" href="m.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -31,7 +32,7 @@ h1 button{width:26px;height:26px;}
 <br>上記設定を<button type=button onclick="st()">変更</button>
 <br><button type=button onclick="o()">切替▼</button>
 <br>
-<br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ2036
+<br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ
 <br>「ﾊﾄﾃﾞﾘｬｰ」
 <br>
 <br>-動作確認：iOS15.4.1 + Safari
@@ -52,7 +53,7 @@ h1 button{width:26px;height:26px;}
 <br>
 <br>ローカルストレージを<button type=button onclick="adel()">全削除</button>
 <br>※他サイトのデータは消えません</div>
-<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><button type=button></button><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button></div>
+<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><button type=button onclick="b()">～</button><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><span id="bm">範囲選択ﾓｰﾄﾞ</span></div>
 </form>
 
 <script>//<!--
@@ -60,6 +61,16 @@ h1 button{width:26px;height:26px;}
 function adel() { //……ストレージ全削除
 	if(window.confirm("本当に全削除しますか？")){
 		localStorage.clear();
+	}
+}
+
+function b() { //……範囲選択モード
+	if(bb){
+		bb = 0;
+		document.getElementById("bm").style.visibility = "hidden";
+	}else{
+		bb = 1;
+		document.getElementById("bm").style.visibility = "visible";
 	}
 }
 
@@ -126,7 +137,7 @@ function si() { //……保存
 
 function gi() { //……復帰
 	s = localStorage.getItem('pvalue');
-	if(s == "" || s == "null"){
+	if(s == "" || s =="null"){
 		alert("ﾅｲﾖｰ");
 	}else{
 		if (window.confirm("ﾓﾄﾞｽ?")) {
@@ -156,9 +167,10 @@ function c() { //……全文コピー
 	}
 }
 
+
 function t() { //……左端
 	s = p.value;
-	q = p.selectionEnd;
+	q = p.selectionStart;
 	
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
@@ -166,12 +178,24 @@ function t() { //……左端
 	s1 = s1[0].length; //行頭～キャレット文字数
 	s1 = s1 % pw;
 	q = q - s1;
-	p.setSelectionRange(q,q);
+	if(bb){
+		if(p.selectionDirection == "backward"){
+			p.selectionStart = q;
+		}else{
+			if(q < p.selectionStart){
+				p.setSelectionRange(q,p.selectionStart,"backward");
+			}else{
+				p.selectionEnd = q;
+			}
+		}
+	}else{
+		p.setSelectionRange(q,q);
+	}
 }
 
 function m() { //……右端
 	s = p.value;
-	q = p.selectionEnd;
+	q = p.p.selectionEnd;
 	
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
@@ -188,28 +212,81 @@ function m() { //……右端
 	}
 	
 	q = q + s2;
-	p.setSelectionRange(q,q);
+	if(bb){
+		if(p.selectionDirection == "backward"){
+			if(q > p.selectionEnd){
+				p.setSelectionRange(p.selectionEnd,q,"forward");
+			}else{
+				p.selectionStart = q;
+			}
+		}else{
+			p.selectionEnd = q;
+		}
+	}else{
+		p.setSelectionRange(q,q);
+	}
 }
 
 function a() { //……文頭
-	p.setSelectionRange(0,0);
+	if(bb){
+		if(p.selectionDirection == "backward"){
+			p.selectionStart = 0;
+		}else{
+			p.setSelectionRange(0,p.selectionStart,"backward");
+		}
+	}else{
+		p.setSelectionRange(0,0);
+	}
 	p.scrollTop = 0;
 }
 
 function l() { //……左
-	p.selectionStart--;
-	p.selectionEnd = p.selectionStart;
+	if(bb){
+		if(p.selectionDirection == "backward"){
+				p.selectionStart--;
+		}else{
+			if(p.selectionStart == p.selectionEnd){
+				p.selectionStart--;
+				p.selectionDirection = "backward";
+			}else{
+				p.selectionEnd--;
+			}
+		}
+	}else{
+		p.selectionStart--;
+		p.selectionEnd--;
+	}
 }
 
 function r() { //……右
-	p.selectionStart++;
-	p.selectionEnd = p.selectionStart;
+	if(bb){
+		if(p.selectionDirection == "backward"){
+			if(p.selectionStart == p.selectionEnd){
+				p.selectionEnd++;
+				p.selectionDirection = "forward";
+			}else{
+				p.selectionStart++;
+			}
+		}else{
+			p.selectionEnd++;
+		}
+		p.selectionStart++;
+		p.selectionEnd++;
+	}
 }
 
 function z() { //……文末
 	s = p.value;
 	s = s.length;
-	p.setSelectionRange(s,s);
+	if(bb){
+		if(p.selectionDirection == "backward"){
+			p.setSelectionRange(p.selectionEnd,s,"forward");
+		}else{
+			p.selectionEnd = q;
+		}
+	}else{
+		p.setSelectionRange(q,q);
+	}
 	p.scrollTop = p.scrollHeight;
 }
 
@@ -219,8 +296,8 @@ function v() { //……鳩
 	p.value = s.slice(0,q);
 	p.value = p.value + "♡";
 	p.value = p.value + s.slice(q);
-	p.selectionStart = q + 1;
-	p.selectionEnd = p.selectionStart;
+	p.selectionEnd = q + 1;
+	p.selectionStart = p.selectionEnd;
 }
 
 function u() { //……上キー
@@ -246,7 +323,19 @@ function u() { //……上キー
 		}
 	}
 	if(q < 0) q = 0; //文頭へ
-	p.setSelectionRange(q,q);
+	if(bb){
+		if(p.selectionDirection == "backward"){
+			p.selectionStart = q;
+		}else{
+			if(q < p.selectionStart){
+				p.setSelectionRange(q,p.selectionStart,"backward");
+			}else{
+				p.selectionEnd = q;
+			}
+		}
+	}else{
+		p.setSelectionRange(q,q);
+	}
 }
 
 function d() { //……下キー
@@ -279,8 +368,19 @@ function d() { //……下キー
 			}
 		}
 	}
-	p.setSelectionRange(q,q);
-
+	if(bb){
+		if(p.selectionDirection == "backward"){
+			if(q > p.selectionEnd){
+				p.setSelectionRange(p.selectionEnd,q,"forward");
+			}else{
+				p.selectionStart = q;
+			}
+		}else{
+			p.selectionEnd = q;
+		}
+	}else{
+		p.setSelectionRange(q,q);
+	}
 }
 
 function h() { //……整形＆プレビュー
@@ -329,16 +429,21 @@ function x() { //……プレビューを閉じる
 function bu() { //……自動バックアップ
 	s = p.value;
 	if(s != ""){
-		localStorage.setItem('pvalue_bu',s);
+			localStorage.setItem('pvalue_bu',s);
 	}
-	pwc();
+//	pwc();
 }
 
 function pwc() { //……1行の文字数（全角）
-	pw = document.getElementById("ft").value - 0;
-	s =  document.getElementById("ls").value - 0;
+	pw = p.style.fontSize.slice(0,-2) - 0;
+	if(!pw){
+		pw = document.getElementById("ft").value - 0;
+	}
+	s = p.style.letterSpacing.slice(0,-2) - 0;
+	if(!s){
+		s =  document.getElementById("ls").value - 0;
+	}
 	s = s + pw;
-
 	pw = p.clientWidth;
 	pw = Math.floor(pw / s);
 }
@@ -346,17 +451,17 @@ function pwc() { //……1行の文字数（全角）
 p = document.getElementById("pr"); //テキストエリアオブジェクト
 w = document.getElementById("vw"); //プレビュー用オブジェクト
 
-s = localStorage.getItem('prows') - 0; //行数
+s = localStorage.getItem('prows'); //行数
 if(s >= 5 && s <= 20){
 	document.getElementById("cr").value = s;
 	p.rows = s;
 }
-s = localStorage.getItem('pfs') - 0; //フォントサイズ
+s = localStorage.getItem('pfs'); //フォントサイズ
 if(s >= 8 && s <= 39){
 	document.getElementById("ft").value = s;
 	p.style.fontSize = s + "px";
 }
-s = localStorage.getItem('pls') - 0; //字間
+s = localStorage.getItem('pls'); //字間
 if(s >= 0 && s <= 9 && s != null){
 	document.getElementById("ls").value = s;
 	p.style.letterSpacing = s + "px";
@@ -372,15 +477,8 @@ if(pw.test(s)){
 	document.getElementById("bc").value = s;
 	p.style.backgroundColor = s;
 }
-//s = localStorage.getItem('pbh') - 0; //ボタン高さ
-//if(s >= 11 && s <= 45){
-//	document.getElementById("bh").value = s;
-//	for (s1 = 5; s1 < 21; s1++) {
-//		document.getElementsByTagName("button")[s1].style.height = s + "px";
-//	}
-//}
-s = localStorage.getItem('pbh');
-if(s >=15 && s <=40){
+s = localStorage.getItem('pbh'); //ボタン高さ
+if(s >= 11 && s <= 45){
 	document.getElementById("bh").value = s;
 	for (s1 = 5; s1 < 20; s1++) {
 		document.getElementsByTagName("button")[s1].style.height = s + "px";
@@ -389,7 +487,7 @@ if(s >=15 && s <=40){
 
 pwc();
 
-s = localStorage.getItem('pn') - 0; //メニュー状態復帰
+s = localStorage.getItem('pn'); //メニュー状態復帰
 if(s > 0){
 		document.getElementById("pn").style.display = "block";
 		document.getElementById("cn").style.display = "none";
@@ -397,13 +495,15 @@ if(s > 0){
 
 s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
 if(p.value == "" && s != null && s != ""){
-	p.value = s;
+		p.value = s;
 }else{
 	s = localStorage.getItem('pvalue'); //保存から復帰
 	if(p.value == "" && s != null && s != ""){
 		p.value = s;
 	}
 }
+
+bb = 0; //範囲選択モード初期値：オフ
 
 //--></script>
 
