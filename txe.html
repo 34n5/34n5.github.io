@@ -9,18 +9,22 @@ body{color:white;background-color:black;width:100%;margin:0 auto;}
 #cn,#pn{width:80%;margin:0 auto;position:relative}
 #pn,#vw{display:none;line-height:1.25;}
 textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
-#vw{color:white;background-color:#313131;position:absolute;padding:1em;}
+#vw{color:white;background-color:#313131;position:absolute;padding:1em;z-index:9;}
 p{font-size:15px;margin:24px 0;padding:0;line-break:anywhere;}
 button,input{color:white;background-color:#216651;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border:solid 1px black;}
 h1{color:c7ffa9;background-color:#111;text-align:center;margin:0;padding:3px;position:fixed;top:0;left:0;width:100%;}
 h1 button{width:26px;height:26px;}
-#bm{color:#212151;background-color:#c9c951;position:absolute;top:0;left:-1.5em;width:1.5em;text-align:center;visibility:hidden;}
+.hm{color:#212151;background-color:#c9c951;position:absolute;top:0;left:0;text-align:center;visibility:hidden;transform:rotate(90deg);transform-origin:0 0;opacity:0;transition:opacity 250ms, visibility 0s ease 250ms;transition-delay:0s;}
+.hm.o{visibility:visible;opacity:1;transition-delay:0s;}
+.mes{color:#f1f1f1;background-color:#216651;font:12px serif;text-align:center;width:50%;border-radius:1em;box-shadow:0 0 9px 5px;position:fixed;top:5em;left:25%;padding:7px 0;visibility:hidden;transform-origin:0 0;opacity:0;transition:opacity 250ms, visibility 0s ease 250ms;z-index:8;}
+.mes.age{visibility:visible;opacity:1;transition-delay:0s;}
 --></style>
 <link rel="manifest" href="m.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head><body ondblclick=";">
 <form>
 <div id="vw"></div>
+<div id="me" class="mes"></div>
 <textarea rows=12 cols=17 name="pr" id="pr" class="pr" onchange="bu()"></textarea>
 <div id="pn"><button type=button onclick="o()">切替▼</button>
 <br><input type="number" name="cr" id="cr" class="cr" max=20 min=5 value=12>テキストエリア高さ(行)
@@ -53,25 +57,33 @@ h1 button{width:26px;height:26px;}
 <br>
 <br>ローカルストレージを<button type=button onclick="adel()">全削除</button>
 <br>※他サイトのデータは消えません</div>
-<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><button type=button onclick="b()">～</button><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><span id="bm">範囲選択ﾓｰﾄﾞ</span></div>
+<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><button type=button onclick="b()">～</button><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><span id="bm" class="hm">範囲ﾓｰﾄﾞ</span></div>
 </form>
 
 <script>//<!--
 
+function mp(s) { //……メッセージポップ
+	document.getElementById("me").innerHTML = s;
+	document.getElementById("me").classList.toggle("age");
+	setTimeout(function() {
+		document.getElementById("me").classList.toggle("age");
+	},1000);
+}
+
 function adel() { //……ストレージ全削除
 	if(window.confirm("本当に全削除しますか？")){
 		localStorage.clear();
+		mp("削除しました");
 	}
 }
 
 function b() { //……範囲選択モード
 	if(bb){
 		bb = 0;
-		document.getElementById("bm").style.visibility = "hidden";
 	}else{
 		bb = 1;
-		document.getElementById("bm").style.visibility = "visible";
 	}
+	document.getElementById("bm").classList.toggle("h");
 }
 
 function st() { //……設定変更
@@ -102,6 +114,7 @@ function st() { //……設定変更
 	s = pw;
 	pw = p.clientWidth;
 	pw = Math.floor(pw / s); //1行の文字数（全角）
+	mp("設定しました");
 }
 
 function o() { //……メニュー
@@ -117,51 +130,45 @@ function o() { //……メニュー
 	}
 }
 
-function rc() { //……行数操作
-	s = document.getElementById("cr").value;
-	p.rows = s;
-	localStorage.setItem('prows',s);
-}
-
 function si() { //……保存
 	s = p.value;
 	if(s == ""){
-		alert("ﾅｲﾖｰ");
+		mp("内容がありません");
 	}else{
 		if(window.confirm("ｲﾁﾎ?")){
 			localStorage.setItem('pvalue',s);
-			alert("ﾎｿﾞﾝ");
+			mp("保存しました");
 		}
 	}
 }
 
 function gi() { //……復帰
 	s = localStorage.getItem('pvalue');
-	if(s == "" || s =="null"){
-		alert("ﾅｲﾖｰ");
+	if(s == "" || s ==null){
+		mp("保存されていません");
 	}else{
-		if (window.confirm("ﾓﾄﾞｽ?")) {
+		if (window.confirm("復帰しますか？")) {
 			s = p.value;
 			p.value = localStorage.getItem('pvalue');
 			if(s == ""){
-				alert("ﾓﾄﾞｼﾀ");
+				mp("復帰しました");
 			}else{
 				localStorage.setItem('pvalue',s);
-				alert("ｲﾚｶｴ");
+				mp("内容を入れ替えました");
 			}
 		}
 	}
 }
 
 function c() { //……全文コピー
-	if(window.confirm("ｺﾋﾟﾙ?")){
+	if(window.confirm("全文コピーしますか？")){
 		q = p.selectionEnd;
 		p.select();
 		try{
 			document.execCommand('copy');
-			alert("ｺﾋﾟｯﾀ");
+			mp("コピーしました");
 		}catch(e){
-			alert("ﾃﾞｷﾅｶｯﾀ\n" + e);
+			alert("実行できませんでした\n" + e);
 		}
 		p.setSelectionRange(q,q);
 	}
@@ -170,7 +177,10 @@ function c() { //……全文コピー
 
 function t() { //……左端
 	s = p.value;
-	q = p.selectionStart;
+	q = p.selectionEnd;
+	if(bb && p.selectionDirection == "backward"){
+		q = p.p.selectionStart;
+	}
 	
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
@@ -196,6 +206,9 @@ function t() { //……左端
 function m() { //……右端
 	s = p.value;
 	q = p.p.selectionEnd;
+	if(bb && p.selectionDirection == "backward"){
+		q = p.p.selectionStart;
+	}
 	
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
@@ -279,7 +292,7 @@ function z() { //……文末
 	q = s.length;
 	if(bb){
 		if(p.selectionDirection == "backward"){
-			p.setSelectionRange(p.selectionEnd,s,"forward");
+			p.setSelectionRange(p.selectionEnd,q,"forward");
 		}else{
 			p.selectionEnd = q;
 		}
@@ -302,6 +315,9 @@ function v() { //……鳩
 function u() { //……上キー
 	s = p.value;
 	q = p.selectionEnd;
+	if(bb && p.selectionDirection == "backward"){
+		q = p.p.selectionStart;
+	}
 	
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
@@ -340,6 +356,9 @@ function u() { //……上キー
 function d() { //……下キー
 	s = p.value;
 	q = p.selectionEnd;
+	if(bb && p.selectionDirection == "backward"){
+		q = p.p.selectionStart;
+	}
 	
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
