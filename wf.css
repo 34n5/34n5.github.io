@@ -2,7 +2,10 @@
 
 /* webフォント指定
 　源暎ゴシックM（http://okoneya.jp/font/）の
-　GenEiGothicM-SemiLight.ttfをwoffに変換して使用しています */
+　GenEiGothicM-SemiLight.ttfを
+　改変（幾つかの絵文字を削除）
+　woffに変換したうえで使用しています */
+
 @font-face {
 	font-family:"GenEiGothicM";
 	src:local("源暎ゴシックM Semilight"),
