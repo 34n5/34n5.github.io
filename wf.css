@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+/* webフォント指定
+　源暎ゴシックM（http://okoneya.jp/font/）の
+　GenEiGothicM-SemiLight.ttfをwoffに変換して使用しています */
+@font-face {
+	font-family:"GenEiGothicM";
+	src:local("源暎ゴシックM Semilight"),
+		local("GenEiGothicM-SemiLight"),
+		local("源暎ゴシックM Regular"),
+		local("GenEiGothicM-Regular"),
+		url('gm-sl.woff') format('woff');
+}

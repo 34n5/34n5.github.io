@@ -8,7 +8,7 @@ body{color:white;background-color:black;width:100%;margin:0 auto;}
 *{-webkit-appearance:none;font:13px sans-serif;border-radius:0;}
 #cn,#pn{width:80%;margin:0 auto;position:relative}
 #pn,#vw{display:none;line-height:1.25;}
-textarea{color:white;background-color:#212121;line-height:1.25;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
+textarea{color:white;background-color:#212121;font:13px/1.25 "Yu Gothic M",monospace,monospace;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
 #vw{color:white;background-color:#313131;position:absolute;padding:1em;z-index:9;}
 p{font-size:15px;margin:24px 0;padding:0;line-break:anywhere;}
 button,input{color:white;background-color:#216651;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border:solid 1px black;}
@@ -16,11 +16,12 @@ h1{color:c7ffa9;background-color:#111;text-align:center;margin:0;padding:3px;pos
 h1 button{width:26px;height:26px;}
 .hm{color:#212151;background-color:#c9c951;position:absolute;top:0;left:0;text-align:center;visibility:hidden;transform:rotate(90deg);transform-origin:0 0;}
 .hm.o{visibility:visible;}
-.mes{color:#f1f1f1;background-color:#216651;font:12px serif;text-align:center;width:50%;border-radius:1em;box-shadow:0 0 9px 5px;position:fixed;top:5em;left:25%;padding:7px 0;visibility:hidden;transform-origin:0 0;opacity:0;transition:opacity 250ms, visibility 0s ease 250ms;z-index:8;}
+.mes{color:#f1f1f1;background-color:#216651;text-align:center;width:50%;border-radius:1em;box-shadow:0 0 9px 5px;position:fixed;top:25%;left:25%;padding:7px 0;visibility:hidden;transform-origin:0 0;opacity:0;transition:opacity 250ms, visibility 0s ease 250ms;z-index:8;}
 .mes.age{visibility:visible;opacity:1;transition-delay:0s;}
 --></style>
 <link rel="manifest" href="m.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" type="text/css" href="wf.css">
 </head><body ondblclick=";">
 <form>
 <div id="vw"></div>
@@ -53,6 +54,8 @@ h1 button{width:26px;height:26px;}
 <br>
 <br>
 <br>
+<br>webフォント（約4MB）の使用を<button type=button name="wf" id="wf" class="wf" onclick="fl()">使用</button>
+<br>
 <br>キャッシュを破棄してページを<button type=button onclick="location.reload(true)">再読込</button>
 <br>
 <br>ローカルストレージを<button type=button onclick="adel()">全削除</button>
@@ -61,6 +64,21 @@ h1 button{width:26px;height:26px;}
 </form>
 
 <script>//<!--
+
+function fl() { //……webフォント適用切り替え
+	s = document.getElementById("wf").innerHTML;
+	if(s =="終了"){
+		p.style.fontFamily = 'monospace,monospace';
+		document.getElementById("wf").innerHTML = "開始";
+		localStorage.setItem('wfl',0);
+		mp("終了しました");
+	}else{
+		p.style.fontFamily = "GenEiGothicM";
+		document.getElementById("wf").innerHTML = "終了";
+		localStorage.setItem('wfl',1);
+		mp("開始しました");
+	}
+}
 
 function mp(s) { //……メッセージポップ
 	document.getElementById("me").innerHTML = s;
@@ -461,8 +479,8 @@ function pwc() { //……1行の文字数（全角）
 	if(!s){
 		s =  document.getElementById("ls").value - 0;
 	}
-	s = s + pw;
-	pw = p.clientWidth;
+	s = s + pw; //font-size + letter-spacing
+	pw = p.clientWidth - 10; //textarea内寸からpaddingを引く
 	pw = Math.floor(pw / s);
 }
 
@@ -519,6 +537,13 @@ if(p.value == "" && s != null && s != ""){
 	if(p.value == "" && s != null && s != ""){
 		p.value = s;
 	}
+}
+
+s = localStorage.getItem('wfl'); //webフォント使用状態
+if(s > 0){
+	p.style.fontFamily = "GenEiGothicM";
+	document.getElementById("wf").innerHTML = "終了";
+
 }
 
 bb = 0; //範囲選択モード初期値：オフ
