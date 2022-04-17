@@ -27,6 +27,7 @@ h1 button{width:26px;height:26px;}
 <div id="vw"></div>
 <div id="me" class="mes"></div>
 <textarea rows=12 cols=17 name="pr" id="pr" class="pr" onchange="bu()"></textarea>
+<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><button type=button onclick="b()">～</button><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><span id="bm" class="hm">範囲選択</span></div>
 <div id="pn"><button type=button onclick="o()">切替▼</button>
 <br><input type="number" name="cr" id="cr" class="cr" max=20 min=5 value=12>テキストエリア高さ(行)
 <br><input type="number" name="ft" id="ft" class="ft" max=39 min=8 value=13>フォントサイズ(px)
@@ -54,13 +55,12 @@ h1 button{width:26px;height:26px;}
 <br>
 <br>
 <br>
-<br>webフォント（約3MB）の使用を<button type=button name="wf" id="wf" class="wf" onclick="fl()">開始</button>
+<br>webフォント（約4MB）の使用を<button type=button name="wf" id="wf" class="wf" onclick="fl()">開始</button>
 <br>
 <br>キャッシュを破棄してページを<button type=button onclick="location.reload(true)">再読込</button>
 <br>
 <br>ローカルストレージを<button type=button onclick="adel()">全削除</button>
 <br>※他サイトのデータは消えません</div>
-<div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><button type=button onclick="b()">～</button><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><span id="bm" class="hm">範囲選択</span></div>
 </form>
 
 <script>//<!--
@@ -123,7 +123,7 @@ function st() { //……設定変更
 	p.style.backgroundColor = s;
 	localStorage.setItem('pbc',s);
 	s = document.getElementById("bh").value; //ボタン高さ(px)
-	for (s1 = 5; s1 < 20; s1++) {
+	for (s1 = 0; s1 < 15; s1++) {
 		document.getElementsByTagName("button")[s1].style.height = s + "px";
 	}
 //	document.getElementsByTagName("input")[6].style.height = s + "px";
@@ -516,7 +516,7 @@ if(pw.test(s)){
 s = localStorage.getItem('pbh'); //ボタン高さ
 if(s >= 11 && s <= 45){
 	document.getElementById("bh").value = s;
-	for (s1 = 5; s1 < 20; s1++) {
+	for (s1 = 0; s1 < 15; s1++) {
 		document.getElementsByTagName("button")[s1].style.height = s + "px";
 	}
 }
