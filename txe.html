@@ -4,19 +4,20 @@
 <title>≡0v0) { ﾊﾄｶﾞﾃﾞﾙﾖ</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
 <style type="text/css"><!--
+@font-face{font-family:"emj";src:local("Segoe UI Emoji"),local("Apple Color Emoji"),local("Noto Color Emoji");unicode-range:U+2600/*☀*/,U+263A/*☺*/,U+2764/*❤*/;}
 body{color:white;background-color:black;width:100%;margin:0 auto;}
 *{-webkit-appearance:none;font:13px sans-serif;border-radius:0;}
 #cn,#pn{width:80%;margin:0 auto;position:relative}
-#pn,#vw{display:none;line-height:1.25;}
-textarea{color:white;background-color:#212121;font:13px/1.25 "Yu Gothic M",monospace,monospace;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
+#pn,#vw{display:none;line-height:125%;}
+textarea{color:white;background-color:#212121;font:13px/125% "emj","NasuM","webnasm",monospace,monospace;letter-spacing:1px;width:100%;margin:0 0 2px;padding:3px 5px;resize:none;line-break:anywhere;}
 #vw{color:white;background-color:#313131;position:absolute;padding:1em;z-index:9;}
 p{font-size:15px;margin:24px 0;padding:0;line-break:anywhere;}
-button,input{color:white;background-color:#216651;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border:solid 1px black;}
+button,input{color:white;background-color:#216651;text-align:center;vertical-align:middle;width:20%;height:26px;margin:0;padding:0;border-style:solid;border-width:0 0 1px 1px;border-color:black;}
 h1{color:c7ffa9;background-color:#111;text-align:center;margin:0;padding:3px;position:fixed;top:0;left:0;width:100%;}
 h1 button{width:26px;height:26px;}
 .hm{color:#212151;background-color:#c9c951;position:absolute;top:0;left:0;text-align:center;visibility:hidden;transform:rotate(90deg);transform-origin:0 0;}
 .hm.o{visibility:visible;}
-.mes{color:#f1f1f1;background-color:#216651;text-align:center;width:50%;border-radius:1em;box-shadow:0 0 9px 5px;position:fixed;top:25%;left:25%;padding:7px 0;visibility:hidden;transform-origin:0 0;opacity:0;transition:opacity 250ms, visibility 0s ease 250ms;z-index:8;}
+.mes{color:#f1f1f1;background-color:#216651;text-align:center;width:50%;border-radius:1em;box-shadow:0 0 9px 5px;position:fixed;top:27%;left:25%;padding:7px 0;visibility:hidden;transform-origin:0 0;opacity:0;transition:opacity 250ms, visibility 0s ease 250ms;z-index:8;}
 .mes.age{visibility:visible;opacity:1;transition-delay:0s;}
 --></style>
 <link rel="manifest" href="m.json">
@@ -29,13 +30,16 @@ h1 button{width:26px;height:26px;}
 <textarea rows=12 cols=17 name="pr" id="pr" class="pr" onchange="bu()"></textarea>
 <div id="cn"><button type=button onclick="si()">⤵</button><button type=button onclick="a()">「</button><button type=button onclick="u()">↑</button><button type=button onclick="m()">≫</button><button type=button onclick="o()">▼</button><button type=button onclick="gi()">⤴</button><button type=button onclick="l()">←</button><button type=button onclick="b()">～</button><button type=button onclick="r()">→</button><button type=button onclick="c()">■</button><button type=button onclick="h()">Φ</button><button type=button onclick="t()">≪</button><button type=button onclick="d()">↓</button><button type=button onclick="z()">」</button><button type=button onclick="v()">ｖ</button><span id="bm" class="hm">範囲選択</span></div>
 <div id="pn"><button type=button onclick="o()">切替▼</button>
+<br>
 <br><input type="number" name="cr" id="cr" class="cr" max=20 min=5 value=12>テキストエリア高さ(行)
 <br><input type="number" name="ft" id="ft" class="ft" max=39 min=8 value=13>フォントサイズ(px)
 <br><input type="number" name="ls" id="ls" class="ls" max=9 min=0 value=1>字間(px)
+<br><input type="number" name="lh" id="lh" class="lh" max=200 min=0 value=125>行間(%)
 <br><input type="color" name="fc" id="fc" class="fc" value="#ffffff">文字色
 <br><input type="color" name="bc" id="bc" class="bc" value="#212121">背景色
 <br><input type="number" name="bh" id="bh" class="bh" max=45 min=11 value=26>ボタン高さ(px)
 <br>上記設定を<button type=button onclick="st()">変更</button>
+<br>
 <br><button type=button onclick="o()">切替▼</button>
 <br>
 <br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ
@@ -55,7 +59,7 @@ h1 button{width:26px;height:26px;}
 <br>
 <br>
 <br>
-<br>webフォント（約4MB）の使用を<button type=button name="wf" id="wf" class="wf" onclick="fl()">開始</button>
+<br>webフォント(約3MB)の使用を<button type=button name="wf" id="wf" class="wf" onclick="fl()">開始</button>
 <br>
 <br>キャッシュを破棄してページを<button type=button onclick="location.reload(true)">再読込</button>
 <br>
@@ -116,6 +120,9 @@ function st() { //……設定変更
 	p.style.letterSpacing = s + "px";
 	localStorage.setItem('pls',s);
 	pw = pw + (s - 0);
+	s = document.getElementById("lh").value; //行間(%)
+	p.style.lineHeight = s + "%";
+	localStorage.setItem('plh',s);
 	s = document.getElementById("fc").value; //文字色
 	p.style.color = s;
 	localStorage.setItem('pfc',s);
@@ -501,6 +508,11 @@ s = localStorage.getItem('pls'); //字間
 if(s >= 0 && s <= 9 && s != null){
 	document.getElementById("ls").value = s;
 	p.style.letterSpacing = s + "px";
+}
+s = localStorage.getItem('plh'); //行間
+if(s >= 0 && s <= 200 && s != null){
+	document.getElementById("lh").value = s;
+	p.style.lineHeight = s + "%";
 }
 pw = /^#[\da-f]{6}$/i;
 s = localStorage.getItem('pfc'); //文字色

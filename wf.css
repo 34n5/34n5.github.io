@@ -1,16 +1,9 @@
 @charset "UTF-8";
 
 /* webフォント指定
-　源暎ゴシックM（http://okoneya.jp/font/）の
-　GenEiGothicM-SemiLight.ttfを
-　改変（幾つかの絵文字を削除）
-　woffに変換したうえで使用しています */
+Nasu（ナス）フォント
+https://itouhiro.hatenablog.com/entry/20140917/font
+NasuM-Regular-20200227.ttf
+こちらをwoffに変換のうえ使用しています */
 
-@font-face {
-	font-family:"GenEiGothicM";
-	src:local("源暎ゴシックM Semilight"),
-		local("GenEiGothicM-SemiLight"),
-		local("源暎ゴシックM Regular"),
-		local("GenEiGothicM-Regular"),
-		url('gm-sl.woff') format('woff');
-}
+@font-face{font-family:"webnasm";srcurl('nm-r.woff') format('woff');}
