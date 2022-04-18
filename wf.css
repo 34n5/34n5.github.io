@@ -6,4 +6,4 @@ https://itouhiro.hatenablog.com/entry/20140917/font
 NasuM-Regular-20200227.ttf
 こちらをwoffに変換のうえ使用しています */
 
-@font-face{font-family:"webnasm";srcurl('nm-r.woff') format('woff');}
+@font-face{font-family:"webnasm";src:url('nm-r.woff') format('woff');}
