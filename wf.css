@@ -6,4 +6,5 @@ https://itouhiro.hatenablog.com/entry/20140917/font
 NasuM-Regular-20200227.ttf
 こちらをwoffに変換のうえ使用しています */
 
-@font-face{font-family:"webnasm";src:url('nm-r.woff') format('woff');}
+@font-face{font-family:"webnasm";src:local("NasuM"),url('nm-r.woff') format('woff');}
+@font-face{font-family:"webnasm";src:local("Segoe UI Emoji"),local("Apple Color Emoji"),local("Noto Color Emoji");unicode-range:U+2600/*☀*/,U+263A/*☺*/,U+2764/*❤*/;}
