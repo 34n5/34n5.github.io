@@ -1,6 +1,7 @@
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-16">
+<meta charset="UTF-8">
 <title>≡0v0) { ﾊﾄｶﾞﾃﾞﾙﾖ</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
 <meta name="format-detection" content="telephone=no">
@@ -48,14 +49,13 @@ h1 button{width:26px;height:26px;}
 <br><input type="number" name="bh" id="bh" class="bh" max=45 min=11 value=26>ボタン高さ(px)
 <br>
 <br><label><input type="checkbox" name="sc" id="sc" class="sc">定型文を使用</label>
-<br><textarea rows=3 cols=17 name="sw" id="sw" class="sw"></textarea>
-<br>1行1定型文/改行を含める場合は『\n』で置換
+<br><textarea rows=3 cols=17 name="sw" id="sw" class="sw" placeholder="1行1定型文/改行を含める場合は『\n』で置換"></textarea>
 <br>
 <br><button type=button onclick="o()">切替▼</button>　<button type=button onclick="st()">設定</button>
 <br>
 <br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ
 <br>「ﾊﾄﾃﾞﾘｬｰ」
-<br>2204231007
+<br>2204231113
 <br>
 <br>-動作確認：iOS15.4.1 + Safari
 <br>-ホーム画面に追加すると単独アプリっぽく使える気がする
@@ -537,7 +537,7 @@ function pwc() { //……1行の文字数（全角）
 
 p = document.getElementById("pr"); //テキストエリアオブジェクト
 w = document.getElementById("vw"); //プレビュー用オブジェクト
-r = document.getElementById("swl"); //定型文用オブジェクト
+r = document.getElementById("swl"); //定型文選択用オブジェクト
 
 s = localStorage.getItem('prows'); //行数
 if(s >= 5 && s <= 20){
@@ -580,7 +580,6 @@ if(s >= 11 && s <= 45){
 }
 
 pwc();
-
 s = localStorage.getItem('psc'); //定型文スイッチ
 if(s){
 	document.getElementById("swg").style.display = "inline";
@@ -619,7 +618,6 @@ if(s > 0){
 }
 
 bb = 0; //範囲選択モード初期値：オフ
-
 
 
 //--></script>
