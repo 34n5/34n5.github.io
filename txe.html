@@ -1,12 +1,12 @@
-<html lang="ja">
+﻿<html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>≡0v0) { ﾊﾄｶﾞﾃﾞﾙﾖ</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
 <meta name="format-detection" content="telephone=no">
+<title>≡0v0) { ﾊﾄｶﾞﾃﾞﾙﾖ</title>
 <style type="text/css"><!--
 @font-face{font-family:"emj";src:local("Apple Color Emoji"),local("Noto Color Emoji");unicode-range:U+2600/*☀*/,U+263A/*☺*/,U+2764/*❤*/;}
-body{color:white;background-color:black;width:100%;margin:0 auto;}
+body{color:white;background-color:black;width:100%;margin:0 auto; max-width:340px;}
 *{-webkit-appearance:none;font:13px sans-serif;border-radius:0;}
 #cn,#pn{width:80%;margin:0 auto;position:relative}
 #pn,#vw{display:none;line-height:125%;}
@@ -54,7 +54,7 @@ h1 button{width:26px;height:26px;}
 <br>
 <br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ
 <br>「ﾊﾄﾃﾞﾘｬｰ」
-<br>2204231113
+<br>2022_0426_2059
 <br>
 <br>-動作確認：iOS15.4.1 + Safari
 <br>-ホーム画面に追加すると単独アプリっぽく使える気がする
@@ -241,7 +241,6 @@ function c() { //……全文コピー
 	}
 }
 
-
 function t() { //……左端
 	s = p.value;
 	q = p.selectionEnd;
@@ -252,9 +251,10 @@ function t() { //……左端
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
-	s1 = s1[0].length; //行頭～キャレット文字数
-	s1 = s1 % pw;
-	q = q - s1;
+	s1 = ar(s1[0]); //キャレット行
+	s1.reverse();
+	q -= s1[0].length;
+	
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			p.selectionStart = q;
@@ -280,18 +280,18 @@ function m() { //……右端
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
-	s1 = s1[0].length; //行頭～キャレット
-	s1 = s1 % pw; //左端～キャレット
-	
-	s2 = s.slice(q);
-	s2 = s2.split("\n");
-	s2 = s2[0].length; //キャレット～行末
-	
-	if(s2 + s1 > pw){
-		s2 = pw - s1;
+	s0 = ar(s1[0]); //行頭～キャレット
+	s0.reverse();
+	q1 =  q - s0[0].length //左端～キャレット
+	s1 = s.slice(q1);
+	s1 = s1.split("\n");
+	s1 = ar(s1[0]); //左端～行末
+	q1 += s1[0].length; //左端～右端
+	if(q == q1 && 1 in s1){
+		q1 += s1[1].length; 
 	}
+	q = q1;
 	
-	q = q + s2;
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			if(q > p.selectionEnd){
@@ -379,6 +379,41 @@ function v() { //……鳩
 	p.selectionStart = p.selectionEnd;
 }
 
+function al(s1) { //……文字数カウント
+	var s = s1.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
+	s = s.length * 2;
+	s -= (s1.match(/[\x20-\x7e]/g)||[]).length
+	return(s);
+}
+
+function ar(s1) { //……改行配列作成
+	var s1 = s1.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
+	var s2 = 0;
+	var s3 = "";
+	var s4 = 0;
+	var s5 = 0;
+	var s6 = [""];
+	var p1 = p.style.fontSize.slice(0,-2) - 0;
+	var p2 = (p.style.letterSpacing.slice(0,-2) - 0) * 2;
+	var p3 = (p.clientWidth - 10) * 2;
+	for(s3 in s1){
+		if(/[\x20-\x7e]/.test(s1[s3])){ //半角
+			s4 = p1 + p2;
+		}else{ //全角
+			s4 = p1 + p1 + p2;
+		}
+		if((s2 + s4) > p3){ //あふれたら改行
+			s2 = s4;
+			s5++;
+			s6[s5] = s1[s3];
+		}else{
+			s2 += s4;
+			s6[s5] += s1[s3];
+		}
+	}
+	return(s6);
+}
+
 function u() { //……上キー
 	s = p.value;
 	q = p.selectionEnd;
@@ -389,22 +424,44 @@ function u() { //……上キー
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
-	s2 = 0;
-	if(s1[1]){
-		s2 = s1[1].length; //キャレット前行文字数
-	}
-	s1 = s1[0].length; //行頭～キャレット文字数
-	
-	if(s1 >= pw){
-		q = q - pw; //行内で移動可能
-	}else{
-		if(s2 % pw > s1){
-			q = q - (s2 % pw) - 1; //前行へ
-		}else{
-			q = q - s1 - 1; //前行末へ
+	s0 = ar(s1[0]); //キャレット行
+	s1 = ar(s1[1]); //前行
+	s0.reverse();
+	s2 = al(s0[0]); //左端～キャレット
+	s2 = Math.ceil(s2 / 2) * 2;
+	if(1 in s0){ //行内で移動可能
+		s3 = s0[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
+		for(i in s3){
+			i++;
+			s4 = s3.slice(0,i);
+			i--;
+			s4 = s4.join("");
+			if(al(s4) > s2){
+				s4 = s3.slice(i);
+				s4 = s4.join("");
+				break;
+			}
+			s4 = "";
 		}
+		q = q - s4.length - s0[0].length
+	}else{
+		s1.reverse();
+		s3 = s1[0].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
+		for(i in s3){
+			i++;
+			s4 = s3.slice(0,i);
+			i--;
+			s4 = s4.join("");
+			if(al(s4) > s2){
+				s4 = s3.slice(i);
+				s4 = s4.join("");
+				break;
+			}
+			s4 = "";
+		}
+		q = q - s4.length - s0[0].length - 1;
 	}
-	if(q < 0) q = 0; //文頭へ
+	
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			p.selectionStart = q;
@@ -430,29 +487,49 @@ function d() { //……下キー
 	s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
-	s1 = s1[0].length; //行頭～キャレット文字数
+	s0 = ar(s1[0]); //行頭～キャレット行
+	s0.reverse();
+	s2 = al(s0[0]); //左端～キャレット
 	
-	s2 = s.slice(q);
-	s2 = s2.split("\n");
-	s3 = 0;
-	if(s2[1]){
-		s3 = s2[1].length; //キャレット次行文字数
-	}
-	s2 = s2[0].length; //キャレット～行末文字数	
-	
-	if(s2 >= pw){
-		q = q + pw; //行内で移動可能
-	}else{
-		if(s2 + (s1 % pw) > pw){
-			q = q + s2; //行末へ
-		}else{
-			if(s3 > s1 % pw){
-				q = q + s2 + (s1 % pw) + 1; //次行へ
-			}else{
-				q = q + s2 + s3 + 1; //次行末へ
+	q -= s0[0].length //キャレット行左端以降
+	s1 = s.slice(q);
+	s1 = s1.split("\n");
+	s0 = ar(s1[0]);
+	if(1 in s0){
+		s3 = s0[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
+		for(i in s3){
+			i++;
+			s4 = s3.slice(0,i);
+			s4 = s4.join("");
+			if(al(s4) >= s2){
+				if(i == 1 && s2 == 0){
+					s4 = "";
+					break;
+				}
+				s4 = s3.slice(0,i);
+				s4 = s4.join("");
+				break;
 			}
 		}
+		q = q + s4.length + s0[0].length;
+	}else if(s1[1] == ""){
+		q = q + s1[0].length + 1;
+	}else{
+		s3 = s1[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
+		for(i in s3){
+			i++;
+			s4 = s3.slice(0,i);
+			s4 = s4.join("");
+			if(al(s4) >= s2){
+				if(i == 1 && s2 == 0){
+					s4 = "";
+				}
+				break;
+			}
+		}
+		q = q + s4.length + s1[0].length + 1;
 	}
+
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			if(q > p.selectionEnd){
@@ -547,11 +624,15 @@ s = localStorage.getItem('pfs'); //フォントサイズ
 if(s >= 8 && s <= 39){
 	document.getElementById("ft").value = s;
 	p.style.fontSize = s + "px";
+}else{
+	p.style.fontSize = "13px";
 }
 s = localStorage.getItem('pls'); //字間
 if(s >= 0 && s <= 9 && s != null){
 	document.getElementById("ls").value = s;
 	p.style.letterSpacing = s + "px";
+}else{
+	p.style.letterSpacing = "1px";
 }
 s = localStorage.getItem('plh'); //行間
 if(s >= 0 && s <= 200 && s != null){
