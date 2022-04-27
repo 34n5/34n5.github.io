@@ -54,7 +54,7 @@ h1 button{width:26px;height:26px;}
 <br>
 <br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ
 <br>「ﾊﾄﾃﾞﾘｬｰ」
-<br>2022_0426_2059
+<br>2022_0427_1754
 <br>
 <br>-動作確認：iOS15.4.1 + Safari
 <br>-ホーム画面に追加すると単独アプリっぽく使える気がする
@@ -81,7 +81,7 @@ h1 button{width:26px;height:26px;}
 <script>//<!--
 
 function fl() { //……webフォント適用切り替え
-	s = document.getElementById("wf").textContent;
+	var s = document.getElementById("wf").textContent;
 	if(s =="終了"){
 		p.style.fontFamily = '"emj","NasuM",monospace,monospace';
 		document.getElementById("wf").textContent = "開始";
@@ -120,17 +120,17 @@ function b() { //……範囲選択モード
 }
 
 function st() { //……設定変更
-	s = document.getElementById("cr").value; //テキストエリア高さ(行)
+	var s = document.getElementById("cr").value; //テキストエリア高さ(行)
 	p.rows = s;
 	localStorage.setItem('prows',s);
 	s = document.getElementById("ft").value; //フォントサイズ(px)
 	p.style.fontSize = s + "px";
 	localStorage.setItem('pfs',s);
-	pw = s - 0;
+//	pw = s - 0;
 	s = document.getElementById("ls").value; //字間(px)
 	p.style.letterSpacing = s + "px";
 	localStorage.setItem('pls',s);
-	pw = pw + (s - 0);
+//	pw = pw + (s - 0);
 	s = document.getElementById("lh").value; //行間(%)
 	p.style.lineHeight = s + "%";
 	localStorage.setItem('plh',s);
@@ -147,9 +147,9 @@ function st() { //……設定変更
 	r.style.height = s + "px";
 	localStorage.setItem('pbh',s);
 	
-	s = pw;
-	pw = p.clientWidth;
-	pw = Math.floor(pw / s); //1行の文字数（全角）
+//	s = pw;
+//	pw = p.clientWidth;
+//	pw = Math.floor(pw / s); //1行の文字数（全角）
 	
 	s = document.getElementById("sc").checked; //定型文スイッチ
 	if(s){
@@ -169,23 +169,24 @@ function st() { //……設定変更
 }
 
 function i() { //……定型文挿入
-	s = r.value;
+	var s = r.value;
 	if(s != ""){
 		s = s.replace(/&lt;/g,"<");
 		s = s.replace(/&gt;/g,">");
-		s1 = s.replace(/\\n/g,"\n");
+		var s1 = s.replace(/\\n/g,"\n");
 		s = p.value;
-		q = p.selectionEnd;
+		var q = p.selectionStart;
+		var q1 = p.selectionEnd;
 		p.value = s.slice(0,q);
-		p.value = p.value + s1;
-		p.value = p.value + s.slice(q);
+		p.value += s1;
+		p.value += s.slice(q1);
 		p.selectionEnd = q + s1.length;
 		p.selectionStart = p.selectionEnd;
 	}
 }
 
 function o() { //……メニュー
-	s = document.getElementById("pn").style.display;
+	var s = document.getElementById("pn").style.display;
 	if(s == "block"){
 		document.getElementById("pn").style.display = "none";
 		document.getElementById("cn").style.display = "block";
@@ -198,7 +199,7 @@ function o() { //……メニュー
 }
 
 function si() { //……保存
-	s = p.value;
+	var s = p.value;
 	if(s == ""){
 		mp("内容がありません");
 	}else{
@@ -210,7 +211,7 @@ function si() { //……保存
 }
 
 function gi() { //……復帰
-	s = localStorage.getItem('pvalue');
+	var s = localStorage.getItem('pvalue');
 	if(s == "" || s ==null){
 		mp("保存されていません");
 	}else{
@@ -229,7 +230,7 @@ function gi() { //……復帰
 
 function c() { //……全文コピー
 	if(window.confirm("全文コピーしますか？")){
-		q = p.selectionEnd;
+		var q = p.selectionEnd;
 		p.select();
 		try{
 			document.execCommand('copy');
@@ -242,13 +243,13 @@ function c() { //……全文コピー
 }
 
 function t() { //……左端
-	s = p.value;
-	q = p.selectionEnd;
+	var s = p.value;
+	var q = p.selectionEnd;
 	if(bb && p.selectionDirection == "backward"){
 		q = p.selectionStart;
 	}
 	
-	s1 = s.slice(0,q);
+	var s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
 	s1 = ar(s1[0]); //キャレット行
@@ -271,18 +272,18 @@ function t() { //……左端
 }
 
 function m() { //……右端
-	s = p.value;
-	q = p.selectionEnd;
+	var s = p.value;
+	var q = p.selectionEnd;
 	if(bb && p.selectionDirection == "backward"){
 		q = p.selectionStart;
 	}
 	
-	s1 = s.slice(0,q);
+	var s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
-	s0 = ar(s1[0]); //行頭～キャレット
+	var s0 = ar(s1[0]); //行頭～キャレット
 	s0.reverse();
-	q1 =  q - s0[0].length //左端～キャレット
+	var q1 =  q - s0[0].length //左端～キャレット
 	s1 = s.slice(q1);
 	s1 = s1.split("\n");
 	s1 = ar(s1[0]); //左端～行末
@@ -355,8 +356,8 @@ function g() { //……右
 }
 
 function z() { //……文末
-	s = p.value;
-	q = s.length;
+	var s = p.value;
+	var q = s.length;
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			p.setSelectionRange(p.selectionEnd,q,"forward");
@@ -370,11 +371,12 @@ function z() { //……文末
 }
 
 function v() { //……鳩
-	s = p.value;
-	q = p.selectionEnd;
+	var s = p.value;
+	var q = p.selectionStart;
+	var q1 = p.selectionEnd;
 	p.value = s.slice(0,q);
-	p.value = p.value + "♡";
-	p.value = p.value + s.slice(q);
+	p.value += "♡";
+	p.value += s.slice(q1);
 	p.selectionEnd = q + 1;
 	p.selectionStart = p.selectionEnd;
 }
@@ -415,20 +417,22 @@ function ar(s1) { //……改行配列作成
 }
 
 function u() { //……上キー
-	s = p.value;
-	q = p.selectionEnd;
+	var i = 0, s = p.value, q = p.selectionEnd, s3 = 0, s4 = 0;
 	if(bb && p.selectionDirection == "backward"){
 		q = p.selectionStart;
 	}
-	
-	s1 = s.slice(0,q);
+	var s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
-	s0 = ar(s1[0]); //キャレット行
-	s1 = ar(s1[1]); //前行
+	var s0 = ar(s1[0]); //キャレット行
 	s0.reverse();
-	s2 = al(s0[0]); //左端～キャレット
-	s2 = Math.ceil(s2 / 2) * 2;
+	s1 = ar(s1[1]); //前行
+	s1.reverse();
+	var s2 = al(s0[0]); //左端～キャレット
+//	s2 = Math.ceil(s2 / 2) * 2;
+	if(s2 % 2 >0){
+		s2++;
+	}
 	if(1 in s0){ //行内で移動可能
 		s3 = s0[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
 		for(i in s3){
@@ -443,9 +447,10 @@ function u() { //……上キー
 			}
 			s4 = "";
 		}
-		q = q - s4.length - s0[0].length
+		q = q - s4.length - s0[0].length;
+	}else if(s1[0] == ""){ //前行が空行
+		q = q - s0[0].length - 1;
 	}else{
-		s1.reverse();
 		s3 = s1[0].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
 		for(i in s3){
 			i++;
@@ -478,18 +483,16 @@ function u() { //……上キー
 }
 
 function d() { //……下キー
-	s = p.value;
-	q = p.selectionEnd;
+	var i = 0, s = p.value, q = p.selectionEnd, s3 = 0, s4 = 0;
 	if(bb && p.selectionDirection == "backward"){
 		q = p.selectionStart;
 	}
-	
-	s1 = s.slice(0,q);
+	var s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
-	s0 = ar(s1[0]); //行頭～キャレット行
+	var s0 = ar(s1[0]); //行頭～キャレット行
 	s0.reverse();
-	s2 = al(s0[0]); //左端～キャレット
+	var s2 = al(s0[0]); //左端～キャレット
 	
 	q -= s0[0].length //キャレット行左端以降
 	s1 = s.slice(q);
@@ -546,7 +549,7 @@ function d() { //……下キー
 }
 
 function h() { //……整形＆プレビュー
-	s = p.value;
+	var s = p.value;
 	s = s.replace(/^\n+/,"");
 	s = s.replace(/\n+$/,"");
 	s = s.replace(/^/gm,"　");
@@ -569,13 +572,13 @@ function hm() { //……プレビューhome
 }
 
 function pu() { //……プレビューpageup
-	s = window.innerHeight;
+	var s = window.innerHeight;
 	s = (s -51) * -1;
 	window.scrollBy(0,s);
 }
 
 function pd() { //……プレビューpagedown
-	s = window.innerHeight;
+	var s = window.innerHeight;
 	s = s -51;
 	window.scrollBy(0,s);
 }
@@ -590,26 +593,26 @@ function x() { //……プレビューを閉じる
 }
 
 function bu() { //……自動バックアップ
-	s = p.value;
+	var s = p.value;
 	if(s != ""){
 			localStorage.setItem('pvalue_bu',s);
 	}
 //	pwc();
 }
 
-function pwc() { //……1行の文字数（全角）
-	pw = p.style.fontSize.slice(0,-2) - 0;
-	if(!pw){
-		pw = document.getElementById("ft").value - 0;
-	}
-	s = p.style.letterSpacing.slice(0,-2) - 0;
-	if(!s){
-		s =  document.getElementById("ls").value - 0;
-	}
-	s = s + pw; //font-size + letter-spacing
-	pw = p.clientWidth - 10; //textarea内寸からpaddingを引く
-	pw = Math.floor(pw / s);
-}
+//function pwc() { //……1行の文字数（全角）
+//	pw = p.style.fontSize.slice(0,-2) - 0;
+//	if(!pw){
+//		pw = document.getElementById("ft").value - 0;
+//	}
+//	s = p.style.letterSpacing.slice(0,-2) - 0;
+//	if(!s){
+//		s =  document.getElementById("ls").value - 0;
+//	}
+//	s = s + pw; //font-size + letter-spacing
+//	pw = p.clientWidth - 10; //textarea内寸からpaddingを引く
+//	pw = Math.floor(pw / s);
+//}
 
 p = document.getElementById("pr"); //テキストエリアオブジェクト
 w = document.getElementById("vw"); //プレビュー用オブジェクト
@@ -639,14 +642,14 @@ if(s >= 0 && s <= 200 && s != null){
 	document.getElementById("lh").value = s;
 	p.style.lineHeight = s + "%";
 }
-pw = /^#[\da-f]{6}$/i;
+//pw = /^#[\da-f]{6}$/i;
 s = localStorage.getItem('pfc'); //文字色
-if(pw.test(s)){
+if(/^#[\da-f]{6}$/i.test(s)){
 	document.getElementById("fc").value = s;
 	p.style.color = s;
 }
 s = localStorage.getItem('pbc'); //背景色
-if(pw.test(s)){
+if(/^#[\da-f]{6}$/i.test(s)){
 	document.getElementById("bc").value = s;
 	p.style.backgroundColor = s;
 }
@@ -659,7 +662,7 @@ if(s >= 11 && s <= 45){
 	r.style.height = s + "px";
 }
 
-pwc();
+//pwc();
 s = localStorage.getItem('psc'); //定型文スイッチ
 if(s){
 	document.getElementById("swg").style.display = "inline";
