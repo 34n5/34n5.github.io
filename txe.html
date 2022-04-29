@@ -117,6 +117,7 @@ function b() { //……範囲選択モード
 		bb = 1;
 	}
 	document.getElementById("bm").classList.toggle("o");
+	p.focus();
 }
 
 function st() { //……設定変更
@@ -208,6 +209,7 @@ function si() { //……保存
 			mp("保存しました");
 		}
 	}
+	p.focus();
 }
 
 function gi() { //……復帰
@@ -226,6 +228,7 @@ function gi() { //……復帰
 			}
 		}
 	}
+	p.focus();
 }
 
 function c() { //……全文コピー
@@ -240,6 +243,7 @@ function c() { //……全文コピー
 		}
 		p.setSelectionRange(q,q);
 	}
+	p.blur();
 }
 
 function t() { //……左端
