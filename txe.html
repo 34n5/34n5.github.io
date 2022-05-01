@@ -668,10 +668,10 @@ if(s >= 11 && s <= 45){
 
 //pwc();
 s = localStorage.getItem('psc'); //定型文スイッチ
-if(s){
+if(s == "true"){
 	document.getElementById("swg").style.display = "inline";
+	document.getElementById("sc").checked = 1;
 }
-document.getElementById("sc").checked = s;
 s = localStorage.getItem('psw'); //定型文内容
 if(s != "" && s != null){
 	document.getElementById("sw").value = s;
