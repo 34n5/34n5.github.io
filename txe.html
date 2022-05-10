@@ -103,7 +103,7 @@ footer{bottom:0;padding-bottom:1em;}
 <br>
 <br>ﾊｰﾄが出るﾃｷｽﾄｴﾘｱ
 <br>「ﾊﾄﾃﾞﾘｬｰ」
-<br>2022_0510_1800
+<br>2022_0510_2033
 <br>
 <br>-動作確認：iOS15.4.1 + Safari
 <br>-ホーム画面に追加すると単独アプリっぽく使える気がする
@@ -817,7 +817,8 @@ function pd() { //……プレビューpagedown
 }
 
 function ed() { //……プレビューend
-	window.scrollTo(0,document.body.scrollHeight);
+	var s = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+	window.scrollTo(0,s);
 }
 
 function x() { //……プレビューを閉じる
