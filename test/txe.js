@@ -319,6 +319,7 @@ function cc(a) { //……全文コピー旧
 
 function c() { //……全文コピー
 	if(confirm("全文コピーしますか？")){
+		alert(typeof navigator.clipboard);
 		if (typeof navigator.clipboard === 'object'){
 			navigator.clipboard.writeText(value).then(function(){
 				mp("コピーしました");
