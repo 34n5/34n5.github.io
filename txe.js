@@ -1,5 +1,4 @@
-console.log("2022.0515.2050");
-
+console.log("2022-0518-1841");
 
 function hp() { //……プレビュー書式設定
 	var s = document.getElementById("vff").value; //フォントファミリー
@@ -51,7 +50,7 @@ function hpr(s) { //……プレビュー設定反映
 	pln = Math.ceil(s[1] * s[3] * 0.02) + 52;
 }
 
-function fl() { //……webフォント適用切り替え
+function fn() { //……webフォント適用切り替え
 	var s = document.getElementById("wf").textContent;
 	if(s =="終了"){
 		p.style.fontFamily = '"emj","NasuM",monospace,monospace';
@@ -67,7 +66,7 @@ function fl() { //……webフォント適用切り替え
 }
 
 function mp(s) { //……メッセージポップ
-	document.getElementById("me").innerHTML = s;
+	document.getElementById("me").textContent = s;
 	document.getElementById("me").classList.toggle("age");
 	setTimeout(function() {
 		document.getElementById("me").classList.toggle("age");
@@ -75,7 +74,7 @@ function mp(s) { //……メッセージポップ
 }
 
 function csp(s) { //……文字数表示
-	document.getElementById("cs").textContent = "[" + s + "]";
+	document.getElementById("cs").textContent = s;
 	document.getElementById("cs").classList.toggle("o");
 	setTimeout(function() {
 		document.getElementById("cs").classList.toggle("o");
@@ -102,7 +101,7 @@ function b() { //……範囲選択モード
 function st() { //……設定変更
 	if(document.getElementById("bh").value < 20){
 		document.getElementById("bh").value = 20;
-		alert("ボタン高さは 20 以上にしてください");
+		alert("ボタンの高さは 20 以上にしてください");
 		return;
 	}
 	var s = document.getElementById("cr").value; //[0]テキストエリア高さ(vh)
@@ -137,12 +136,11 @@ function sh(s) { //……設定反映
 	p.style.lineHeight = s[3] + "%"; //行間(%)
 	p.style.color = s[4]; //文字色
 	p.style.backgroundColor = s[5]; //背景色
-	var i = 0; 
-	for (; i < 24; i++) {//ボタン高さ(px)
-		document.getElementsByTagName("button")[i].style.height = s[6] + "px";
+	var t = document.querySelectorAll("#cn button");
+	for (let i = 0; i < t.length; i++) {//ボタン高さ(px)
+		t[i].style.height = s[6] + "px";
 	}
 	r.style.height = s + "px"; //定型文セレクトボックス
-	
 	if(s[7] == true || s[7] == "true"){ //拡張スイッチ
 		document.getElementById("cf").style.display = "block";
 		document.getElementById("cm").style.display = "none";
@@ -155,27 +153,75 @@ function sh(s) { //……設定反映
 	}else{
 		document.getElementById("swg").style.display = "none";
 	}
-	return(1);
+	fl = (s[1] - 0) + (s[2] -0 );
+	fl /= 2;
 }
 
 function i() { //……定型文挿入
 	var s = r.value;
-	if(s != ""){
-		s = s.replace(/&lt;/g,"<");
-		s = s.replace(/&gt;/g,">");
-		var s1 = s.replace(/\\n/g,"\n");
+	s = s.replace(/&lt;/g,"<");
+	s = s.replace(/&gt;/g,">");
+	s = s.replace(/\\n/g,"\n");
+	var a = document.execCommand('insertText', false, s);
+	if(!a){
+		var s1 = p.value;
+		var q = p.selectionStart;
+		var q1 = p.selectionEnd;
+		p.value = s1.slice(0,q);
+		p.value += s;
+		p.value += s1.slice(q1);
+		p.selectionEnd = q + s.length;
+		p.selectionStart = p.selectionEnd;
+	}
+	/*
+	try{
+		document.execCommand('insertText', false, s);
+	}catch(e){
+		var s1 = p.value;
+		var q = p.selectionStart;
+		var q1 = p.selectionEnd;
+		p.value = s1.slice(0,q);
+		p.value += s;
+		p.value += s1.slice(q1);
+		p.selectionEnd = q + s.length;
+		p.selectionStart = p.selectionEnd;
+	}
+	*/
+}
+
+function v() { //……鳩
+	var a = document.execCommand("insertText", false, "♡");
+	if(!a){
 		s = p.value;
 		var q = p.selectionStart;
 		var q1 = p.selectionEnd;
 		p.value = s.slice(0,q);
-		p.value += s1;
+		p.value += "♡";
 		p.value += s.slice(q1);
-		p.selectionEnd = q + s1.length;
+		p.selectionEnd = q + 1;
 		p.selectionStart = p.selectionEnd;
 	}
+	
+	/*
+	try{
+		document.execCommand('insertText', false, str);
+	}catch(e){
+		s = p.value;
+		var q = p.selectionStart;
+		var q1 = p.selectionEnd;
+		p.value = s.slice(0,q);
+		p.value += "♡";
+		p.value += s.slice(q1);
+		p.selectionEnd = q + 1;
+		p.selectionStart = p.selectionEnd;
+	}
+	*/
 }
 
-function o(a) { //……メニュー
+function oo() { //……メニュー
+	document.getElementById('mu').classList.toggle('nu');
+}
+function o(a) { //……設定画面
 	var sb = document.getElementById("stab");
 	var pb = document.getElementById("ptab");
 	var ab = document.getElementById("atab");
@@ -215,6 +261,7 @@ function o(a) { //……メニュー
 			localStorage.setItem('pn',0);
 		}else{
 			document.getElementById("pn").style.display = "block";
+			oo();
 			p.style.display = "none";
 			document.getElementById("cn").style.display = "none";
 			localStorage.setItem('pn',1);
@@ -250,25 +297,58 @@ function gi() { //……復帰
 				localStorage.setItem('pvalue',s);
 				mp("内容を入れ替えました");
 			}
-			csp(s.length);
+			csp(p.value.length);
 		}
 	}
+	oo();
 	p.focus();
 }
 
-function c() { //……全文コピー
-	if(window.confirm("全文コピーしますか？")){
-		var q = p.selectionEnd;
-		p.select();
-		try{
-			document.execCommand('copy');
-			mp("コピーしました");
-		}catch(e){
-			alert("実行できませんでした\n" + e);
-		}
-		p.setSelectionRange(q,q);
+function cc(a) { //……全文コピー旧
+	var q = p.selectionEnd;
+	p.select();
+	try{
+		document.execCommand('copy');
+		mp("コピーしました" + a);
+	}catch(e){
+		alert("実行できませんでした\n" + e);
 	}
+	p.setSelectionRange(q,q);
 	p.blur();
+}
+
+function c() { //……全文コピー
+	if(confirm("全文コピーしますか？")){
+		if (typeof navigator.clipboard === 'object'){
+			navigator.clipboard.writeText(p.value).then(function(){
+				mp("コピーしました");
+			}, function() {
+				cc(0);
+			});
+			return;
+		}
+		result = cc(1);
+		/*
+		try{
+			navigator.clipboard.writeText(p.value).then(function() {
+				mp("コピーしました");
+			}, function() {
+				alert("実行できませんでした");
+			});
+		}catch(e){
+			var q = p.selectionEnd;
+			p.select();
+			try{
+				document.execCommand('copy');
+				mp("コピーしました.");
+			}catch(e){
+				alert("実行できませんでした\n" + e);
+			}
+			p.setSelectionRange(q,q);
+			p.blur();
+		}
+		*/
+	}
 }
 
 function t() { //……左端
@@ -403,25 +483,9 @@ function z() { //……文末
 	p.scrollTop = p.scrollHeight;
 }
 
-function v() { //……鳩
-	var s = p.value;
-	var q = p.selectionStart;
-	var q1 = p.selectionEnd;
-	p.value = s.slice(0,q);
-	p.value += "♡";
-	p.value += s.slice(q1);
-	p.selectionEnd = q + 1;
-	p.selectionStart = p.selectionEnd;
-}
-
-function al(s1,s2) { //……文字数カウント
+function al(s1) { //……文字数カウント
 	var s = s1.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
-	if(s2 != 1){
-		s = s.length * 2;
-		s -= (s1.match(/[\x20-\x7e]/g)||[]).length
-	}else{
-		s = s.length;
-	}
+	s = s.length;
 	return(s);
 }
 
@@ -432,7 +496,6 @@ function ar(s1,a) { //……改行配列作成
 	var p0 = n.clientHeight;
 	var s1 = s1.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
 	var s2, s3 = s2 = [""], p1, p2 = p1 = s1.length, i = p3 = 0;
-	
 	if(a == 1){
 		p1 = p2 = 0;
 		for(i in s1){
@@ -449,7 +512,6 @@ function ar(s1,a) { //……改行配列作成
 			s3[p3] = s1.slice(p2,p1).join("");
 			p0 = n.clientHeight;
 		}
-		
 	}else{
 		for(i in s1){
 			p1--;
@@ -466,39 +528,8 @@ function ar(s1,a) { //……改行配列作成
 			}
 		}
 	}
-	
 	n.textContent = "";
-	console.log(s3);
 	return(s3);
-	
-	/*
-	var s1 = s1.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
-	var s2 = 0;
-	var s3 = "";
-	var s4 = 0;
-	var s5 = 0;
-	var s6 = [""];
-	var p1 = p.style.fontSize.slice(0,-2) - 0;
-	var p2 = (p.style.letterSpacing.slice(0,-2) - 0) * 2;
-	var p3 = (p.clientWidth - 10) * 2;
-	for(s3 in s1){
-		if(/[\x20-\x7e]/.test(s1[s3])){ //半角
-			s4 = p1 + p2;
-		}else{ //全角
-			s4 = p1 + p1 + p2;
-		}
-		if((s2 + s4) > p3){ //あふれたら改行
-			s2 = s4;
-			s5++;
-			s6[s5] = s1[s3];
-		}else{
-			s2 += s4;
-			s6[s5] += s1[s3];
-		}
-	}
-	return(s6);
-	*/
-	
 }
 
 function u() { //……上キー
@@ -511,28 +542,21 @@ function u() { //……上キー
 	s1 = s1.split("\n");
 	s1.reverse();
 	var s0 = ar(s1[0]); //前段左端～キャレット文字列
-	
 	if(1 in s1){
 		s1 = ar(s1[1]);
 		s1 = s1[0]; //前行最下段
 	}else{
 		s1 = -1; //1行目
 	}
-	
 	y.textContent = s0[0];
-	var s2 = p.style.letterSpacing.slice(0,-2) - 0;
-	s2 += p.style.fontSize.slice(0,-2) - 0;
-	s2 *= -0.5;
-	s2 += y.offsetWidth; //左端～キャレット幅px
-	
+	var s2 = y.offsetWidth - fl; //左端～キャレット幅px
 	var s5 = s.slice(0,q + 1);
 	if(s.charAt(q) != "\n"){
 		s5 = s5.split("\n");
 		s5.reverse();
 		s5 = ar(s5[0]);
-		s5 = s5[0].length - s0[0].length; //マイナスなら右端・0なら文末
+		s5 = s5[0].length - s0[0].length; //マイナスなら左端
 	}
-	//if(s5 < 0 && s0.length == 1){ //キャレットが行の2段目左端だった場合
 	if(s5 < 0){ //キャレットが左端だった場合
 		s0.unshift("");
 		s2 = 0;
@@ -564,74 +588,6 @@ function u() { //……上キー
 		q -= s3.length - s4.length + s0[0].length + 1;
 	}
 	y.textContent = "";
-	
-	
-	/*
-	var s1 = s.slice(0,q);
-	s1 = s1.split("\n");
-	s1.reverse();
-	var s0 = ar(s1[0]); //キャレット行
-	s0.reverse();
-	if(1 in s1){
-		s1 = ar(s1[1]); //前行
-		s1.reverse();
-	}else{
-		s1 = -1;
-	}
-	var s2 = al(s0[0]); //左端～キャレット
-	if(s2 % 2 >0){
-		s2++;
-	}
-	
-	var s5 = s.slice(0,q + 1);
-	if(s.charAt(q) != "\n"){
-		s5 = s5.split("\n");
-		s5.reverse();
-		s5 = ar(s5[0]);
-		s5 = s5.length - s0.length; //右端チェック
-	}
-	if(s5 > 0 && s0.length == 1){ //キャレットが行の2段目左端だった場合
-		s0.unshift("");
-		s5 = -1;
-	}
-	if(1 in s0){ //行内で移動可能
-		s3 = s0[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
-		for(i in s3){
-			i++;
-			s4 = s3.slice(0,i);
-			i--;
-			s4 = s4.join("");
-			if(al(s4) > s2){
-				s4 = s3.slice(i);
-				s4 = s4.join("");
-				break;
-			}
-			if(s5 > 0){
-				s4 = "";
-			}
-		}
-		q = q - s4.length - s0[0].length;
-	}else if(s1 == -1){ //キャレット行が最前
-		q = q - s0[0].length;
-	}else if(s1[0] == ""){ //前行が空行
-		q = q - s0[0].length - 1;
-	}else{
-		s3 = s1[0].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
-		for(i in s3){
-			i++;
-			s4 = s3.slice(0,i);
-			i--;
-			s4 = s4.join("");
-			if(al(s4) > s2){
-				s4 = s3.slice(i);
-				s4 = s4.join("");
-				break;
-			}
-			s4 = "";
-		}
-		q = q - s4.length - s0[0].length - 1;
-	}
-	*/
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			p.selectionStart = q;
@@ -653,23 +609,18 @@ function d() { //……下キー
 	if(bb && p.selectionDirection == "backward"){
 		q = p.selectionStart;
 	}
-	
 	var s1 = s.slice(0,q);
 	s1 = s1.split("\n");
 	s1.reverse();
 	var s0 = ar(s1[0]); //左端～キャレット
 	y.textContent = s0[0];
-	var s2 = p.style.letterSpacing.slice(0,-2) - 0;
-	s2 += p.style.fontSize.slice(0,-2) - 0;
-	s2 *= -0.5;
-	s2 += y.offsetWidth; //左端～キャレット幅px
-	
+	var s2 = y.offsetWidth - fl; //左端～キャレット幅px
 	var s5 = s.slice(0,q + 1);
 	if(s.charAt(q) != "\n"){
 		s5 = s5.split("\n");
 		s5.reverse();
 		s5 = ar(s5[0]);
-		s5 = s5[0].length - s0[0].length; //マイナスなら右端・0なら文末
+		s5 = s5[0].length - s0[0].length; //マイナスなら左端
 	}
 	if(s5 < 0){
 		s2 = 0;
@@ -679,7 +630,6 @@ function d() { //……下キー
 	s1 = s.slice(q);
 	s1 = s1.split("\n"); //～文末
 	s0 = ar(s1[0],1); //～次段右端
-	//console.log(s4);
 	if(1 in s0){ //行内で移動可能
 		s3 = s0[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
 		for(let i = 0; i <= s3.length; i++){
@@ -708,76 +658,6 @@ function d() { //……下キー
 		q = s.length;
 	}
 	y.textContent = "";
-	
-	
-	/*
-	var s1 = s.slice(0,q);
-	s1 = s1.split("\n");
-	s1.reverse();
-	var s0 = ar(s1[0]); //行頭～キャレット行
-	s0.reverse();
-	var s2 = al(s0[0]); //左端～キャレット
-	
-	var s5 = s.slice(0,q + 1);
-	if(s.charAt(q) != "\n"){
-		s5 = s5.split("\n");
-		s5.reverse();
-		s5 = ar(s5[0]);
-		s5 = s5.length - s0.length; //右端チェック
-	}else{
-		s5 = -1;
-	}
-	
-	q -= s0[0].length //キャレット行左端
-	s1 = s.slice(q);
-	s1 = s1.split("\n"); //～文末
-	s0 = ar(s1[0]); //～行末
-	
-	if(s5 > 0 && s0.length == 2){ //キャレットが行の最下段左端だった場合
-		s0.shift();
-		s2 = 0;
-	}
-	
-	if(1 in s0){ //行内で移動可能
-		s3 = s0[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
-		for(i in s3){
-			i++;
-			s4 = s3.slice(0,i);
-			s4 = s4.join("");
-			if(al(s4) >= s2){
-				if(i == 1 && s2 == 0){
-					s4 = "";
-//					break;
-				}
-//これいらなくね？
-//				s4 = s3.slice(0,i);
-//				s4 = s4.join("");
-				break;
-			}
-		}
-		q = q + s4.length + s0[0].length;
-	}else if(1 in s1){ //キャレット行が最終
-		if(s1[1] == ""){ //次行が空行
-			q = q + s1[0].length + 1;
-		}else{
-			s3 = s1[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
-			for(i in s3){
-				i++;
-				s4 = s3.slice(0,i);
-				s4 = s4.join("");
-				if(al(s4) >= s2){
-					if(i == 1 && s2 == 0){
-						s4 = "";
-					}
-					break;
-				}
-			}
-			q = q + s4.length + s1[0].length + 1;
-		}
-	}else{
-		q = s.length;
-	}
-	*/
 	if(bb){
 		if(p.selectionDirection == "backward"){
 			if(q > p.selectionEnd){
@@ -795,41 +675,53 @@ function d() { //……下キー
 
 function h() { //……プレビュー表示
 	var s = rg(1);
-	var s1 = al(s,1);
+	var s1 = al(s);
 	s = s.replace(/</gm,"&lt;");
 	s = s.replace(/>/gm,"&gt;");
 	s = s.replace(/\n/gm,"<br>");
 	s = "<header><span>Preview[" + s1 
-	+ ']</span><button type=button onclick="pc()">■</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd(' + pln + ')"' + pst + ">" + s + '</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu(' + pln + ')">↑</button><button type=button onclick="pd(' + pln + ')">↓</button><button type=button onclick="ed()">」</button></footer>';
+	+ ']</span><button type=button onclick="pc()">■</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd()"' + pst + ">" + s + '</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>';
 	w.innerHTML = s;
 	w.style.display = "block";
 	p.style.display = "none";
 	document.getElementById("cn").style.display = "none";
+	oo();
+}
+
+function pcc(a) { //……プレビューコピー
+	p.style.display = "block";
+	var s = rg(), a = p.value, q = p.selectionEnd;
+	p.value = s;
+	p.select();
+	try{
+		document.execCommand('copy');
+		mp("コピーしました" + a);
+	}catch(e){
+		alert("実行できませんでした\n" + e);
+	}
+	p.value = a;
+	p.setSelectionRange(q,q);
+	p.blur();
+	p.style.display = "none";
+
 }
 
 function pc() { //……プレビューコピー
 	if(window.confirm("プレビューをコピーしますか？")){
-		p.style.display = "block";
-		var s = rg(), a = p.value, q = p.selectionEnd;
-		p.value = s;
-		p.select();
-		try{
-			document.execCommand('copy');
-			mp("コピーしました");
-		}catch(e){
-			alert("実行できませんでした\n" + e);
+		if (typeof navigator.clipboard === 'object'){
+			navigator.clipboard.writeText(rg()).then(function(){
+				mp("コピーしました");
+			}, function() {
+				pcc(0);
+			});
+			return;
 		}
-		p.value = a;
-		p.setSelectionRange(q,q);
-		p.blur();
-		p.style.display = "none";
+		result = pcc(1);
 	}
-	
 }
 
-function rg(u) { //……置換処理
+function rg(u) { //……置換処理（エラー表示）
 	var t = p.value;
-	
 	var s = localStorage.getItem('pps'); //プレビュー設定
 	if(s != "" && s != null){
 		s = s.split(":");
@@ -865,15 +757,15 @@ function hm() { //……プレビューhome
 	window.scrollTo(0,0);
 }
 
-function pu(a) { //……プレビューpageup
+function pu() { //……プレビューpageup
 	var s = window.innerHeight;
-	s -= a;
+	s -= pln;
 	window.scrollBy(0,s * -1);
 }
 
-function pd(a) { //……プレビューpagedown
+function pd() { //……プレビューpagedown
 	var s = window.innerHeight;
-	s -= a;
+	s -= pln;
 	window.scrollBy(0,s);
 }
 
@@ -885,7 +777,7 @@ function ed() { //……プレビューend
 function x() { //……プレビューを閉じる
 	p.style.display = "block";
 	document.getElementById("cn").style.display = "block";
-	w.innerHTML = 0;
+	w.textContent = "";
 	w.style.display = "none";
 }
 
@@ -893,18 +785,23 @@ function bu() { //……自動バックアップ
 	var s = p.value;
 	if(s != ""){
 			localStorage.setItem('pvalue_bu',s);
-			csp(s.length);
+			s = al(s);
+			csp(s);
 	}
 }
 
+/* ここから読込時処理 */
+
 p = document.getElementById("pr"); //テキストエリアオブジェクト
-n = document.getElementById("rn"); //ダミーテキストエリアオブジェクト
-y = document.getElementById("wi"); //ダミーテキストエリアオブジェクト
+n = document.getElementById("rn"); //ダミーブロックオブジェクト
+y = document.getElementById("wi"); //ダミーインラインオブジェクト
 w = document.getElementById("vw"); //プレビュー用オブジェクトdiv
 wp = document.getElementById("pp"); //プレビュー用オブジェクトp
 r = document.getElementById("swl"); //定型文選択用オブジェクト
-pst = "";
-pln = 85;
+pst = ""; //プレビューcss初期値
+pln = 85; //プレビュースクロール余白初期値
+fl = 7; //フォント+字間初期値
+bb = 0; //範囲選択モード初期値
 
 s = localStorage.getItem('pss');
 if(s != "" && s != null){
@@ -924,9 +821,7 @@ if(s != "" && s != null){
 		document.getElementById("sc").checked = 1;
 	}
 }else{
-	p.style.fontSize = "13px";
-	p.style.letterSpacing = "1px";
-	document.getElementById("cm").style.display = "block";
+	document.getElementById("cm").style.display = "block"; //初期値は最小セット
 	document.getElementById("cf").style.display = "none";
 }
 s = localStorage.getItem('psw'); //定型文内容
@@ -968,27 +863,25 @@ if(s > 0){
 s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
 if(p.value == "" && s != null && s != ""){
 		p.value = s;
-		csp(s.length);
+		s = al(s);
+		csp(s);
 }else{
 	s = localStorage.getItem('pvalue'); //保存から復帰
 	if(p.value == "" && s != null && s != ""){
 		p.value = s;
-		csp(s.length);
+		s = al(s);
+		csp(s);
 	}
 }
 
 s = localStorage.getItem('wfl'); //webフォント使用状態
 if(s > 0){
-	p.style.fontFamily = '"emj","webnasm"';
+	p.style.fontFamily = '"emj","mies","webnasm"';
 	document.getElementById("wf").textContent = "終了";
-
 }
-
-bb = 0; //範囲選択モード初期値：オフ
 
 /*	サービスワーカーの登録
 if('serviceWorker' in navigator){
 	navigator.serviceWorker.register('/txe_sw.js');
 }
 */
-
