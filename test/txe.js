@@ -318,17 +318,7 @@ function cc(a) { //……全文コピー旧
 }
 
 function c() { //……全文コピー
-	if(confirm("全文コピーしますか？")){
 		alert(typeof navigator.clipboard);
-		if (typeof navigator.clipboard === 'object'){
-			navigator.clipboard.writeText(value).then(function(){
-				mp("コピーしました");
-			}, function() {
-				cc(0);
-			});
-			return;
-		}
-		result = cc(1);
 		/*
 		try{
 			navigator.clipboard.writeText(p.value).then(function() {
@@ -349,7 +339,6 @@ function c() { //……全文コピー
 			p.blur();
 		}
 		*/
-	}
 }
 
 function t() { //……左端
