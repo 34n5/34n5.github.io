@@ -159,24 +159,63 @@ function sh(s) { //……設定反映
 
 function i() { //……定型文挿入
 	var s = r.value;
-	var t = window.navigator.userAgent.toLowerCase();
-	if(s != ""){
-		s = s.replace(/&lt;/g,"<");
-		s = s.replace(/&gt;/g,">");
-		s = s.replace(/\\n/g,"\n");
-		if(t.indexOf('iphone os 12') > -1){
-			var s1 = p.value;
-			var q = p.selectionStart;
-			var q1 = p.selectionEnd;
-			p.value = s1.slice(0,q);
-			p.value += s;
-			p.value += s1.slice(q1);
-			p.selectionEnd = q + s.length;
-			p.selectionStart = p.selectionEnd;
-		}else{
-			document.execCommand('insertText', false, s);
-		}
+	s = s.replace(/&lt;/g,"<");
+	s = s.replace(/&gt;/g,">");
+	s = s.replace(/\\n/g,"\n");
+	var a = document.execCommand('insertText', false, s);
+	if(!a){
+		var s1 = p.value;
+		var q = p.selectionStart;
+		var q1 = p.selectionEnd;
+		p.value = s1.slice(0,q);
+		p.value += s;
+		p.value += s1.slice(q1);
+		p.selectionEnd = q + s.length;
+		p.selectionStart = p.selectionEnd;
 	}
+	/*
+	try{
+		document.execCommand('insertText', false, s);
+	}catch(e){
+		var s1 = p.value;
+		var q = p.selectionStart;
+		var q1 = p.selectionEnd;
+		p.value = s1.slice(0,q);
+		p.value += s;
+		p.value += s1.slice(q1);
+		p.selectionEnd = q + s.length;
+		p.selectionStart = p.selectionEnd;
+	}
+	*/
+}
+
+function v() { //……鳩
+	var a = document.execCommand("insertText", false, "♡");
+	if(!a){
+		s = p.value;
+		var q = p.selectionStart;
+		var q1 = p.selectionEnd;
+		p.value = s.slice(0,q);
+		p.value += "♡";
+		p.value += s.slice(q1);
+		p.selectionEnd = q + 1;
+		p.selectionStart = p.selectionEnd;
+	}
+	
+	/*
+	try{
+		document.execCommand('insertText', false, str);
+	}catch(e){
+		s = p.value;
+		var q = p.selectionStart;
+		var q1 = p.selectionEnd;
+		p.value = s.slice(0,q);
+		p.value += "♡";
+		p.value += s.slice(q1);
+		p.selectionEnd = q + 1;
+		p.selectionStart = p.selectionEnd;
+	}
+	*/
 }
 
 function oo() { //……メニュー
@@ -265,8 +304,31 @@ function gi() { //……復帰
 	p.focus();
 }
 
+function cc(a) { //……全文コピー旧
+	var q = p.selectionEnd;
+	p.select();
+	try{
+		document.execCommand('copy');
+		mp("コピーしました" + a);
+	}catch(e){
+		alert("実行できませんでした\n" + e);
+	}
+	p.setSelectionRange(q,q);
+	p.blur();
+}
+
 function c() { //……全文コピー
-	if(window.confirm("全文コピーしますか？")){
+	if(confirm("全文コピーしますか？")){
+		if (typeof navigator.clipboard === 'object'){
+			navigator.clipboard.writeText(value).then(function(){
+				mp("コピーしました");
+			}, function() {
+				cc(0);
+			});
+			return;
+		}
+		result = cc(1);
+		/*
 		try{
 			navigator.clipboard.writeText(p.value).then(function() {
 				mp("コピーしました");
@@ -278,13 +340,14 @@ function c() { //……全文コピー
 			p.select();
 			try{
 				document.execCommand('copy');
-				mp("コピーしました");
+				mp("コピーしました.");
 			}catch(e){
 				alert("実行できませんでした\n" + e);
 			}
 			p.setSelectionRange(q,q);
 			p.blur();
 		}
+		*/
 	}
 }
 
@@ -418,37 +481,6 @@ function z() { //……文末
 		p.setSelectionRange(q,q);
 	}
 	p.scrollTop = p.scrollHeight;
-}
-
-function v() { //……鳩
-	try{
-		document.execCommand('insertText', false, "♡");
-	}catch{
-		s = p.value;
-		var q = p.selectionStart;
-		var q1 = p.selectionEnd;
-		p.value = s.slice(0,q);
-		p.value += "♡";
-		p.value += s.slice(q1);
-		p.selectionEnd = q + 1;
-		p.selectionStart = p.selectionEnd;
-	}
-	
-	/*
-	var s = window.navigator.userAgent.toLowerCase();
-	if(s.indexOf('iphone os 12') < 0){
-		document.execCommand('insertText', false, "♡");
-	}else{
-		s = p.value;
-		var q = p.selectionStart;
-		var q1 = p.selectionEnd;
-		p.value = s.slice(0,q);
-		p.value += "♡";
-		p.value += s.slice(q1);
-		p.selectionEnd = q + 1;
-		p.selectionStart = p.selectionEnd;
-	}
-	*/
 }
 
 function al(s1) { //……文字数カウント
