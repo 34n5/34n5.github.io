@@ -37,7 +37,6 @@ function rd() { //……redo
 
 function ur() { //……undo用ログ記録
 	var s = p.value;
-	console.log(s);
 	var l = 999999; //総文字数リミット
 	var q = p.selectionEnd;
 	uq += s.length;
@@ -176,6 +175,7 @@ function st() { //……設定変更
 	s += ":" + document.getElementById("bh").value; //[6]ボタン高さ(px)
 	s += ":" + document.getElementById("em").checked; //[7]拡張スイッチ
 	s += ":" + document.getElementById("sc").checked; //[8]定型文スイッチ
+	s += ":" + document.getElementById("rc").checked; //[9]文末キャレット
 	sh(s);
 	localStorage.setItem('pss',s);
 	s = document.getElementById("sw").value; //定型文内容
@@ -806,6 +806,26 @@ function bu() { //……自動バックアップ
 
 /* ここから読込時処理 */
 
+s = localStorage.getItem('wfl'); //webフォント使用状態
+if(s > 0){
+	p.style.fontFamily = '"emj","mies","webnasm"';
+	document.getElementById("wf").textContent = "終了";
+}
+
+s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
+if(p.value == "" && s != null && s != ""){
+		p.value = s;
+		s = al(s);
+		csp(s);
+}else{
+	s = localStorage.getItem('pvalue'); //保存から復帰
+	if(p.value == "" && s != null && s != ""){
+		p.value = s;
+		s = al(s);
+		csp(s);
+	}
+}
+
 s = localStorage.getItem('pss');
 if(s != "" && s != null){
 	sh(s);
@@ -822,6 +842,10 @@ if(s != "" && s != null){
 	}
 	if(s[8] == "true"){ //定型文スイッチ
 		document.getElementById("sc").checked = 1;
+	}
+	if(s[9] == "true"){ //文末キャレット
+		document.getElementById("rc").checked = 1;
+		z();
 	}
 }else{
 	document.getElementById("cm").style.display = "block"; //初期値は最小セット
@@ -863,24 +887,10 @@ if(s > 0){
 	p.style.display = "block";
 }
 
-s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
-if(p.value == "" && s != null && s != ""){
-		p.value = s;
-		s = al(s);
-		csp(s);
-}else{
-	s = localStorage.getItem('pvalue'); //保存から復帰
-	if(p.value == "" && s != null && s != ""){
-		p.value = s;
-		s = al(s);
-		csp(s);
-	}
-}
-
-s = localStorage.getItem('wfl'); //webフォント使用状態
-if(s > 0){
-	p.style.fontFamily = '"emj","mies","webnasm"';
-	document.getElementById("wf").textContent = "終了";
+if(location.search == "?1"){
+	let e = document.createElement("div");
+	e.innerHTML = '<a href="/test/tex.html">テスト版</a><br><a href="/tex.html">本番</a>';
+	document.getElementById("atab").appendChild(e);
 }
 
 /*	サービスワーカーの登録
