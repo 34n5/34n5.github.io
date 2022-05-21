@@ -1,4 +1,61 @@
-console.log("2022-0516-2050");
+console.log("2022-0518-1841");
+
+/* オブジェクトセット */
+p = document.getElementById("pr"); //メインtextarea
+n = document.getElementById("rn"); //ダミーdiv
+y = document.getElementById("wi"); //ダミーspan
+w = document.getElementById("vw"); //プレビューdiv
+wp = document.getElementById("pp"); //プレビューp
+r = document.getElementById("swl"); //定型文select
+
+/* 初期値セット */
+pst = ""; //プレビューcss
+pln = 85; //プレビュースクロール余白
+fl = 7; //フォント+字間
+bb = 0; //範囲選択モード
+us = [["",0]]; //undo用ログ
+ut = []; //redo用ログ
+uq = 0; //undo用ログ容量
+
+function ud() { //……undo
+	if(!(us.length > 1)){
+		return;
+	}
+	ut.unshift(us.shift());
+	p.value = us[0][0];
+	p.setSelectionRange(us[0][1],us[0][1]);
+}
+
+
+function rd() { //……redo
+	if(!(ut.length > 0)){
+		return;
+	}
+	p.value = ut[0][0];
+	p.setSelectionRange(ut[0][1],ut[0][1]);
+	us.unshift(ut.shift());
+}
+
+function ur() { //……undo用ログ記録
+	var s = p.value;
+	var l = 999999; //総文字数リミット
+	var q = p.selectionEnd;
+	uq += s.length;
+	if(uq > l){
+		//console.log("削除作業");
+		while(uq > l){
+			let a = us.pop();
+			uq -= a[0].length;
+		}
+		console.log(us);
+	}
+	us.unshift([s,q]);
+	st = [];
+}
+
+p.addEventListener('compositionend', (event) => {
+	ur();
+});
 
 function hp() { //……プレビュー書式設定
 	var s = document.getElementById("vff").value; //フォントファミリー
@@ -172,21 +229,8 @@ function i() { //……定型文挿入
 		p.value += s1.slice(q1);
 		p.selectionEnd = q + s.length;
 		p.selectionStart = p.selectionEnd;
+		ur();
 	}
-	/*
-	try{
-		document.execCommand('insertText', false, s);
-	}catch(e){
-		var s1 = p.value;
-		var q = p.selectionStart;
-		var q1 = p.selectionEnd;
-		p.value = s1.slice(0,q);
-		p.value += s;
-		p.value += s1.slice(q1);
-		p.selectionEnd = q + s.length;
-		p.selectionStart = p.selectionEnd;
-	}
-	*/
 }
 
 function v() { //……鳩
@@ -200,22 +244,8 @@ function v() { //……鳩
 		p.value += s.slice(q1);
 		p.selectionEnd = q + 1;
 		p.selectionStart = p.selectionEnd;
+		ur();
 	}
-	
-	/*
-	try{
-		document.execCommand('insertText', false, str);
-	}catch(e){
-		s = p.value;
-		var q = p.selectionStart;
-		var q1 = p.selectionEnd;
-		p.value = s.slice(0,q);
-		p.value += "♡";
-		p.value += s.slice(q1);
-		p.selectionEnd = q + 1;
-		p.selectionStart = p.selectionEnd;
-	}
-	*/
 }
 
 function oo() { //……メニュー
@@ -328,26 +358,6 @@ function c() { //……全文コピー
 			return;
 		}
 		result = cc(1);
-		/*
-		try{
-			navigator.clipboard.writeText(p.value).then(function() {
-				mp("コピーしました");
-			}, function() {
-				alert("実行できませんでした");
-			});
-		}catch(e){
-			var q = p.selectionEnd;
-			p.select();
-			try{
-				document.execCommand('copy');
-				mp("コピーしました.");
-			}catch(e){
-				alert("実行できませんでした\n" + e);
-			}
-			p.setSelectionRange(q,q);
-			p.blur();
-		}
-		*/
 	}
 }
 
@@ -675,12 +685,10 @@ function d() { //……下キー
 
 function h() { //……プレビュー表示
 	var s = rg(1);
-	var s1 = al(s);
 	s = s.replace(/</gm,"&lt;");
 	s = s.replace(/>/gm,"&gt;");
 	s = s.replace(/\n/gm,"<br>");
-	s = "<header><span>Preview[" + s1 
-	+ ']</span><button type=button onclick="pc()">■</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd()"' + pst + ">" + s + '</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>';
+	s = `<header><span>Preview[${al(s)}]</span><button type=button onclick="pc()">■</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd()"${pst}>${s}</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>`;
 	w.innerHTML = s;
 	w.style.display = "block";
 	p.style.display = "none";
@@ -688,34 +696,39 @@ function h() { //……プレビュー表示
 	oo();
 }
 
+function pcc(a) { //……プレビューコピー旧
+	p.style.display = "block";
+	var s = rg(), a = p.value, q = p.selectionEnd;
+	p.value = s;
+	p.select();
+	try{
+		document.execCommand('copy');
+		mp("コピーしました" + a);
+	}catch(e){
+		alert("実行できませんでした\n" + e);
+	}
+	p.value = a;
+	p.setSelectionRange(q,q);
+	p.blur();
+	p.style.display = "none";
+
+}
+
 function pc() { //……プレビューコピー
 	if(window.confirm("プレビューをコピーしますか？")){
-		try{
-			navigator.clipboard.writeText(rg()).then(function() {
+		if (typeof navigator.clipboard === 'object'){
+			navigator.clipboard.writeText(rg()).then(function(){
 				mp("コピーしました");
 			}, function() {
-				alert("実行できませんでした");
+				pcc(0);
 			});
-		}catch(e){
-			p.style.display = "block";
-			var s = rg(), a = p.value, q = p.selectionEnd;
-			p.value = s;
-			p.select();
-			try{
-				document.execCommand('copy');
-				mp("コピーしました:e");
-			}catch(e){
-				alert("実行できませんでした\n" + e);
-			}
-			p.value = a;
-			p.setSelectionRange(q,q);
-			p.blur();
-			p.style.display = "none";
+			return;
 		}
+		result = pcc(1);
 	}
 }
 
-function rg(u) { //……置換処理（エラー表示）
+function rg(u) { //……置換処理+エラー表示
 	var t = p.value;
 	var s = localStorage.getItem('pps'); //プレビュー設定
 	if(s != "" && s != null){
@@ -787,17 +800,6 @@ function bu() { //……自動バックアップ
 
 /* ここから読込時処理 */
 
-p = document.getElementById("pr"); //テキストエリアオブジェクト
-n = document.getElementById("rn"); //ダミーブロックオブジェクト
-y = document.getElementById("wi"); //ダミーインラインオブジェクト
-w = document.getElementById("vw"); //プレビュー用オブジェクトdiv
-wp = document.getElementById("pp"); //プレビュー用オブジェクトp
-r = document.getElementById("swl"); //定型文選択用オブジェクト
-pst = ""; //プレビューcss初期値
-pln = 85; //プレビュースクロール余白初期値
-fl = 7; //フォント+字間初期値
-bb = 0; //範囲選択モード初期値
-
 s = localStorage.getItem('pss');
 if(s != "" && s != null){
 	sh(s);
@@ -858,12 +860,16 @@ if(s > 0){
 s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
 if(p.value == "" && s != null && s != ""){
 		p.value = s;
+		us = [];
+		ur();
 		s = al(s);
 		csp(s);
 }else{
 	s = localStorage.getItem('pvalue'); //保存から復帰
 	if(p.value == "" && s != null && s != ""){
 		p.value = s;
+		us = [];
+		ur();
 		s = al(s);
 		csp(s);
 	}
