@@ -889,7 +889,7 @@ if(s > 0){
 
 if(location.search == "?1"){
 	let e = document.createElement("div");
-	e.innerHTML = '<a href="/test/tex.html">テスト版</a><br><a href="/tex.html">本番</a>';
+	e.innerHTML = '<a href="/test/txe.html">テスト版</a><br><a href="/txe.html">本番</a>';
 	document.getElementById("atab").appendChild(e);
 }
 
