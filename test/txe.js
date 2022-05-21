@@ -1,4 +1,4 @@
-console.log("2022-0518-1841");
+console.log("2022-0521-1721");
 
 /* オブジェクトセット */
 p = document.getElementById("pr"); //メインtextarea
@@ -13,30 +13,31 @@ pst = ""; //プレビューcss
 pln = 85; //プレビュースクロール余白
 fl = 7; //フォント+字間
 bb = 0; //範囲選択モード
-us = [["",0]]; //undo用ログ
+us = []; //undo用ログ
 ut = []; //redo用ログ
 uq = 0; //undo用ログ容量
 
 function ud() { //……undo
-	if(!(us.length > 1)){
-		return;
-	}
-	ut.unshift(us.shift());
+	p.focus();
+	if(!(us.length > 0)) return;
+	ut.unshift([p.value,p.selectionEnd]);
 	p.value = us[0][0];
 	p.setSelectionRange(us[0][1],us[0][1]);
+	us.shift();
 }
 
 function rd() { //……redo
-	if(!(ut.length > 0)){
-		return;
-	}
+	p.focus();
+	if(!(ut.length > 0)) return;
+	us.unshift([p.value,p.selectionEnd]);
 	p.value = ut[0][0];
 	p.setSelectionRange(ut[0][1],ut[0][1]);
-	us.unshift(ut.shift());
+	ut.shift()
 }
 
 function ur() { //……undo用ログ記録
 	var s = p.value;
+	console.log(s);
 	var l = 999999; //総文字数リミット
 	var q = p.selectionEnd;
 	uq += s.length;
@@ -52,8 +53,7 @@ function ur() { //……undo用ログ記録
 	ut = [];
 }
 
-p.addEventListener('compositionend', (event) => {
-	if(event.data == "") return;
+p.addEventListener('compositionstart', (event) => {
 	ur();
 });
 
@@ -221,6 +221,7 @@ function sh(s) { //……設定反映
 }
 
 function i() { //……定型文挿入
+	ur();
 	var s = r.value;
 	s = s.replace(/&lt;/g,"<");
 	s = s.replace(/&gt;/g,">");
@@ -235,11 +236,11 @@ function i() { //……定型文挿入
 		p.value += s1.slice(q1);
 		p.selectionEnd = q + s.length;
 		p.selectionStart = p.selectionEnd;
-		ur();
 	}
 }
 
 function v() { //……鳩
+	ur();
 	var a = document.execCommand("insertText", false, "♡");
 	if(!a){
 		s = p.value;
@@ -250,7 +251,6 @@ function v() { //……鳩
 		p.value += s.slice(q1);
 		p.selectionEnd = q + 1;
 		p.selectionStart = p.selectionEnd;
-		ur();
 	}
 }
 
@@ -866,14 +866,12 @@ if(s > 0){
 s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
 if(p.value == "" && s != null && s != ""){
 		p.value = s;
-		us = [[p,0]];
 		s = al(s);
 		csp(s);
 }else{
 	s = localStorage.getItem('pvalue'); //保存から復帰
 	if(p.value == "" && s != null && s != ""){
 		p.value = s;
-		us = [[p,0]];
 		s = al(s);
 		csp(s);
 	}
