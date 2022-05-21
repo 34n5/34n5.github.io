@@ -26,7 +26,6 @@ function ud() { //……undo
 	p.setSelectionRange(us[0][1],us[0][1]);
 }
 
-
 function rd() { //……redo
 	if(!(ut.length > 0)){
 		return;
@@ -50,10 +49,17 @@ function ur() { //……undo用ログ記録
 		console.log(us);
 	}
 	us.unshift([s,q]);
-	st = [];
+	ut = [];
 }
 
 p.addEventListener('compositionend', (event) => {
+	if(event.data == "") return;
+	ur();
+});
+
+p.addEventListener('beforeinput', (event) => {
+	if(event.isComposing) return;
+	if(event.data == "") return;
 	ur();
 });
 
@@ -860,16 +866,14 @@ if(s > 0){
 s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
 if(p.value == "" && s != null && s != ""){
 		p.value = s;
-		us = [];
-		ur();
+		us = [[p,0]];
 		s = al(s);
 		csp(s);
 }else{
 	s = localStorage.getItem('pvalue'); //保存から復帰
 	if(p.value == "" && s != null && s != ""){
 		p.value = s;
-		us = [];
-		ur();
+		us = [[p,0]];
 		s = al(s);
 		csp(s);
 	}
