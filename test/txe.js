@@ -54,16 +54,25 @@ function ur() { //……undo用ログ記録
 }
 
 p.addEventListener('compositionstart', (event) => {
+	document.getElementById("test0").textContent += "start";
 	ur();
 });
 
+p.addEventListener('keydown', (event) => {
+	document.getElementById("test0").textContent = "isCom["+event.isComposing+"]/data["+event.data+"]";
+	if(event.isComposing|| event.keyCode === 229) return;
+	if(event.data == "") return;
+	document.getElementById("test0").textContent += "through";
+	ur();
+});
+/*
 p.addEventListener('beforeinput', (event) => {
 	document.getElementById("test0").textContent = "isCom["+event.isComposing+"]/data["+event.data+"]";
 	if(event.isComposing) return;
 	if(event.data == "") return;
 	ur();
 });
-
+*/
 function hp() { //……プレビュー書式設定
 	var s = document.getElementById("vff").value; //フォントファミリー
 	s += ":" + document.getElementById("vft").value; //フォントサイズ(px)
