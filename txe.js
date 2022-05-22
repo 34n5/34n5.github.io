@@ -1,4 +1,67 @@
-console.log("2022-0518-1841");
+console.log("2022-0521-1721");
+
+
+/* オブジェクトセット */
+p = document.getElementById("pr"); //メインtextarea
+n = document.getElementById("rn"); //ダミーdiv
+y = document.getElementById("wi"); //ダミーspan
+w = document.getElementById("vw"); //プレビューdiv
+wp = document.getElementById("pp"); //プレビューp
+r = document.getElementById("swl"); //定型文select
+
+/* 初期値セット */
+pst = ""; //プレビューcss
+pln = 85; //プレビュースクロール余白
+fl = 7; //フォント+字間
+bb = 0; //範囲選択モード
+us = []; //undo用ログ
+ut = []; //redo用ログ
+uq = 0; //undo用ログ容量
+
+function ud() { //……undo
+	p.focus();
+	if(!(us.length > 0)) return;
+	ut.unshift([p.value,p.selectionEnd]);
+	p.value = us[0][0];
+	p.setSelectionRange(us[0][1],us[0][1]);
+	us.shift();
+}
+
+function rd() { //……redo
+	p.focus();
+	if(!(ut.length > 0)) return;
+	us.unshift([p.value,p.selectionEnd]);
+	p.value = ut[0][0];
+	p.setSelectionRange(ut[0][1],ut[0][1]);
+	ut.shift()
+}
+
+function ur() { //……undo用ログ記録
+	var s = p.value;
+	var l = 999999; //総文字数リミット
+	var q = p.selectionEnd;
+	uq += s.length;
+	if(uq > l){
+		//console.log("削除作業");
+		while(uq > l){
+			let a = us.pop();
+			uq -= a[0].length;
+		}
+		console.log(us);
+	}
+	us.unshift([s,q]);
+	ut = [];
+}
+
+p.addEventListener('compositionstart', (event) => {
+	ur();
+});
+
+p.addEventListener('beforeinput', (event) => {
+	if(event.isComposing) return;
+	if(event.data == "") return;
+	ur();
+});
 
 function hp() { //……プレビュー書式設定
 	var s = document.getElementById("vff").value; //フォントファミリー
@@ -113,6 +176,7 @@ function st() { //……設定変更
 	s += ":" + document.getElementById("bh").value; //[6]ボタン高さ(px)
 	s += ":" + document.getElementById("em").checked; //[7]拡張スイッチ
 	s += ":" + document.getElementById("sc").checked; //[8]定型文スイッチ
+	s += ":" + document.getElementById("rc").checked; //[9]文末キャレット
 	sh(s);
 	localStorage.setItem('pss',s);
 	s = document.getElementById("sw").value; //定型文内容
@@ -158,6 +222,7 @@ function sh(s) { //……設定反映
 }
 
 function i() { //……定型文挿入
+	ur();
 	var s = r.value;
 	s = s.replace(/&lt;/g,"<");
 	s = s.replace(/&gt;/g,">");
@@ -173,23 +238,10 @@ function i() { //……定型文挿入
 		p.selectionEnd = q + s.length;
 		p.selectionStart = p.selectionEnd;
 	}
-	/*
-	try{
-		document.execCommand('insertText', false, s);
-	}catch(e){
-		var s1 = p.value;
-		var q = p.selectionStart;
-		var q1 = p.selectionEnd;
-		p.value = s1.slice(0,q);
-		p.value += s;
-		p.value += s1.slice(q1);
-		p.selectionEnd = q + s.length;
-		p.selectionStart = p.selectionEnd;
-	}
-	*/
 }
 
 function v() { //……鳩
+	ur();
 	var a = document.execCommand("insertText", false, "♡");
 	if(!a){
 		s = p.value;
@@ -201,21 +253,6 @@ function v() { //……鳩
 		p.selectionEnd = q + 1;
 		p.selectionStart = p.selectionEnd;
 	}
-	
-	/*
-	try{
-		document.execCommand('insertText', false, str);
-	}catch(e){
-		s = p.value;
-		var q = p.selectionStart;
-		var q1 = p.selectionEnd;
-		p.value = s.slice(0,q);
-		p.value += "♡";
-		p.value += s.slice(q1);
-		p.selectionEnd = q + 1;
-		p.selectionStart = p.selectionEnd;
-	}
-	*/
 }
 
 function oo() { //……メニュー
@@ -272,14 +309,13 @@ function o(a) { //……設定画面
 function si() { //……保存
 	var s = p.value;
 	if(s == ""){
-		mp("内容がありません");
+		if(!window.confirm("内容がありません。\n本当に保存しますか？")) return;
 	}else{
-		if(window.confirm("保存しますか？")){
-			localStorage.setItem('pvalue',s);
-			bu();
-			mp("保存しました");
-		}
+		if(!window.confirm("保存しますか？")) return;
 	}
+	localStorage.setItem('pvalue',s);
+	bu();
+	mp("保存しました");
 	p.focus();
 }
 
@@ -288,7 +324,8 @@ function gi() { //……復帰
 	if(s == "" || s ==null){
 		mp("保存されていません");
 	}else{
-		if (window.confirm("復帰しますか？")) {
+		if (window.confirm("復帰しますか？ (" + s.length + ")")) {
+			csp(s.length);
 			s = p.value;
 			p.value = localStorage.getItem('pvalue');
 			if(s == ""){
@@ -297,7 +334,6 @@ function gi() { //……復帰
 				localStorage.setItem('pvalue',s);
 				mp("内容を入れ替えました");
 			}
-			csp(p.value.length);
 		}
 	}
 	oo();
@@ -328,26 +364,6 @@ function c() { //……全文コピー
 			return;
 		}
 		result = cc(1);
-		/*
-		try{
-			navigator.clipboard.writeText(p.value).then(function() {
-				mp("コピーしました");
-			}, function() {
-				alert("実行できませんでした");
-			});
-		}catch(e){
-			var q = p.selectionEnd;
-			p.select();
-			try{
-				document.execCommand('copy');
-				mp("コピーしました.");
-			}catch(e){
-				alert("実行できませんでした\n" + e);
-			}
-			p.setSelectionRange(q,q);
-			p.blur();
-		}
-		*/
 	}
 }
 
@@ -431,40 +447,68 @@ function a() { //……文頭
 	p.scrollTop = 0;
 }
 
+function lg(a,b) { //……サロゲートペアチェック
+	var s = p.value;
+	var q = [a, a + b]
+	q.sort();
+	s = s.slice(q[0],q[1]);
+	return(/[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(s));
+}
+
 function l() { //……左
 	p.focus();
+	var a,b,c,d;
+	a = p.selectionStart;
+	b = p.selectionEnd;
+	c = d = 0;
 	if(bb){
 		if(p.selectionDirection == "backward"){
-				p.selectionStart--;
+			if(lg(a,-2)) c--;
+			c--;
 		}else{
-			if(p.selectionStart == p.selectionEnd){
-				p.selectionStart--;
+			if(a == b){
+				if(lg(a,-2)) c--;
+				c--;
 				p.selectionDirection = "backward";
 			}else{
-				p.selectionEnd--;
+				if(lg(b,-2)) d--;
+				d--;
 			}
 		}
 	}else{
-		p.selectionEnd--;
+		if(lg(b,-2)) d--;
+		d--;
 	}
+	p.selectionStart += c;
+	p.selectionEnd += d;
 }
 
 function g() { //……右
 	p.focus();
+	var a,b,c,d;
+	a = p.selectionStart;
+	b = p.selectionEnd;
+	c = d = 0;
 	if(bb){
 		if(p.selectionDirection == "backward"){
-			if(p.selectionStart == p.selectionEnd){
-				p.selectionEnd++;
+			if(a == b){
+				if(lg(b,2)) d++;
+				d++;
 				p.selectionDirection = "forward";
 			}else{
-				p.selectionStart++;
+				if(lg(a,2)) c++;
+				c++;
 			}
 		}else{
-			p.selectionEnd++;
+			if(lg(b,2)) d++;
+			d++;
 		}
 	}else{
-		p.selectionStart++;
+		if(lg(a,2))c++;
+		c++;
 	}
+	p.selectionStart += c;
+	p.selectionEnd += d;
 }
 
 function z() { //……文末
@@ -675,12 +719,10 @@ function d() { //……下キー
 
 function h() { //……プレビュー表示
 	var s = rg(1);
-	var s1 = al(s);
 	s = s.replace(/</gm,"&lt;");
 	s = s.replace(/>/gm,"&gt;");
 	s = s.replace(/\n/gm,"<br>");
-	s = "<header><span>Preview[" + s1 
-	+ ']</span><button type=button onclick="pc()">■</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd()"' + pst + ">" + s + '</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>';
+	s = `<header><span>Preview[${al(s)}]</span><button type=button onclick="pc()">■</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd()"${pst}>${s}</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>`;
 	w.innerHTML = s;
 	w.style.display = "block";
 	p.style.display = "none";
@@ -688,7 +730,7 @@ function h() { //……プレビュー表示
 	oo();
 }
 
-function pcc(a) { //……プレビューコピー
+function pcc(a) { //……プレビューコピー旧
 	p.style.display = "block";
 	var s = rg(), a = p.value, q = p.selectionEnd;
 	p.value = s;
@@ -720,7 +762,7 @@ function pc() { //……プレビューコピー
 	}
 }
 
-function rg(u) { //……置換処理（エラー表示）
+function rg(u) { //……置換処理+エラー表示
 	var t = p.value;
 	var s = localStorage.getItem('pps'); //プレビュー設定
 	if(s != "" && s != null){
@@ -792,16 +834,25 @@ function bu() { //……自動バックアップ
 
 /* ここから読込時処理 */
 
-p = document.getElementById("pr"); //テキストエリアオブジェクト
-n = document.getElementById("rn"); //ダミーブロックオブジェクト
-y = document.getElementById("wi"); //ダミーインラインオブジェクト
-w = document.getElementById("vw"); //プレビュー用オブジェクトdiv
-wp = document.getElementById("pp"); //プレビュー用オブジェクトp
-r = document.getElementById("swl"); //定型文選択用オブジェクト
-pst = ""; //プレビューcss初期値
-pln = 85; //プレビュースクロール余白初期値
-fl = 7; //フォント+字間初期値
-bb = 0; //範囲選択モード初期値
+s = localStorage.getItem('wfl'); //webフォント使用状態
+if(s > 0){
+	p.style.fontFamily = '"emj","mies","webnasm"';
+	document.getElementById("wf").textContent = "終了";
+}
+
+s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
+if(p.value == "" && s != null && s != ""){
+		p.value = s;
+		s = al(s);
+		csp(s);
+}else{
+	s = localStorage.getItem('pvalue'); //保存から復帰
+	if(p.value == "" && s != null && s != ""){
+		p.value = s;
+		s = al(s);
+		csp(s);
+	}
+}
 
 s = localStorage.getItem('pss');
 if(s != "" && s != null){
@@ -819,6 +870,10 @@ if(s != "" && s != null){
 	}
 	if(s[8] == "true"){ //定型文スイッチ
 		document.getElementById("sc").checked = 1;
+	}
+	if(s[9] == "true"){ //文末キャレット
+		document.getElementById("rc").checked = 1;
+		z();
 	}
 }else{
 	document.getElementById("cm").style.display = "block"; //初期値は最小セット
@@ -860,24 +915,10 @@ if(s > 0){
 	p.style.display = "block";
 }
 
-s = localStorage.getItem('pvalue_bu'); //自動バックアップから復帰
-if(p.value == "" && s != null && s != ""){
-		p.value = s;
-		s = al(s);
-		csp(s);
-}else{
-	s = localStorage.getItem('pvalue'); //保存から復帰
-	if(p.value == "" && s != null && s != ""){
-		p.value = s;
-		s = al(s);
-		csp(s);
-	}
-}
-
-s = localStorage.getItem('wfl'); //webフォント使用状態
-if(s > 0){
-	p.style.fontFamily = '"emj","mies","webnasm"';
-	document.getElementById("wf").textContent = "終了";
+if(location.search == "?1"){
+	let e = document.createElement("div");
+	e.innerHTML = '<a href="/test/tex.html">テスト版</a><br><a href="/tex.html">本番</a>';
+	document.getElementById("atab").appendChild(e);
 }
 
 /*	サービスワーカーの登録
