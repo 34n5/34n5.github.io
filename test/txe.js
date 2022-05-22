@@ -1,5 +1,6 @@
 console.log("2022-0521-1721");
 
+
 /* オブジェクトセット */
 p = document.getElementById("pr"); //メインtextarea
 n = document.getElementById("rn"); //ダミーdiv
@@ -57,6 +58,7 @@ p.addEventListener('compositionstart', (event) => {
 });
 
 p.addEventListener('beforeinput', (event) => {
+	document.getElementById("test0").textContent = "isCom["+event.isComposing+"]/data["+event.data+"]";
 	if(event.isComposing) return;
 	if(event.data == "") return;
 	ur();
@@ -308,14 +310,13 @@ function o(a) { //……設定画面
 function si() { //……保存
 	var s = p.value;
 	if(s == ""){
-		mp("内容がありません");
+		if(!window.confirm("内容がありません。\n本当に保存しますか？")) return;
 	}else{
-		if(window.confirm("保存しますか？")){
-			localStorage.setItem('pvalue',s);
-			bu();
-			mp("保存しました");
-		}
+		if(!window.confirm("保存しますか？")) return;
 	}
+	localStorage.setItem('pvalue',s);
+	bu();
+	mp("保存しました");
 	p.focus();
 }
 
@@ -324,7 +325,8 @@ function gi() { //……復帰
 	if(s == "" || s ==null){
 		mp("保存されていません");
 	}else{
-		if (window.confirm("復帰しますか？")) {
+		if (window.confirm("復帰しますか？ (" + s.length + ")")) {
+			csp(s.length);
 			s = p.value;
 			p.value = localStorage.getItem('pvalue');
 			if(s == ""){
@@ -333,7 +335,6 @@ function gi() { //……復帰
 				localStorage.setItem('pvalue',s);
 				mp("内容を入れ替えました");
 			}
-			csp(p.value.length);
 		}
 	}
 	oo();
@@ -447,40 +448,68 @@ function a() { //……文頭
 	p.scrollTop = 0;
 }
 
+function lg(a,b) { //……サロゲートペアチェック
+	var s = p.value;
+	var q = [a, a + b]
+	q.sort();
+	s = s.slice(q[0],q[1]);
+	return(/[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(s));
+}
+
 function l() { //……左
 	p.focus();
+	var a,b,c,d;
+	a = p.selectionStart;
+	b = p.selectionEnd;
+	c = d = 0;
 	if(bb){
 		if(p.selectionDirection == "backward"){
-				p.selectionStart--;
+			if(lg(a,-2)) c--;
+			c--;
 		}else{
-			if(p.selectionStart == p.selectionEnd){
-				p.selectionStart--;
+			if(a == b){
+				if(lg(a,-2)) c--;
+				c--;
 				p.selectionDirection = "backward";
 			}else{
-				p.selectionEnd--;
+				if(lg(b,-2)) d--;
+				d--;
 			}
 		}
 	}else{
-		p.selectionEnd--;
+		if(lg(b,-2)) d--;
+		d--;
 	}
+	p.selectionStart += c;
+	p.selectionEnd += d;
 }
 
 function g() { //……右
 	p.focus();
+	var a,b,c,d;
+	a = p.selectionStart;
+	b = p.selectionEnd;
+	c = d = 0;
 	if(bb){
 		if(p.selectionDirection == "backward"){
-			if(p.selectionStart == p.selectionEnd){
-				p.selectionEnd++;
+			if(a == b){
+				if(lg(b,2)) d++;
+				d++;
 				p.selectionDirection = "forward";
 			}else{
-				p.selectionStart++;
+				if(lg(a,2)) c++;
+				c++;
 			}
 		}else{
-			p.selectionEnd++;
+			if(lg(b,2)) d++;
+			d++;
 		}
 	}else{
-		p.selectionStart++;
+		if(lg(a,2))c++;
+		c++;
 	}
+	p.selectionStart += c;
+	p.selectionEnd += d;
 }
 
 function z() { //……文末
@@ -889,7 +918,7 @@ if(s > 0){
 
 if(location.search == "?1"){
 	let e = document.createElement("div");
-	e.innerHTML = '<a href="/test/txe.html">テスト版</a><br><a href="/txe.html">本番</a>';
+	e.innerHTML = '<a href="/test/tex.html">テスト版</a><br><a href="/tex.html">本番</a>';
 	document.getElementById("atab").appendChild(e);
 }
 
