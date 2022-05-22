@@ -54,15 +54,15 @@ function ur() { //……undo用ログ記録
 }
 
 p.addEventListener('compositionstart', (event) => {
-	document.getElementById("test0").textContent += "start";
+	document.getElementById("test0").textContent += "start\n";
 	ur();
 });
 
 p.addEventListener('keydown', (event) => {
-	document.getElementById("test0").textContent = "isCom["+event.isComposing+"]/data["+event.data+"]";
+	document.getElementById("test0").textContent += "isCom["+event.isComposing+"]/data["+event.data+"]\n";
 	if(event.isComposing|| event.keyCode === 229) return;
 	if(event.data == "") return;
-	document.getElementById("test0").textContent += "through";
+	document.getElementById("test0").textContent += "through\n
 	ur();
 });
 /*
