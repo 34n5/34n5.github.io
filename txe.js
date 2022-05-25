@@ -1,7 +1,7 @@
-console.log("2022-0522-1845");
+console.log("2022-0525-2128");
 
 
-/* オブジェクトセット */
+// ***オブジェクトセット
 p = document.getElementById("pr"); //メインtextarea
 n = document.getElementById("rn"); //ダミーdiv
 y = document.getElementById("wi"); //ダミーspan
@@ -9,7 +9,7 @@ w = document.getElementById("vw"); //プレビューdiv
 wp = document.getElementById("pp"); //プレビューp
 r = document.getElementById("swl"); //定型文select
 
-/* 初期値セット */
+// ***初期値セット
 pst = ""; //プレビューcss
 pln = 85; //プレビュースクロール余白
 fl = 7; //フォント+字間
@@ -921,8 +921,7 @@ if(location.search == "?1"){
 	document.getElementById("atab").appendChild(e);
 }
 
-/*	サービスワーカーの登録
+// ***サービスワーカーの登録
 if('serviceWorker' in navigator){
 	navigator.serviceWorker.register('/txe_sw.js');
 }
-*/
