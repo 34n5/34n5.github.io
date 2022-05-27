@@ -1,4 +1,4 @@
-console.log("2022-0525-2128");
+console.log("2022-0527-2239");
 
 
 // ***オブジェクトセット
@@ -17,6 +17,56 @@ bb = 0; //範囲選択モード
 us = []; //undo用ログ
 ut = []; //redo用ログ
 uq = 0; //undo用ログ容量
+
+function c1() { //……copy
+	p.focus();
+	if(p.selectionStart == p.selectionEnd) return;
+	var s = p.value;
+	s = s.slice(p.selectionStart, p.selectionEnd);
+	navigator.clipboard.writeText(s).then(function(){
+		mp("コピーしました");
+		return;
+	},function(){
+		alert("コピーできませんでした");
+		return;
+	});
+}
+
+function c2() { //……cut
+	p.focus();
+	if(p.selectionStart == p.selectionEnd) return;
+	ur();
+	var s = p.value;
+	var t = s.slice(0, p.selectionStart);
+	t += s.slice(p.selectionEnd);
+	s = s.slice(p.selectionStart, p.selectionEnd);
+	navigator.clipboard.writeText(s).then(function(){
+		p.value = t;
+		mp("カットしました");
+		return;
+	},function(){
+		alert("カットできませんでした");
+		return;
+	});
+}
+
+function c3() { //……paste
+	var s = "";
+	navigator.clipboard.readText().then(function(s){
+		if(s == "") return;
+		ur();
+		p.focus();
+		var t = p.value, q = p.selectionStart, r = q + s.length;
+		s += t.slice(p.selectionEnd);
+		t = t.slice(0, q);
+		t += s;
+		p.value = t;
+		p.setSelectionRange(q,r);
+	},function(){
+		alert("クリップボードを取得できませんでした");
+		return;
+	});
+}
 
 function ud() { //……undo
 	p.focus();
@@ -158,6 +208,7 @@ function b() { //……範囲選択モード
 		bb = 1;
 	}
 	document.getElementById("bm").classList.toggle("o");
+	document.getElementById("ccp").classList.toggle("p");
 	p.focus();
 }
 

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* 2022-0525-1752 */
+/* 2022-0527-2239 */
 
 @font-face{font-family:"emj";src:local("Apple Color Emoji"),local("Noto Color Emoji");unicode-range:U+2600/*☀*/,U+263A/*☺*/,U+2764/*❤*/;}
 body{color:white;background-color:black;width:100%;margin:0 auto;max-width:340px;}
@@ -18,6 +18,9 @@ button,input,select{color:white;background-color:#216651;height:26px;vertical-al
 button,input[type="number"],input[type="color"],input[type="reset"]{text-align:center;width:20%;}
 button:focus,input:focus,select:focus{outline:solid 1px #a1f1a1;}
 #cm>button{width:25%}/* 最小ボタンセット */
+.cc{width:20%;display:none;position:absolute;top:0;}/* コピペセット */
+.cc.p{display:block;}
+.cc>button{width:100%;background-color:#517721;}
 input[type="checkbox"]{width:19px;height:21px;margin:0 0 1px 1px;border:4px solid #216651;}
 input[type="checkbox"]:checked{background-color:white;}
 select,option{width:80%;padding:0 5px;}
