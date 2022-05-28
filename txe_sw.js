@@ -1,5 +1,9 @@
-﻿const ar2c = async (r) => {
-	const cache = await caches.open("txe001");
+﻿/* 2022-0528-1439 */
+
+const cn = "txe001";
+
+const ar2c = async (r) => {
+	const cache = await caches.open(cn);
 	await cache.addAll(r);
 };
 
@@ -10,14 +14,12 @@ self.addEventListener("install", (e) => {
 			"/txe.css",
 			"/txe.js",
 			"/wf.css",
-			"/nm-r.woff",
-			"/mies.woff",
 		])
 	);
 });
 
 const pinc = async (req, res) => {
-	const c = await caches.open("txe001");
+	const c = await caches.open(cn);
 	await c.put(req, res);
 }
 
@@ -44,7 +46,7 @@ const delc = async key => {
 }
 
 const deloc = async () => {
-	const keepl = ['txe001'];
+	const keepl = [cn];
 	const keyl = await caches.keys()
 	const c2del = keyl.filter(key => !keepl.includes(key))
 	await Promise.all(c2del.map(delc));
