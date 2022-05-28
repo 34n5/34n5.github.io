@@ -1,4 +1,4 @@
-s = "2022-0528-1506";
+s = "2022-0528-2012";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -48,7 +48,7 @@ function c2() { //……✂cut
 	*/
 	navigator.clipboard.writeText(s).then(function(){
 		p.setRangeText("");
-		mp("カットしました");
+		//mp("カットしました");
 		return;
 	},function(){
 		alert("カットできませんでした");
@@ -101,7 +101,6 @@ function ur() { //……undo用ログ記録
 	var q = p.selectionEnd;
 	uq += s.length;
 	if(uq > l){
-		//console.log("削除作業");
 		while(uq > l){
 			let a = us.pop();
 			uq -= a[0].length;
@@ -958,6 +957,11 @@ if(s > 0){
 	p.style.display = "block";
 }
 
+s = localStorage.getItem('regtime'); ///sw更新日時
+if(s != null){
+	document.getElementById("swtime").value = s;
+}
+
 if(location.search == "?1"){
 	let e = document.createElement("div");
 	e.innerHTML = '<a href="/test/tex.html">テスト版</a><br><a href="/tex.html">本番</a>';
@@ -966,5 +970,27 @@ if(location.search == "?1"){
 
 // ***サービスワーカーの登録
 if('serviceWorker' in navigator){
-	navigator.serviceWorker.register('/txe_sw.js');
+	navigator.serviceWorker.register('/txe_sw.js').then(function(r){
+		document.getElementById("swstate").textContent = "[success]";
+		document.getElementById("swstate").onclick = function(){
+			if(window.confirm("Service Workerを更新しますか？")){
+				r.update();
+			}
+		}
+	}).catch(function(e) {
+		document.getElementById("swstate").textContent = "[error]" + e;
+	});;
 }
+
+navigator.serviceWorker.getRegistration().then(function(r) {
+	if(r){
+		document.getElementById("swstate").textContent = "[alive]";
+		r.addEventListener('updatefound', () => {
+			var s = new Date();
+			s = s.toLocaleString();
+			localStorage.setItem('regtime',s);
+			document.getElementById("swtime").textContent = s;
+			document.getElementById("swstate").textContent = "[update]";
+		});
+	}
+});

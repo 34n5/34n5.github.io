@@ -1,6 +1,6 @@
-﻿/* 2022-0528-1439 */
+﻿/* 2022-0528-2012 */
 
-const cn = "txe001";
+const cn = "txe002";
 
 const ar2c = async (r) => {
 	const cache = await caches.open(cn);
