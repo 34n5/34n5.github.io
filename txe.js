@@ -1,4 +1,4 @@
-s = "2022-0528-2044";
+s = "2022-0528-2104";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -175,11 +175,15 @@ function fn() { //……webフォント適用切り替え
 	var s = document.getElementById("wf").textContent;
 	if(s =="終了"){
 		p.style.fontFamily = '"emj","NasuM",monospace,monospace';
+		n.style.fontFamily = '"emj","NasuM",monospace,monospace';
+		y.style.fontFamily = '"emj","NasuM",monospace,monospace';
 		document.getElementById("wf").textContent = "開始";
 		localStorage.setItem('wfl',0);
 		mp("終了しました");
 	}else{
 		p.style.fontFamily = '"emj","mies","webnasm"';
+		n.style.fontFamily = '"emj","mies","webnasm"';
+		y.style.fontFamily = '"emj","mies","webnasm"';
 		document.getElementById("wf").textContent = "終了";
 		localStorage.setItem('wfl',1);
 		mp("開始しました");
@@ -541,6 +545,7 @@ function l() { //…… ←
 	}else{
 		if(lg(b,-2)) b--;
 		b--;
+		a = b;
 	}
 	p.setSelectionRange(a,b,c);
 }
@@ -563,6 +568,7 @@ function g() { //……→
 	}else{
 		if(lg(a,2))a++;
 		a++;
+		b = a;
 	}
 	p.setSelectionRange(a,b,c);
 }
@@ -677,6 +683,8 @@ function u() { //……↑
 			y.textContent = s4;
 			if(y.offsetWidth >= s2) break;
 		}
+		alert(s3);
+		alert(s1);
 		q -= s1.length - s4.length + s0[0].length + 1;
 	}
 	y.textContent = "";
@@ -982,10 +990,10 @@ if('serviceWorker' in navigator){
 	});;
 }
 
-navigator.serviceWorker.getRegistration().then(function(reg) {
-	if(reg){
+navigator.serviceWorker.getRegistration().then(function(r) {
+	if(r){
 		document.getElementById("swstate").textContent = "[alive]";
-		reg.addEventListener('updatefound', () => {
+		r.addEventListener('updatefound', () => {
 			var s = new Date();
 			s = s.toLocaleString();
 			localStorage.setItem('regtime',s);
