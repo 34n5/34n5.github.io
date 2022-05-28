@@ -1,7 +1,7 @@
-console.log("2022-0521-1721");
+console.log("2022-0527-2239");
 
 
-/* オブジェクトセット */
+// ***オブジェクトセット
 p = document.getElementById("pr"); //メインtextarea
 n = document.getElementById("rn"); //ダミーdiv
 y = document.getElementById("wi"); //ダミーspan
@@ -9,7 +9,7 @@ w = document.getElementById("vw"); //プレビューdiv
 wp = document.getElementById("pp"); //プレビューp
 r = document.getElementById("swl"); //定型文select
 
-/* 初期値セット */
+// ***初期値セット
 pst = ""; //プレビューcss
 pln = 85; //プレビュースクロール余白
 fl = 7; //フォント+字間
@@ -18,7 +18,66 @@ us = []; //undo用ログ
 ut = []; //redo用ログ
 uq = 0; //undo用ログ容量
 
-function ud() { //……undo
+function c1() { //……昍copy
+	p.focus();
+	var s = getSelection();
+	if(s == "") return;
+	/*
+	var s = p.value;
+	s = s.slice(p.selectionStart, p.selectionEnd);
+	*/
+	navigator.clipboard.writeText(s).then(function(){
+		mp("コピーしました");
+		return;
+	},function(){
+		alert("コピーできませんでした");
+		return;
+	});
+}
+
+function c2() { //……✂cut
+	p.focus();
+	var s = getSelection();
+	if(s == "") return;
+	ur();
+	/*
+	var s = p.value;
+	var t = s.slice(0, p.selectionStart);
+	t += s.slice(p.selectionEnd);
+	s = s.slice(p.selectionStart, p.selectionEnd);
+	*/
+	navigator.clipboard.writeText(s).then(function(){
+		p.setRangeText("");
+		mp("カットしました");
+		return;
+	},function(){
+		alert("カットできませんでした");
+		return;
+	});
+}
+
+function c3() { //……目paste
+	var s = "";
+	navigator.clipboard.readText().then(function(s){
+		if(s == "") return;
+		ur();
+		p.setRangeText(s,p.selectionStart,p.selectionEnd,"end");
+		p.focus();
+		/*
+		var t = p.value, q = p.selectionStart, r = q + s.length;
+		s += t.slice(p.selectionEnd);
+		t = t.slice(0, q);
+		t += s;
+		p.value = t;
+		p.setSelectionRange(q,r);
+		*/
+	},function(){
+		alert("クリップボードを取得できませんでした");
+		return;
+	});
+}
+
+function ud() { //……↲undo
 	p.focus();
 	if(!(us.length > 0)) return;
 	ut.unshift([p.value,p.selectionEnd]);
@@ -27,7 +86,7 @@ function ud() { //……undo
 	us.shift();
 }
 
-function rd() { //……redo
+function rd() { //……↳redo
 	p.focus();
 	if(!(ut.length > 0)) return;
 	us.unshift([p.value,p.selectionEnd]);
@@ -54,25 +113,15 @@ function ur() { //……undo用ログ記録
 }
 
 p.addEventListener('compositionstart', (event) => {
-	document.getElementById("test0").textContent += "start\n";
 	ur();
 });
 
-p.addEventListener('keydown', (event) => {
-	document.getElementById("test0").textContent += "isCom["+event.isComposing+"]/data["+event.data+"]\n";
-	if(event.isComposing|| event.keyCode === 229) return;
-	if(event.data == "") return;
-	document.getElementById("test0").textContent += "through\n"
-	ur();
-});
-/*
 p.addEventListener('beforeinput', (event) => {
-	document.getElementById("test0").textContent = "isCom["+event.isComposing+"]/data["+event.data+"]";
 	if(event.isComposing) return;
 	if(event.data == "") return;
 	ur();
 });
-*/
+
 function hp() { //……プレビュー書式設定
 	var s = document.getElementById("vff").value; //フォントファミリー
 	s += ":" + document.getElementById("vft").value; //フォントサイズ(px)
@@ -161,13 +210,14 @@ function adel() { //……ストレージ全削除
 	}
 }
 
-function b() { //……範囲選択モード
+function b() { //……～
 	if(bb){
 		bb = 0;
 	}else{
 		bb = 1;
 	}
 	document.getElementById("bm").classList.toggle("o");
+	document.getElementById("ccp").classList.toggle("p");
 	p.focus();
 }
 
@@ -237,6 +287,9 @@ function i() { //……定型文挿入
 	s = s.replace(/&lt;/g,"<");
 	s = s.replace(/&gt;/g,">");
 	s = s.replace(/\\n/g,"\n");
+	p.setRangeText(s,p.selectionStart,p.selectionEnd,"end");
+	p.focus();
+	/*
 	var a = document.execCommand('insertText', false, s);
 	if(!a){
 		var s1 = p.value;
@@ -248,10 +301,14 @@ function i() { //……定型文挿入
 		p.selectionEnd = q + s.length;
 		p.selectionStart = p.selectionEnd;
 	}
+	*/
 }
 
 function v() { //……鳩
 	ur();
+	p.setRangeText("♡",p.selectionStart,p.selectionEnd,"end");
+	p.focus();
+	/*
 	var a = document.execCommand("insertText", false, "♡");
 	if(!a){
 		s = p.value;
@@ -263,11 +320,13 @@ function v() { //……鳩
 		p.selectionEnd = q + 1;
 		p.selectionStart = p.selectionEnd;
 	}
+	*/
 }
 
-function oo() { //……メニュー
+function oo() { //……▼
 	document.getElementById('mu').classList.toggle('nu');
 }
+
 function o(a) { //……設定画面
 	var sb = document.getElementById("stab");
 	var pb = document.getElementById("ptab");
@@ -316,7 +375,7 @@ function o(a) { //……設定画面
 	}
 }
 
-function si() { //……保存
+function si() { //……⤵
 	var s = p.value;
 	if(s == ""){
 		if(!window.confirm("内容がありません。\n本当に保存しますか？")) return;
@@ -363,7 +422,7 @@ function cc(a) { //……全文コピー旧
 	p.blur();
 }
 
-function c() { //……全文コピー
+function c() { //……■
 	if(confirm("全文コピーしますか？")){
 		if (typeof navigator.clipboard === 'object'){
 			navigator.clipboard.writeText(p.value).then(function(){
@@ -377,7 +436,7 @@ function c() { //……全文コピー
 	}
 }
 
-function t() { //……左端
+function t() { //……≪
 	p.focus();
 	var s = p.value;
 	var q = p.selectionEnd;
@@ -406,7 +465,7 @@ function t() { //……左端
 	}
 }
 
-function m() { //……右端
+function m() { //……≫
 	p.focus();
 	var s = p.value;
 	var q = p.selectionEnd;
@@ -443,7 +502,7 @@ function m() { //……右端
 	}
 }
 
-function a() { //……文頭
+function a() { //……「
 	p.focus();
 	if(bb){
 		if(p.selectionDirection == "backward"){
@@ -465,63 +524,51 @@ function lg(a,b) { //……サロゲートペアチェック
 	return(/[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(s));
 }
 
-function l() { //……左
+function l() { //…… ←
 	p.focus();
-	var a,b,c,d;
+	var a,b,c;
 	a = p.selectionStart;
 	b = p.selectionEnd;
-	c = d = 0;
+	c = p.selectionDirection;
 	if(bb){
-		if(p.selectionDirection == "backward"){
-			if(lg(a,-2)) c--;
-			c--;
+		if(a == b) c = "backward";
+		if(c == "backward"){
+			if(lg(a,-2)) a--;
+			a--;
 		}else{
-			if(a == b){
-				if(lg(a,-2)) c--;
-				c--;
-				p.selectionDirection = "backward";
-			}else{
-				if(lg(b,-2)) d--;
-				d--;
-			}
+			if(lg(b,-2)) b--;
+			b--;
 		}
 	}else{
-		if(lg(b,-2)) d--;
-		d--;
+		if(lg(b,-2)) b--;
+		b--;
 	}
-	p.selectionStart += c;
-	p.selectionEnd += d;
+	p.setSelectionRange(a,b,c);
 }
 
-function g() { //……右
+function g() { //……→
 	p.focus();
-	var a,b,c,d;
+	var a,b,c;
 	a = p.selectionStart;
 	b = p.selectionEnd;
-	c = d = 0;
+	c = p.selectionDirection;
 	if(bb){
-		if(p.selectionDirection == "backward"){
-			if(a == b){
-				if(lg(b,2)) d++;
-				d++;
-				p.selectionDirection = "forward";
-			}else{
-				if(lg(a,2)) c++;
-				c++;
-			}
+		//if(a == b) c = "forward";
+		if(c == "backward"){
+			if(lg(a,2)) a++;
+			a++;
 		}else{
-			if(lg(b,2)) d++;
-			d++;
+			if(lg(b,2)) b++;
+			b++;
 		}
 	}else{
-		if(lg(a,2))c++;
-		c++;
+		if(lg(a,2))a++;
+		a++;
 	}
-	p.selectionStart += c;
-	p.selectionEnd += d;
+	p.setSelectionRange(a,b,c);
 }
 
-function z() { //……文末
+function z() { //……」
 	p.focus();
 	var s = p.value;
 	var q = s.length;
@@ -558,9 +605,7 @@ function ar(s1,a) { //……改行配列作成
 			n.textContent = s2.join("");
 			if(p0 < n.clientHeight){
 				p3++;
-				if(p3 == 2){
-					break;
-				} 
+				if(p3 == 2) break;
 				p2 = p1 - 1;
 			}
 			s3[p3] = s1.slice(p2,p1).join("");
@@ -573,9 +618,7 @@ function ar(s1,a) { //……改行配列作成
 			n.textContent = s2.join("");
 			if(p0 > n.clientHeight){
 				s3[p3] = s1.slice(p1,p2).join("");
-				if(p3 == 1){
-					break;
-				} 
+				if(p3 == 1) break;
 				p0 = n.clientHeight;
 				p2 = p1;
 				p3++;
@@ -586,7 +629,7 @@ function ar(s1,a) { //……改行配列作成
 	return(s3);
 }
 
-function u() { //……上キー
+function u() { //……↑
 	p.focus();
 	var s = p.value, q = p.selectionEnd, s3 = 0, s4 = 0;
 	if(bb && p.selectionDirection == "backward"){
@@ -621,25 +664,21 @@ function u() { //……上キー
 		for(let i = 0; i <= s3.length; i++){
 			s4 = s3.slice(0,i).join("");
 			y.textContent = s4;
-			if(y.offsetWidth >= s2){
-				break;
-			}
+			if(y.offsetWidth >= s2) break;
 		}
 		q -= s3.length - s4.length + s0[0].length;
 	}else if(s1 == -1){ //キャレット行が1行目
 		q = 0;
-	}else if(s1 == ""){ //前行が空行
-		q -= s0[0].length + 1;
-	}else{
+//	}else if(s1 == ""){ //前行が空行
+//		q -= s0[0].length + 1;
+	}else{ //内容あり
 		s3 = s1.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
 		for(let i = 0; i <= s3.length; i++){
 			s4 = s3.slice(0,i).join("");
 			y.textContent = s4;
-			if(y.offsetWidth >= s2){
-				break;
-			}
+			if(y.offsetWidth >= s2) break;
 		}
-		q -= s3.length - s4.length + s0[0].length + 1;
+		q -= s1.length - s4.length + s0[0].length + 1;
 	}
 	y.textContent = "";
 	if(bb){
@@ -657,7 +696,7 @@ function u() { //……上キー
 	}
 }
 
-function d() { //……下キー
+function d() { //……↓
 	p.focus();
 	var s = p.value, q = p.selectionEnd, s3 = 0, s4 = 0;
 	if(bb && p.selectionDirection == "backward"){
@@ -689,25 +728,21 @@ function d() { //……下キー
 		for(let i = 0; i <= s3.length; i++){
 			s4 = s3.slice(0,i).join("");
 			y.textContent = s4;
-			if(y.offsetWidth >= s2){
-				break;
-			}
+			if(y.offsetWidth >= s2) break;
 		}
 		q += s4.length + s0[0].length;
-	}else if(1 in s1){ //次行が存在する
-		if(s1[1] == ""){ //次行が空行
-			q += s1[0].length + 1;
-		}else{ //次行が空行ではない
+	}else if(1 in s1){
+//		if(s1[1] == ""){ //次行が空行
+//			q += s1[0].length + 1;
+//		}else{ //内容あり
 			s3 = s1[1].match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g)||[];
 			for(let i = 0; i <= s3.length; i++){
 				s4 = s3.slice(0,i).join("");
 				y.textContent = s4;
-				if(y.offsetWidth >= s2){
-					break;
-				}
+				if(y.offsetWidth >= s2) break;
 			}
 			q += s4.length + s1[0].length + 1;
-		}
+//		}
 	}else{ //キャレット行が最終
 		q = s.length;
 	}
@@ -835,11 +870,9 @@ function x() { //……プレビューを閉じる
 
 function bu() { //……自動バックアップ
 	var s = p.value;
-	if(s != ""){
-			localStorage.setItem('pvalue_bu',s);
-			s = al(s);
-			csp(s);
-	}
+	localStorage.setItem('pvalue_bu',s);
+	s = al(s);
+	csp(s);
 }
 
 /* ここから読込時処理 */
@@ -931,8 +964,7 @@ if(location.search == "?1"){
 	document.getElementById("atab").appendChild(e);
 }
 
-/*	サービスワーカーの登録
+// ***サービスワーカーの登録
 if('serviceWorker' in navigator){
 	navigator.serviceWorker.register('/txe_sw.js');
 }
-*/
