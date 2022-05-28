@@ -1,4 +1,4 @@
-s = "2022-0528-2012";
+s = "2022-0528-2044";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -982,10 +982,10 @@ if('serviceWorker' in navigator){
 	});;
 }
 
-navigator.serviceWorker.getRegistration().then(function(r) {
-	if(r){
+navigator.serviceWorker.getRegistration().then(function(reg) {
+	if(reg){
 		document.getElementById("swstate").textContent = "[alive]";
-		r.addEventListener('updatefound', () => {
+		reg.addEventListener('updatefound', () => {
 			var s = new Date();
 			s = s.toLocaleString();
 			localStorage.setItem('regtime',s);
