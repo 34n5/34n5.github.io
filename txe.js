@@ -1,5 +1,5 @@
-console.log("2022-0528-1439");
-
+s = "2022-0528-1506";
+document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
 p = document.getElementById("pr"); //メインtextarea

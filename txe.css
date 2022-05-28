@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* 2022-0528-1439 */
+#cssdate:after{content:"2022-0528-1506";}
 
 @font-face{font-family:"emj";src:local("Apple Color Emoji"),local("Noto Color Emoji");unicode-range:U+2600/*☀*/,U+263A/*☺*/,U+2764/*❤*/;}
 body{color:white;background-color:black;width:100%;margin:0 auto;max-width:340px;}
