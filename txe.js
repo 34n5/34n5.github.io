@@ -1,4 +1,4 @@
-s = "2022-0528-2104";
+s = "2022_0530_1925";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -105,17 +105,17 @@ function ur() { //……undo用ログ記録
 			let a = us.pop();
 			uq -= a[0].length;
 		}
-		console.log(us);
+		//console.log(us);
 	}
 	us.unshift([s,q]);
 	ut = [];
 }
 
-p.addEventListener('compositionstart', (event) => {
+p.addEventListener('compositionstart', () => {// ログ拾いイベント1
 	ur();
 });
 
-p.addEventListener('beforeinput', (event) => {
+p.addEventListener('beforeinput', () => {// ログ拾いイベント2
 	if(event.isComposing) return;
 	if(event.data == "") return;
 	ur();
@@ -965,11 +965,6 @@ if(s > 0){
 	p.style.display = "block";
 }
 
-s = localStorage.getItem('regtime'); ///sw更新日時
-if(s != null){
-	document.getElementById("swtime").value = s;
-}
-
 if(location.search == "?1"){
 	let e = document.createElement("div");
 	e.innerHTML = '<a href="/test/tex.html">テスト版</a><br><a href="/tex.html">本番</a>';
@@ -981,6 +976,8 @@ if('serviceWorker' in navigator){
 	navigator.serviceWorker.register('/txe_sw.js').then(function(r){
 		document.getElementById("swstate").textContent = "[success]";
 		document.getElementById("swstate").onclick = function(){
+			s = document.getElementById("swstate").textContent;
+			if(s != "[alive]") return;
 			if(window.confirm("Service Workerを更新しますか？")){
 				r.update();
 			}
@@ -993,6 +990,10 @@ if('serviceWorker' in navigator){
 navigator.serviceWorker.getRegistration().then(function(r) {
 	if(r){
 		document.getElementById("swstate").textContent = "[alive]";
+		s = localStorage.getItem('regtime'); ///sw更新日時
+		if(s != null){
+			document.getElementById("swtime").textContent = s;
+		}
 		r.addEventListener('updatefound', () => {
 			var s = new Date();
 			s = s.toLocaleString();
@@ -1000,5 +1001,7 @@ navigator.serviceWorker.getRegistration().then(function(r) {
 			document.getElementById("swtime").textContent = s;
 			document.getElementById("swstate").textContent = "[update]";
 		});
+	}else{
+		document.getElementById("swstate").textContent = "[undefined]";
 	}
 });
