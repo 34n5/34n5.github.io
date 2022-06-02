@@ -1,5 +1,5 @@
-﻿const ud = "2022_0602_2022";
-const cn = "txe002";
+﻿const ud = "2022_0602_2107";
+const cn = "txe003";
 
 const ar2c = async (r) => {
 	const cache = await caches.open(cn);
