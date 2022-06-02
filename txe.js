@@ -1,4 +1,4 @@
-s = "2022_0602_2022";
+s = "2022_0602_2054";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -17,6 +17,10 @@ bb = 0; //範囲選択モード
 us = []; //undo用ログ
 ut = []; //redo用ログ
 uq = 0; //undo用ログ容量
+
+function le() { //……load
+	document.getElementById("lg").classList.add("out");
+}
 
 function c1() { //……昍copy
 	p.focus();

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-#cssdate:after{content:"2022-0528-1506";}
+#cssdate:after{content:"2022_0602_2055";}
 
 @font-face{font-family:"emj";src:local("Apple Color Emoji"),local("Noto Color Emoji");unicode-range:U+2600/*☀*/,U+263A/*☺*/,U+2764/*❤*/;}
 body{color:white;background-color:black;width:100%;margin:0 auto;max-width:340px;}
@@ -57,3 +57,7 @@ li:first-child{margin-top:9px;}
 li:last-child{margin-bottom:9px;}
 li:hover{background-color:#313131;}
 .me.nu{height:125px;transition-timing-function:ease-in;}
+
+
+.ling{width:100vw;height:100vh;position:fixed;z-index:99;background-color:gray;top:0;left:0;}
+.ling.out{display:none;}
