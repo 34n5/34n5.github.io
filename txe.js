@@ -1,4 +1,4 @@
-s = "2022_0530_1925";
+s = "2022_0602_2022";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -975,33 +975,28 @@ if(location.search == "?1"){
 if('serviceWorker' in navigator){
 	navigator.serviceWorker.register('/txe_sw.js').then(function(r){
 		document.getElementById("swstate").textContent = "[success]";
+		sut();
 		document.getElementById("swstate").onclick = function(){
 			s = document.getElementById("swstate").textContent;
-			if(s != "[alive]") return;
+			//if(s != "[alive]") return;
 			if(window.confirm("Service Workerを更新しますか？")){
 				r.update();
 			}
 		}
+		r.addEventListener('updatefound', () => {
+			document.getElementById("swstate").textContent = "[update]";
+			sut();
+		});
 	}).catch(function(e) {
-		document.getElementById("swstate").textContent = "[error]" + e;
+		document.getElementById("swstate").textContent = "[fail]" + e;
 	});;
+}else{
+	document.getElementById("swstate").textContent = "[no support]" + e;
 }
 
-navigator.serviceWorker.getRegistration().then(function(r) {
-	if(r){
-		document.getElementById("swstate").textContent = "[alive]";
-		s = localStorage.getItem('regtime'); ///sw更新日時
-		if(s != null){
-			document.getElementById("swtime").textContent = s;
-		}
-		r.addEventListener('updatefound', () => {
-			var s = new Date();
-			s = s.toLocaleString();
-			localStorage.setItem('regtime',s);
-			document.getElementById("swtime").textContent = s;
-			document.getElementById("swstate").textContent = "[update]";
-		});
-	}else{
-		document.getElementById("swstate").textContent = "[undefined]";
+function sut() { //……sw更新日時表示
+	s = localStorage.getItem('regtime'); ///sw更新日時
+	if(s != null){
+		document.getElementById("swtime").textContent = s;
 	}
-});
+}
