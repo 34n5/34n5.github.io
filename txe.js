@@ -999,7 +999,7 @@ if('serviceWorker' in navigator){
 }
 
 function sut() { //……sw更新日時表示
-	p.postMessage("getdate);
+	p.postMessage("getdate");
 }
 
 var c = new MessageChannel();
