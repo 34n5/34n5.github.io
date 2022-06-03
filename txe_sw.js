@@ -1,21 +1,19 @@
-﻿const ud = "2022_0603_1753";
+﻿const ud = "2022_0603_1913";
 const cn = "txe003";
 
-const ar2c = async (r) => {
+const ar2c = async () => {
 	const cache = await caches.open(cn);
-	await cache.addAll(r);
+	await cache.addAll([
+		"/txe.html",
+		"/txe.css",
+		"/txe.js",
+		"/wf.css",
+	]);
+	localStorage.setItem('regtime',ud);
 };
 
 self.addEventListener("install", (e) => {
-	e.waitUntil(
-		ar2c([
-			"/txe.html",
-			"/txe.css",
-			"/txe.js",
-			"/wf.css",
-		]);
-	localStorage.setItem('regtime',ud);
-	);
+	e.waitUntil(ar2c());
 });
 
 const pinc = async (req, res) => {
