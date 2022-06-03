@@ -14,9 +14,7 @@ self.addEventListener("install", (e) => {
 			"/txe.js",
 			"/wf.css",
 		])
-	var s = new Date();
-	s = s.toLocaleString();
-	localStorage.setItem('regtime',s);
+	localStorage.setItem('regtime',ud);
 	);
 });
 
