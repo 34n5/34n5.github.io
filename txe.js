@@ -1,4 +1,4 @@
-s = "2022_0602_2054";
+s = "2022_0603_2141";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -999,8 +999,16 @@ if('serviceWorker' in navigator){
 }
 
 function sut() { //……sw更新日時表示
-	s = localStorage.getItem('regtime'); ///sw更新日時
+	p.postMessage("getdate);
+}
+
+var c = new MessageChannel();
+var p = channel.port1;
+p.onmessage = onMessage;
+navigator.serviceWorker.controller.postMessage('init', '*', [c.port2]);
+
+function onMessage(s) {
 	if(s != null){
-		document.getElementById("swtime").textContent = s;
+		document.getElementById("swtime").textContent = s.data;
 	}
 }

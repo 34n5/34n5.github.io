@@ -1,5 +1,17 @@
-﻿const ud = "2022_0603_1913";
+﻿const ud = "2022_0603_2140";
 const cn = "txe003";
+
+var port2;
+window.addEventListener('message', i);
+function i(e) {
+	port2 = e.ports[0];
+	port2.onmessage = onMessage;
+}
+function onMessage(s) {
+	if(s.data == "getdate"){
+		port2.postMessage(ud);
+	}
+}
 
 const ar2c = async () => {
 	const cache = await caches.open(cn);
@@ -9,7 +21,6 @@ const ar2c = async () => {
 		"/txe.js",
 		"/wf.css",
 	]);
-	localStorage.setItem('regtime',ud);
 };
 
 self.addEventListener("install", (e) => {
