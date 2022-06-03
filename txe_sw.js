@@ -1,4 +1,4 @@
-﻿const ud = "2022_0602_2107";
+﻿const ud = "2022_0603_1753";
 const cn = "txe003";
 
 const ar2c = async (r) => {
@@ -13,7 +13,7 @@ self.addEventListener("install", (e) => {
 			"/txe.css",
 			"/txe.js",
 			"/wf.css",
-		])
+		]);
 	localStorage.setItem('regtime',ud);
 	);
 });
