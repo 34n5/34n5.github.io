@@ -2,7 +2,7 @@
 const cn = "txe003";
 
 var port2;
-window.addEventListener('message', i);
+self.addEventListener('message', i);
 function i(e) {
 	port2 = e.ports[0];
 	port2.onmessage = onMessage;

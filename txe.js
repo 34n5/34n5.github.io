@@ -1003,7 +1003,7 @@ function sut() { //……sw更新日時表示
 }
 
 var c = new MessageChannel();
-var p = channel.port1;
+var p = c.port1;
 p.onmessage = onMessage;
 navigator.serviceWorker.controller.postMessage('init', '*', [c.port2]);
 
