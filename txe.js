@@ -1,4 +1,4 @@
-s = "2022_0603_2141";
+s = "2022_0604_1248";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -999,13 +999,13 @@ if('serviceWorker' in navigator){
 }
 
 function sut() { //……sw更新日時表示
-	p.postMessage("getdate");
+	por.postMessage("getdate");
 }
 
-var c = new MessageChannel();
-var p = c.port1;
-p.onmessage = onMessage;
-navigator.serviceWorker.controller.postMessage('init', '*', [c.port2]);
+var cha = new MessageChannel();
+var por = cha.port1;
+por.onmessage = onMessage;
+navigator.serviceWorker.controller.postMessage('init', '*', [cha.port2]);
 
 function onMessage(s) {
 	if(s != null){
