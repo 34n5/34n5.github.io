@@ -1,4 +1,4 @@
-﻿const ud = "2022_0604_1309";
+﻿const ud = "2022_0604_1337";
 const cn = "txe003";
 
 self.addEventListener('message', e =>  {
@@ -6,7 +6,7 @@ self.addEventListener('message', e =>  {
 		self.clients.matchAll().then(clients =>
 		clients.forEach(client => client.postMessage(ud)));
 	}
-}
+});
 
 const ar2c = async () => {
 	const cache = await caches.open(cn);
