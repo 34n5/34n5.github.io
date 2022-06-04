@@ -1,5 +1,5 @@
-﻿const ud = "2022_0604_1337";
-const cn = "txe003";
+﻿const ud = "2022_0604_1718";
+const cn = "txe004";
 
 self.addEventListener('message', e =>  {
 	if(e.data == "getdate"){

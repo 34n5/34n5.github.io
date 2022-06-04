@@ -1,4 +1,4 @@
-s = "2022_0604_1319";
+s = "2022_0604_1714";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -22,10 +22,6 @@ function c1() { //……昍copy
 	p.focus();
 	var s = getSelection();
 	if(s == "") return;
-	/*
-	var s = p.value;
-	s = s.slice(p.selectionStart, p.selectionEnd);
-	*/
 	navigator.clipboard.writeText(s).then(function(){
 		mp("コピーしました");
 		return;
@@ -40,12 +36,6 @@ function c2() { //……✂cut
 	var s = getSelection();
 	if(s == "") return;
 	ur();
-	/*
-	var s = p.value;
-	var t = s.slice(0, p.selectionStart);
-	t += s.slice(p.selectionEnd);
-	s = s.slice(p.selectionStart, p.selectionEnd);
-	*/
 	navigator.clipboard.writeText(s).then(function(){
 		p.setRangeText("");
 		//mp("カットしました");
@@ -63,14 +53,6 @@ function c3() { //……目paste
 		ur();
 		p.setRangeText(s,p.selectionStart,p.selectionEnd,"end");
 		p.focus();
-		/*
-		var t = p.value, q = p.selectionStart, r = q + s.length;
-		s += t.slice(p.selectionEnd);
-		t = t.slice(0, q);
-		t += s;
-		p.value = t;
-		p.setSelectionRange(q,r);
-		*/
 	},function(){
 		alert("クリップボードを取得できませんでした");
 		return;
@@ -155,7 +137,6 @@ function hp() { //……プレビュー書式設定
 			localStorage.setItem('ppv',s);
 		}
 	}
-	
 	mp("設定を保存しました");
 }
 
@@ -292,38 +273,12 @@ function i() { //……定型文挿入
 	s = s.replace(/\\n/g,"\n");
 	p.setRangeText(s,p.selectionStart,p.selectionEnd,"end");
 	p.focus();
-	/*
-	var a = document.execCommand('insertText', false, s);
-	if(!a){
-		var s1 = p.value;
-		var q = p.selectionStart;
-		var q1 = p.selectionEnd;
-		p.value = s1.slice(0,q);
-		p.value += s;
-		p.value += s1.slice(q1);
-		p.selectionEnd = q + s.length;
-		p.selectionStart = p.selectionEnd;
-	}
-	*/
 }
 
 function v() { //……鳩
 	ur();
 	p.setRangeText("♡",p.selectionStart,p.selectionEnd,"end");
 	p.focus();
-	/*
-	var a = document.execCommand("insertText", false, "♡");
-	if(!a){
-		s = p.value;
-		var q = p.selectionStart;
-		var q1 = p.selectionEnd;
-		p.value = s.slice(0,q);
-		p.value += "♡";
-		p.value += s.slice(q1);
-		p.selectionEnd = q + 1;
-		p.selectionStart = p.selectionEnd;
-	}
-	*/
 }
 
 function oo() { //……▼
@@ -596,7 +551,6 @@ function al(s1) { //……文字数カウント
 }
 
 function ar(s1,a) { //……改行配列作成
-	
 	n.style.width = (p.clientWidth - 10) + "px";
 	n.textContent = s1;
 	var p0 = n.clientHeight;
@@ -977,8 +931,6 @@ if('serviceWorker' in navigator){
 		document.getElementById("swstate").textContent = "[success]";
 		sut();
 		document.getElementById("swstate").onclick = function(){
-			s = document.getElementById("swstate").textContent;
-			//if(s != "[alive]") return;
 			if(window.confirm("Service Workerを更新しますか？")){
 				r.update();
 			}
@@ -995,14 +947,8 @@ if('serviceWorker' in navigator){
 }
 
 function sut() { //……sw更新日時表示
-	//por.postMessage("getdate");
 	navigator.serviceWorker.controller.postMessage('getdate');
 }
-
-//var cha = new MessageChannel();
-//var por = cha.port1;
-//por.onmessage = onMessage;
-//navigator.serviceWorker.controller.postMessage('init', '*', [cha.port2]);
 
 navigator.serviceWorker.addEventListener('message', e =>  {
 	document.getElementById("swtime").textContent = e.data;
