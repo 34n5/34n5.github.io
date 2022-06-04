@@ -999,16 +999,15 @@ if('serviceWorker' in navigator){
 }
 
 function sut() { //……sw更新日時表示
-	por.postMessage("getdate");
+	//por.postMessage("getdate");
+	navigator.serviceWorker.controller.postMessage('getdate');
 }
 
-var cha = new MessageChannel();
-var por = cha.port1;
-por.onmessage = onMessage;
-navigator.serviceWorker.controller.postMessage('init', '*', [cha.port2]);
+//var cha = new MessageChannel();
+//var por = cha.port1;
+//por.onmessage = onMessage;
+//navigator.serviceWorker.controller.postMessage('init', '*', [cha.port2]);
 
-function onMessage(s) {
-	if(s != null){
-		document.getElementById("swtime").textContent = s.data;
-	}
+navigator.serviceWorker.addEventListener('message', e =>  {
+	document.getElementById("swtime").textContent = e.data;
 }

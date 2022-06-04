@@ -1,15 +1,10 @@
-﻿const ud = "2022_0603_2140";
+﻿const ud = "2022_0604_1309";
 const cn = "txe003";
 
-var port2;
-self.addEventListener('message', i);
-function i(e) {
-	port2 = e.ports[0];
-	port2.onmessage = onMessage;
-}
-function onMessage(s) {
-	if(s.data == "getdate"){
-		port2.postMessage(ud);
+self.addEventListener('message', e =>  {
+	if(e.data == "getdate"){
+		self.clients.matchAll().then(clients =>
+		clients.forEach(client => client.postMessage(ud)));
 	}
 }
 
