@@ -1,0 +1,13 @@
+{
+	"short_name": "≡0v0)",
+	"name": "ﾊﾄﾃﾞﾘｬｰ",
+	"display": "standalone",
+	"start_url": "tex.html",
+	"icons": [
+		{
+			"src": "i.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		}
+	]
+}
