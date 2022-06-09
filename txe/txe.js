@@ -1,4 +1,4 @@
-s = "2022_0609_1730";
+s = "2022_0609_2100";
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -916,13 +916,13 @@ if(s > 0){
 }else{
 	p.style.display = "block";
 }
-
+/*
 if(location.search == "?1"){
 	let e = document.createElement("div");
 	e.innerHTML = '<a href="/test/tex.html">テスト版</a><br><a href="/tex.html">本番</a>';
 	document.getElementById("atab").appendChild(e);
 }
-
+*/
 // ***サービスワーカーの登録
 if('serviceWorker' in navigator){
 	navigator.serviceWorker.register('/txe/txe_sw.js').then(function(r){

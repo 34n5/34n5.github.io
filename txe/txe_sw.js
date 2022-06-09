@@ -1,4 +1,4 @@
-﻿const ud = "2022_0609_1844";
+﻿const ud = "2022_0609_2101";
 const cn = "txe001";
 const fls = [
 	"/txe/txe.html",
@@ -24,22 +24,6 @@ self.addEventListener('install', function(e) {
 		})
 	);
 });
-
-/*
-const ar2c = async () => {
-	const cache = await caches.open(cn);
-	await cache.addAll([
-		"/txe.html",
-		"/txe.css",
-		"/txe.js",
-		"/wf.css",
-	]);
-};
-
-self.addEventListener("install", (e) => {
-	e.waitUntil(ar2c());
-});
-*/
 
 const pinc = async (req, res) => {
 	const c = await caches.open(cn);
@@ -75,7 +59,3 @@ self.addEventListener('activate', function(e){
 	e.waitUntil(self.clients.claim());
 	e.waitUntil(deloc());
 });
-
-//self.addEventListener('activate', (e) => {
-//	e.waitUntil(deloc());
-//});
