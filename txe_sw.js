@@ -1,4 +1,5 @@
-﻿const ud = "2022_0604_1718";
+/*
+const ud = "2022_0604_1718";
 const cn = "txe004";
 
 self.addEventListener('message', e =>  {
@@ -59,3 +60,4 @@ const deloc = async () => {
 self.addEventListener('activate', (e) => {
 	e.waitUntil(deloc());
 });
+*/
