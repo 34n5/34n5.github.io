@@ -1,3 +1,6 @@
+document.getElementsByTagName("span")[0].textContent = lastMod;
+document.getElementsByTagName("span")[1].textContent = "2022_0616_2022"; //＊＊＊更新日時＊＊＊
+
 //初期設定
 //const hana(from hana.js)
 let r0 = hana; //mで記憶したリスト
@@ -16,7 +19,7 @@ const _tbody = document.getElementsByTagName("tbody")[0];
 td();
 document.getElementsByTagName("thead")[0].innerHTML = `<tr><th onclick="t(0);">名前</th><th onclick="t(1);">::</th><th onclick="t(2);">季節</th><th onclick="t(3);">★</th><th onclick="t(4);">色数<br><small>(交配)</small></th><th onclick="t(5);">売価</th><th onclick="t(6);">時間</th></tr>`;
 
-t(0);
+//t(0);
 
 //初期作業ここまで
 
@@ -32,6 +35,7 @@ function thc() { //thクリア
 	for(let i = 0; i < _th.length; i++){
 		_th[i].style.backgroundColor = "#519121";
 	}
+	_bset.style.display = "none";
 }
 
 function u() { //oninputイベント
@@ -42,10 +46,6 @@ function u() { //oninputイベント
 
 function f() { //onfocusイベント
 	_bset.style.display = "flex";
-}
-
-function b() { //onblurイベント
-	_bset.style.display = "none";
 }
 
 function td() { //作表
@@ -69,9 +69,7 @@ function kuria() {
 function batu() {
 	thc();
 	_div.style.display = "none";
-	b();
 }
-
 
 function i(a) {
 	_input.setRangeText(event.target.textContent,_input.selectionStart,_input.selectionEnd,"end");
@@ -79,3 +77,8 @@ function i(a) {
 	if(a) _input.selectionEnd -= 1;
 	u();
 }
+
+document.addEventListener('click', (e) => {
+	let a = /^(input|button)$/i.test(e.target.tagName);
+	if(!a) _bset.style.display = "none";
+})
