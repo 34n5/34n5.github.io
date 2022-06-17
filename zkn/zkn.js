@@ -1,5 +1,5 @@
 document.getElementsByTagName("span")[0].textContent = lastMod;
-document.getElementsByTagName("span")[1].textContent = "2022_0616_2022"; //＊＊＊更新日時＊＊＊
+document.getElementsByTagName("span")[1].textContent = "2022_0617_2112"; //＊＊＊更新日時＊＊＊
 
 //初期設定
 //const hana(from hana.js)
@@ -29,6 +29,14 @@ function t(a) { //検索パネルスイッチ
 	thc();
 	_th[a].style.backgroundColor = "#717171";
 	n = a; //検索ターゲットをセット
+	let b = r0.map(x => x[a]);
+	b.sort();
+	let c = "";
+	for(let i = 0; i < b.length - 1; i++){
+		if(b[i] != b[i + 1]) c += "<option>" + b[i] +"</option>";
+	}
+	c += "<option>" + b[b.length - 1] +"</option>";
+	document.getElementById("li").innerHTML = c;
 }
 
 function thc() { //thクリア
@@ -39,13 +47,13 @@ function thc() { //thクリア
 }
 
 function u() { //oninputイベント
-	let a = new RegExp(_input.value);
-	r = r0.filter(c => a.test(c[n]));
-	td();
-}
-
-function f() { //onfocusイベント
-	_bset.style.display = "flex";
+	try{
+		let a = new RegExp(_input.value);
+		r = r0.filter(c => a.test(c[n]));
+		td();
+	}catch{
+		return false;
+	}
 }
 
 function td() { //作表
@@ -54,6 +62,10 @@ function td() { //作表
 		s += `<tr><td>${r[i][0]}</td><td>${r[i][1]}</td><td>${r[i][2]}</td><td>${r[i][3]}</td><td>${r[i][4]}</td><td>${r[i][5]}</td><td>${r[i][6]}</td></tr>`;
 	}
 	_tbody.innerHTML = s;
+}
+/*
+function f() { //onfocusイベント
+	_bset.style.display = "flex";
 }
 
 function kioku() {
@@ -65,12 +77,12 @@ function kuria() {
 	_input.value = "";
 	td();
 }
-
 function batu() {
 	thc();
 	_div.style.display = "none";
 }
 
+*/
 function i(a) {
 	_input.setRangeText(event.target.textContent,_input.selectionStart,_input.selectionEnd,"end");
 	_input.focus();
