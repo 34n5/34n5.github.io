@@ -1,5 +1,5 @@
 document.getElementsByTagName("span")[0].textContent = lastMod;
-document.getElementsByTagName("span")[1].textContent = "2022_0617_2112"; //＊＊＊更新日時＊＊＊
+document.getElementsByTagName("span")[1].textContent = "2022_0618_1330"; //＊＊＊更新日時＊＊＊
 
 //初期設定
 //const hana(from hana.js)
@@ -14,6 +14,7 @@ const _div = document.getElementsByTagName("div")[1];
 const _input = document.getElementsByTagName("input")[0];
 const _th = document.getElementsByTagName("th");
 const _tbody = document.getElementsByTagName("tbody")[0];
+const _p = document.getElementsByTagName("p")[0];
 
 //初回作表
 td();
@@ -63,26 +64,13 @@ function td() { //作表
 	}
 	_tbody.innerHTML = s;
 }
-/*
-function f() { //onfocusイベント
-	_bset.style.display = "flex";
-}
 
-function kioku() {
+function m() {
 	r0 = r;
+	let a = ["名前","::","季節","★","色数","売価","時間"];
+	_p.textContent += `${a[n]}…${_input.value}　`;
 }
 
-function kuria() {
-	r = hana;
-	_input.value = "";
-	td();
-}
-function batu() {
-	thc();
-	_div.style.display = "none";
-}
-
-*/
 function i(a) {
 	_input.setRangeText(event.target.textContent,_input.selectionStart,_input.selectionEnd,"end");
 	_input.focus();
