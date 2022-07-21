@@ -18,7 +18,7 @@ const _p = document.getElementsByTagName("p")[0];
 
 //初回作表
 td();
-document.getElementsByTagName("thead")[0].innerHTML = `<tr><th onclick="t(0);">名前</th><th onclick="t(1);">::</th><th onclick="t(2);">季節</th><th onclick="t(3);">★</th><th onclick="t(4);">色数<br><small>(交配)</small></th><th onclick="t(5);">売価</th><th onclick="t(6);">時間</th></tr>`;
+document.getElementsByTagName("thead")[0].innerHTML = `<tr><th onclick="t(0);">名前</th><th onclick="t(1);">::</th><th onclick="t(2);">季節</th><th onclick="t(3);">★</th><th onclick="t(4);">色</th><th onclick="t(5);">売価</th><th onclick="t(6);">時間</th></tr>`;
 
 //t(0);
 
