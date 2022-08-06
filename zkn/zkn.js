@@ -1,5 +1,5 @@
 document.getElementsByTagName("span")[0].textContent = lastMod;
-document.getElementsByTagName("span")[1].textContent = "2022_0618_1330"; //＊＊＊更新日時＊＊＊
+document.getElementsByTagName("span")[1].textContent = "2022_0806_2015"; //＊＊＊更新日時＊＊＊
 
 //初期設定
 //const hana(from hana.js)
@@ -18,7 +18,7 @@ const _p = document.getElementsByTagName("p")[0];
 
 //初回作表
 td();
-document.getElementsByTagName("thead")[0].innerHTML = `<tr><th onclick="t(0);">名前</th><th onclick="t(1);">::</th><th onclick="t(2);">季節</th><th onclick="t(3);">★</th><th onclick="t(4);">色</th><th onclick="t(5);">売価</th><th onclick="t(6);">時間</th></tr>`;
+document.getElementsByTagName("thead")[0].innerHTML = `<tr><th onclick="t(0);">名前</th><th onclick="t(1);">::</th><th onclick="t(2);">季</th><th onclick="t(3);">★</th><th onclick="t(4);">色</th><th onclick="t(5);">売価</th><th onclick="t(6);">時間</th></tr>`;
 
 //t(0);
 
