@@ -1,4 +1,4 @@
-s = "2022_0609_2100";
+s = "2022_0818_1814"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -839,6 +839,8 @@ function bu() { //……自動バックアップ
 s = localStorage.getItem('wfl'); //webフォント使用状態
 if(s > 0){
 	p.style.fontFamily = '"emj","mies","webnasm"';
+	n.style.fontFamily = '"emj","mies","webnasm"';
+	y.style.fontFamily = '"emj","mies","webnasm"';
 	document.getElementById("wf").textContent = "終了";
 }
 

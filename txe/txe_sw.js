@@ -1,4 +1,4 @@
-﻿const ud = "2022_0609_2101";
+﻿const ud = "2022_0818_1849"; //＊＊＊更新日時＊＊＊
 const cn = "txe001";
 const fls = [
 	"/txe/txe.html",
