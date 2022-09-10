@@ -1,4 +1,4 @@
-s = "2022_0818_1814"; //＊＊＊更新日時＊＊＊
+s = "2022_0910_2112"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -373,6 +373,7 @@ function cc(a) { //……全文コピー旧
 	try{
 		document.execCommand('copy');
 		mp("コピーしました" + a);
+		oo();
 	}catch(e){
 		alert("実行できませんでした\n" + e);
 	}
@@ -385,6 +386,7 @@ function c() { //……■
 		if (typeof navigator.clipboard === 'object'){
 			navigator.clipboard.writeText(p.value).then(function(){
 				mp("コピーしました");
+				oo();
 			}, function() {
 				cc(0);
 			});
@@ -877,7 +879,7 @@ if(s != "" && s != null){
 	}
 	if(s[9] == "true"){ //文末キャレット
 		document.getElementById("rc").checked = 1;
-		z();
+		//z();
 	}
 }else{
 	document.getElementById("cm").style.display = "block"; //初期値は最小セット
@@ -953,3 +955,7 @@ function sut() { //……sw更新日時表示
 navigator.serviceWorker.addEventListener('message', e =>  {
 	document.getElementById("swtime").textContent = e.data;
 });
+
+if(document.getElementById("rc").checked == 1){
+	z();
+}
