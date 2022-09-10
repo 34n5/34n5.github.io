@@ -1,4 +1,4 @@
-s = "2022_0910_2112"; //＊＊＊更新日時＊＊＊
+s = "2022_0910_2123"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 
 // ***オブジェクトセット
@@ -248,7 +248,7 @@ function sh(s) { //……設定反映
 	for (let i = 0; i < t.length; i++) {//ボタン高さ(px)
 		t[i].style.height = s[6] + "px";
 	}
-	r.style.height = s + "px"; //定型文セレクトボックス
+	r.style.height = s[6] + "px"; //定型文セレクトボックス
 	if(s[7] == true || s[7] == "true"){ //拡張スイッチ
 		document.getElementById("cf").style.display = "block";
 		document.getElementById("cm").style.display = "none";
