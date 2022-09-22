@@ -1,5 +1,11 @@
-s = "2022_0910_2123"; //＊＊＊更新日時＊＊＊
+s = "2022_0922_1918"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
+/*
+0922 全文コピー後ジャンプ追加
+
+
+*/
+
 
 // ***オブジェクトセット
 p = document.getElementById("pr"); //メインtextarea
@@ -17,8 +23,9 @@ bb = 0; //範囲選択モード
 us = []; //undo用ログ
 ut = []; //redo用ログ
 uq = 0; //undo用ログ容量
+jf = false; //コピー後ジャンプフラグ
 
-function c1() { //……昍copy
+function c1() { //……📑copy
 	p.focus();
 	var s = getSelection();
 	if(s == "") return;
@@ -46,7 +53,7 @@ function c2() { //……✂cut
 	});
 }
 
-function c3() { //……目paste
+function c3() { //……📋paste
 	var s = "";
 	navigator.clipboard.readText().then(function(s){
 		if(s == "") return;
@@ -211,6 +218,10 @@ function st() { //……設定変更
 		alert("ボタンの高さは 20 以上にしてください");
 		return;
 	}
+	if(!document.getElementById("ju").validity.valid){
+		document.getElementById("ju").reportValidity();
+		return;
+	}
 	var s = document.getElementById("cr").value; //[0]テキストエリア高さ(vh)
 	s += ":" + document.getElementById("ft").value; //[1]フォントサイズ(px)
 	s += ":" + document.getElementById("ls").value; //[2]字間(px)
@@ -221,8 +232,12 @@ function st() { //……設定変更
 	s += ":" + document.getElementById("em").checked; //[7]拡張スイッチ
 	s += ":" + document.getElementById("sc").checked; //[8]定型文スイッチ
 	s += ":" + document.getElementById("rc").checked; //[9]文末キャレット
+	jf = document.getElementById("uj").checked; //[10]コピー後ジャンプ
+	s += ":" + jf;
 	sh(s);
 	localStorage.setItem('pss',s);
+	s = document.getElementById("ju").value; //ジャンプ先
+	localStorage.setItem('pju',s);
 	s = document.getElementById("sw").value; //定型文内容
 	localStorage.setItem('psw',s);
 	s = s.replace(/</g,"&lt;");
@@ -387,6 +402,12 @@ function c() { //……■
 			navigator.clipboard.writeText(p.value).then(function(){
 				mp("コピーしました");
 				oo();
+				if(jf){
+					var s = localStorage.getItem('pju');
+					if(confirm("次のURLを開きます : " + s)){
+						window.open(s,"_blank");
+					}
+				}
 			}, function() {
 				cc(0);
 			});
@@ -881,6 +902,10 @@ if(s != "" && s != null){
 		document.getElementById("rc").checked = 1;
 		//z();
 	}
+	if(s[10] == "true"){ //全文コピー後ジャンプ
+		document.getElementById("uj").checked = 1;
+		jf = true;
+	}
 }else{
 	document.getElementById("cm").style.display = "block"; //初期値は最小セット
 	document.getElementById("cf").style.display = "none";
@@ -892,6 +917,10 @@ if(s != "" && s != null){
 	s = s.replace(/>/g,"&gt;");
 	s = s.replace(/^(.+)$/gm,"<option>$1</option>");
 	r.innerHTML = s;
+}
+s = localStorage.getItem('pju'); //コピー後ジャンプ先
+if(s != "" && s != null){
+	document.getElementById("ju").value = s;
 }
 
 s = localStorage.getItem('pps'); //プレビュー設定
@@ -909,7 +938,8 @@ if(s != "" && s != null){
 	}
 }
 s = localStorage.getItem('ppv'); ///置換ルール
-if(s != null){
+//if(s != null){
+if(s != "" && s != null){
 	document.getElementById("vsw").value = s;
 }
 
