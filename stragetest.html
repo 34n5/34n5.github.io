@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
+<meta name="format-detection" content="telephone=no">
+<title>[test]</title>
+</head><body ondblclick=";">
+<p>localstrage test</p>
+<button type=button onclick="test_sart();">start</button>
+<button type=button onclick="localStorage.clear();">clear</button>
+<select id="word_input"><option>0000000000</option><option>ああああああああああ</option><option>𩸽𩸽𩸽𩸽𩸽𩸽𩸽𩸽𩸽𩸽</option></select>
+<div id="mes_log" style="white-space:pre-wrap">log...</div>
+<script>
+const log_v = document.getElementById("mes_log");
+const word_get = document.getElementById("word_input");
+
+function test_sart(){
+	var test_wrd = word_get.value;
+	if(test_wrd == ""){
+		alert("テストする文字を入れてください！");
+		return;
+	}
+	var test_cnt = 0;
+	//ワードブロック作成
+	var test_str = "";
+	for (let i = 0; i < 100; i++){
+		test_str += test_wrd;
+	}
+	//バイトカウント用blob作成
+	var test_ary =[test_str];
+	var test_blb = new Blob(test_ary);
+	log_v.textContent = "test_str size : " + test_blb.size;
+
+	log_v.textContent += "\n....start\n";
+	
+	for (let i = 0; i < 100000; i++){
+		try{
+			localStorage.setItem("m" + i,test_str);
+			//log_v.textContent += i + " ";
+		}catch(e){
+			log_v.textContent += "\nstop!\nerror : " + e ;
+			log_v.textContent += "\ntotalsize : " + test_cnt ;
+			return;
+		}
+		test_cnt += test_blb.size;
+	}
+}
+
+
+</script>
+</body>
+</html>
