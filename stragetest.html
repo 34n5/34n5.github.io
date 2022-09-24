@@ -23,6 +23,7 @@ function test_sart(){
 	}
 	var test_cnt_s = 0;
 	var test_cnt_l = 0;
+	var count_i = 0;
 	//ワードブロック作成1
 	var test_str = "";
 	for (let i = 0; i < 2621439; i++){
@@ -58,18 +59,17 @@ function test_sart(){
 	for (let i = 0; i < 1000; i++){
 		try{
 			localStorage.setItem("m" + i,test_str);
-			log_v.textContent += i + " ";
 		}catch(e){
 			log_v.textContent += "\nstop!\nerror : " + e ;
-			log_v.textContent += "\ntotalsize : " + test_cnt ;
-			log_v.textContent += "\ntest_str length : " + test_str.length;
-			log_v.textContent += "\ncount : " + i ;
+			count_i = i;
 			break;
 		}
 		test_cnt_s += test_blb.size;
 		test_cnt_l += test_str.length;
 	}
-	log_v.textContent += "\nfinish!\ncount : " + i ;
+	log_v.textContent += "\nfinish!\ncount : " + count_i ;
+	log_v.textContent += "\ntotal size : " + test_cnt_s ;
+	log_v.textContent += "\ntotal length : " + test_cnt_l ;
 }
 
 
