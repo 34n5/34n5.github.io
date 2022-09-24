@@ -9,7 +9,7 @@
 <p>localstrage test</p>
 <button type=button onclick="test_sart();">start</button>
 <button type=button onclick="localStorage.clear();">clear</button>
-<select id="word_input"><option>0000000000</option><option>ああああああああああ</option><option>𩸽𩸽𩸽𩸽𩸽𩸽𩸽𩸽𩸽𩸽</option></select>
+<select id="word_input"><option>0</option><option>鰯</option><option>𩸽</option></select>
 <div id="mes_log" style="white-space:pre-wrap">log...</div>
 <script>
 const log_v = document.getElementById("mes_log");
@@ -21,31 +21,55 @@ function test_sart(){
 		alert("テストする文字を入れてください！");
 		return;
 	}
-	var test_cnt = 0;
-	//ワードブロック作成
+	var test_cnt_s = 0;
+	var test_cnt_l = 0;
+	//ワードブロック作成1
 	var test_str = "";
-	for (let i = 0; i < 100; i++){
+	for (let i = 0; i < 2621439; i++){
 		test_str += test_wrd;
 	}
 	//バイトカウント用blob作成
 	var test_ary =[test_str];
 	var test_blb = new Blob(test_ary);
 	log_v.textContent = "test_str size : " + test_blb.size;
+	log_v.textContent += "\ntest_str length : " + test_str.length;
+	try{
+		log_v.textContent += "\ntry a";
+		localStorage.setItem("a",test_str);
+	}catch(e){
+		log_v.textContent += "\nstop!\nerror : " + e ;
+	}
+	try{
+		log_v.textContent += "\ntry b";
+		localStorage.setItem("b",test_str);
+	}catch(e){
+		log_v.textContent += "\nstop!\nerror : " + e ;
+	}
 
-	log_v.textContent += "\n....start\n";
+	//ワードブロック作成2
+	test_str = test_wrd;
+	//バイトカウント用blob作成
+	test_ary =[test_str];
+	test_blb = new Blob(test_ary);
+	log_v.textContent += "\nnext\ntest_str size : " + test_blb.size;
+	log_v.textContent += "\ntest_str length : " + test_str.length;
+	log_v.textContent += "\ntry m(i)....start\n";
 	
-	for (let i = 0; i < 100000; i++){
+	for (let i = 0; i < 1000; i++){
 		try{
 			localStorage.setItem("m" + i,test_str);
-			//log_v.textContent += i + " ";
+			log_v.textContent += i + " ";
 		}catch(e){
 			log_v.textContent += "\nstop!\nerror : " + e ;
 			log_v.textContent += "\ntotalsize : " + test_cnt ;
+			log_v.textContent += "\ntest_str length : " + test_str.length;
 			log_v.textContent += "\ncount : " + i ;
 			return;
 		}
-		test_cnt += test_blb.size;
+		test_cnt_s += test_blb.size;
+		test_cnt_l += test_str.length;
 	}
+	log_v.textContent += "\nfinish!\ncount : " + i ;
 }
 
 
