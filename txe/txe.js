@@ -1,4 +1,4 @@
-s = "2022_0925_2032"; //＊＊＊更新日時＊＊＊
+s = "2022_0925_2046"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 /*
 0922 全文コピー後ジャンプ追加
@@ -435,7 +435,7 @@ function c() { //……全文コピー
 				if(jf){
 					var s = localStorage.getItem('pju');
 					if(confirm("次のURLを開きます : " + s)){
-						location.href = s;
+						window.open(s);
 					}
 				}
 			}, function() {
