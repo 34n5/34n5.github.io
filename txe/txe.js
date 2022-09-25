@@ -1,4 +1,4 @@
-s = "2022_0925_2046"; //＊＊＊更新日時＊＊＊
+s = "2022_0925_2108"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 /*
 0922 全文コピー後ジャンプ追加
@@ -408,13 +408,28 @@ function gi() { //……復帰
 	p.focus();
 }
 
+function ll() { //……■すべて選択
+	p.select();
+}
+
+
+function aj() { //……コピー後ジャンプ
+	oo();
+	if(jf){
+		var s = localStorage.getItem('pju');
+		if(confirm("次のURLを開きます : " + s)){
+			window.open(s);
+		}
+	}
+}
+
 function cc(a) { //……全文コピー旧
 	var q = p.selectionEnd;
 	p.select();
 	try{
 		document.execCommand('copy');
 		mp("コピーしました" + a);
-		oo();
+		aj();
 	}catch(e){
 		alert("実行できませんでした\n" + e);
 	}
@@ -422,22 +437,12 @@ function cc(a) { //……全文コピー旧
 	p.blur();
 }
 
-function ll() { //……■
-	p.select();
-}
-
 function c() { //……全文コピー
 	if(confirm("全文コピーしますか？")){
 		if (typeof navigator.clipboard === 'object'){
 			navigator.clipboard.writeText(p.value).then(function(){
 				mp("コピーしました");
-				oo();
-				if(jf){
-					var s = localStorage.getItem('pju');
-					if(confirm("次のURLを開きます : " + s)){
-						window.open(s);
-					}
-				}
+				aj();
 			}, function() {
 				cc(0);
 			});
