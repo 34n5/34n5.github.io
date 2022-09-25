@@ -1,10 +1,10 @@
-s = "2022_0925_1424"; //＊＊＊更新日時＊＊＊
+s = "2022_0925_1902"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 /*
 0922 全文コピー後ジャンプ追加
 0925 すべて選択追加
 	 ボタン配置変更・コピペセット廃止
-
+	 保存エラーチェック追加
 
 */
 
@@ -112,6 +112,16 @@ p.addEventListener('beforeinput', () => {// ログ拾いイベント2
 	ur();
 });
 
+function ls(k,s) { //……保存エラーチェック
+	try{
+		localStorage.setItem(k,s);
+	}catch{
+		alert("保存できませんでした");
+		return true;
+	}
+	return;
+}
+
 function hp() { //……プレビュー書式設定
 	var s = document.getElementById("vff").value; //フォントファミリー
 	s += ":" + document.getElementById("vft").value; //フォントサイズ(px)
@@ -120,7 +130,8 @@ function hp() { //……プレビュー書式設定
 	s += ":" + document.getElementById("vfc").value; //文字色
 	s += ":" + document.getElementById("vbc").value; //背景色
 	s += ":" + document.getElementById("vem").checked; //置換
-	localStorage.setItem('pps',s);
+	//localStorage.setItem('pps',s);
+	if(ls('pps',s)) return;
 	hpr(s);
 	s = document.getElementById("vsw").value; //置換ルール
 	var a = "", b = "", c = "", i = 0;
@@ -140,10 +151,12 @@ function hp() { //……プレビュー書式設定
 		if(c != ""){
 			c = c.slice(0,-1);
 			if(window.confirm(c + "行目は要素が不足しています。\nこのまま設定しますか？")){
-				localStorage.setItem('ppv',s);
+				//localStorage.setItem('ppv',s);
+				if(ls('ppv',s)) return;
 			}
 		}else{
-			localStorage.setItem('ppv',s);
+			//localStorage.setItem('ppv',s);
+			if(ls('ppv',s)) return;
 		}
 	}
 	mp("設定を保存しました");
@@ -164,18 +177,20 @@ function hpr(s) { //……プレビュー設定反映
 function fn() { //……webフォント適用切り替え
 	var s = document.getElementById("wf").textContent;
 	if(s =="終了"){
+		//localStorage.setItem('wfl',0);
+		if(ls('wfl',0)) return;
 		p.style.fontFamily = '"emj","NasuM",monospace,monospace';
 		n.style.fontFamily = '"emj","NasuM",monospace,monospace';
 		y.style.fontFamily = '"emj","NasuM",monospace,monospace';
 		document.getElementById("wf").textContent = "開始";
-		localStorage.setItem('wfl',0);
 		mp("終了しました");
 	}else{
+		//localStorage.setItem('wfl',1);
+		if(ls('wfl',1)) return;
 		p.style.fontFamily = '"emj","mies","webnasm"';
 		n.style.fontFamily = '"emj","mies","webnasm"';
 		y.style.fontFamily = '"emj","mies","webnasm"';
 		document.getElementById("wf").textContent = "終了";
-		localStorage.setItem('wfl',1);
 		mp("開始しました");
 	}
 }
@@ -235,12 +250,15 @@ function st() { //……設定変更
 	s += ":" + document.getElementById("rc").checked; //[9]文末キャレット
 	jf = document.getElementById("uj").checked; //[10]コピー後ジャンプ
 	s += ":" + jf;
+	//localStorage.setItem('pss',s);
+	if(ls('pss',s)) return;
 	sh(s);
-	localStorage.setItem('pss',s);
 	s = document.getElementById("ju").value; //ジャンプ先
-	localStorage.setItem('pju',s);
+	//localStorage.setItem('pju',s);
+	if(ls('pju',s)) return;
 	s = document.getElementById("sw").value; //定型文内容
-	localStorage.setItem('psw',s);
+	//localStorage.setItem('psw',s);
+	if(ls('psw',s)) return;
 	s = s.replace(/</g,"&lt;");
 	s = s.replace(/>/g,"&gt;");
 	s = s.replace(/^(.+)$/gm,"<option>$1</option>");
@@ -338,13 +356,15 @@ function o(a) { //……設定画面
 			p.style.display = "block";
 			document.getElementById("cn").style.display = "block";
 			document.getElementById("pn").style.display = "none";
-			localStorage.setItem('pn',0);
+			//localStorage.setItem('pn',0);
+			if(ls('pn',0)) return;
 		}else{
 			document.getElementById("pn").style.display = "block";
 			oo();
 			p.style.display = "none";
 			document.getElementById("cn").style.display = "none";
-			localStorage.setItem('pn',1);
+			//localStorage.setItem('pn',1);
+			if(ls('pn',1)) return;
 		}
 	}
 }
@@ -356,7 +376,8 @@ function si() { //……📁
 	}else{
 		if(!window.confirm("保存しますか？")) return;
 	}
-	localStorage.setItem('pvalue',s);
+	//localStorage.setItem('pvalue',s);
+	if(ls('pvalue',s)) return;
 	bu();
 	mp("保存しました");
 	p.focus();
@@ -367,14 +388,16 @@ function gi() { //……復帰
 	if(s == "" || s ==null){
 		mp("保存されていません");
 	}else{
-		if (window.confirm("復帰しますか？ (" + s.length + ")")) {
-			csp(s.length);
+		s = al(s);
+		if (window.confirm("復帰しますか？ (" + s + ")")) {
+			csp(s);
 			s = p.value;
 			p.value = localStorage.getItem('pvalue');
 			if(s == ""){
 				mp("復帰しました");
 			}else{
-				localStorage.setItem('pvalue',s);
+				//localStorage.setItem('pvalue',s);
+				if(ls('pvalue',s)) return;
 				mp("内容を入れ替えました");
 			}
 		}
@@ -857,7 +880,8 @@ function x() { //……プレビューを閉じる
 
 function bu() { //……自動バックアップ
 	var s = p.value;
-	localStorage.setItem('pvalue_bu',s);
+	//localStorage.setItem('pvalue_bu',s);
+	if(ls('pvalue_bu',s)) return;
 	s = al(s);
 	csp(s);
 }
@@ -965,7 +989,7 @@ if(location.search == "?1"){
 // ***サービスワーカーの登録
 if('serviceWorker' in navigator){
 	navigator.serviceWorker.register('/txe/txe_sw.js').then(function(r){
-		document.getElementById("swstate").textContent = "[success]";
+		document.getElementById("swstate").textContent = "[ok]";
 		sut();
 		document.getElementById("swstate").onclick = function(){
 			if(window.confirm("Service Workerを更新しますか？")){
@@ -976,7 +1000,7 @@ if('serviceWorker' in navigator){
 			document.getElementById("swstate").textContent = "[update]";
 			sut();
 		});
-	}).catch(function(e) {
+	}).catch(function(e){
 		document.getElementById("swstate").textContent = "[fail]" + e;
 	});;
 }else{
