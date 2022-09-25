@@ -1,7 +1,9 @@
-s = "2022_0922_1918"; //＊＊＊更新日時＊＊＊
+s = "2022_0925_1424"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 /*
 0922 全文コピー後ジャンプ追加
+0925 すべて選択追加
+	 ボタン配置変更・コピペセット廃止
 
 
 */
@@ -208,7 +210,6 @@ function b() { //……～
 		bb = 1;
 	}
 	document.getElementById("bm").classList.toggle("o");
-	document.getElementById("ccp").classList.toggle("p");
 	p.focus();
 }
 
@@ -348,7 +349,7 @@ function o(a) { //……設定画面
 	}
 }
 
-function si() { //……⤵
+function si() { //……📁
 	var s = p.value;
 	if(s == ""){
 		if(!window.confirm("内容がありません。\n本当に保存しますか？")) return;
@@ -396,7 +397,11 @@ function cc(a) { //……全文コピー旧
 	p.blur();
 }
 
-function c() { //……■
+function ll() { //……■
+	p.select();
+}
+
+function c() { //……全文コピー
 	if(confirm("全文コピーしますか？")){
 		if (typeof navigator.clipboard === 'object'){
 			navigator.clipboard.writeText(p.value).then(function(){
