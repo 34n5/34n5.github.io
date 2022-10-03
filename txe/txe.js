@@ -1,13 +1,16 @@
-s = "2022_0925_2108"; //＊＊＊更新日時＊＊＊
+s = "2022_1003_2005"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 /*
 0922 全文コピー後ジャンプ追加
 0925 すべて選択追加
 	 ボタン配置変更・コピペセット廃止
 	 保存エラーチェック追加
+1003 セーブ機能追加
+	 保存メニュー廃止
+	 プレビューコピーにもジャンプを設定
 
 	-- 予定 --
-	 複数テキスト保存
+	 複数テキスト保存 => セーブ機能
 */
 
 
@@ -18,6 +21,7 @@ y = document.getElementById("wi"); //ダミーspan
 w = document.getElementById("vw"); //プレビューdiv
 wp = document.getElementById("pp"); //プレビューp
 r = document.getElementById("swl"); //定型文select
+dl = document.getElementsByTagName("dl")[0]; //セーブリストコンテナ
 
 // ***初期値セット
 pst = ""; //プレビューcss
@@ -28,6 +32,7 @@ us = []; //undo用ログ
 ut = []; //redo用ログ
 uq = 0; //undo用ログ容量
 jf = false; //コピー後ジャンプフラグ
+nkey = 0; //新規セーブ用key
 
 function c1() { //……📑copy
 	p.focus();
@@ -104,11 +109,13 @@ function ur() { //……undo用ログ記録
 	ut = [];
 }
 
-p.addEventListener('compositionstart', () => {// ログ拾いイベント1
+p.addEventListener(
+  'compositionstart', () => {// ログ拾い1
 	ur();
 });
 
-p.addEventListener('beforeinput', () => {// ログ拾いイベント2
+p.addEventListener(
+  'beforeinput', () => {// ログ拾い2
 	if(event.isComposing) return;
 	if(event.data == "") return;
 	ur();
@@ -325,32 +332,50 @@ function o(a) { //……設定画面
 	var sb = document.getElementById("stab");
 	var pb = document.getElementById("ptab");
 	var ab = document.getElementById("atab");
+	var ah = document.getElementById("htab");
 	var st = document.getElementById("sbt");
 	var pt = document.getElementById("pbt");
 	var at = document.getElementById("abt");
+	var ht = document.getElementById("hbt");
 	if(a == 1){
 		sb.style.display = "block";
 		pb.style.display = "none";
 		ab.style.display = "none";
+		ah.style.display = "none";
 		st.disabled = true;
 		pt.disabled = false;
 		at.disabled = false;
+		ht.disabled = false;
 		window.scrollTo(0,0);
 	}else if(a == 2){
 		sb.style.display = "none";
 		pb.style.display = "block";
 		ab.style.display = "none";
+		ah.style.display = "none";
 		st.disabled = false;
 		pt.disabled = true;
 		at.disabled = false;
+		ht.disabled = false;
 		window.scrollTo(0,0);
 	}else if(a == 3){
 		sb.style.display = "none";
 		pb.style.display = "none";
 		ab.style.display = "block";
+		ah.style.display = "none";
 		st.disabled = false;
 		pt.disabled = false;
 		at.disabled = true;
+		ht.disabled = false;
+		window.scrollTo(0,0);
+	}else if(a == 4){
+		sb.style.display = "none";
+		pb.style.display = "none";
+		ab.style.display = "none";
+		ah.style.display = "block";
+		st.disabled = false;
+		pt.disabled = false;
+		at.disabled = false;
+		ht.disabled = true;
 		window.scrollTo(0,0);
 	}else{
 		var s = document.getElementById("pn").style.display;
@@ -371,7 +396,7 @@ function o(a) { //……設定画面
 	}
 }
 
-function si() { //……📁
+function si() { //……📁save
 	var s = p.value;
 	if(s == ""){
 		if(!window.confirm("内容がありません。\n本当に保存しますか？")) return;
@@ -414,7 +439,6 @@ function ll() { //……■すべて選択
 
 
 function aj() { //……コピー後ジャンプ
-	oo();
 	if(jf){
 		var s = localStorage.getItem('pju');
 		if(confirm("次のURLを開きます : " + s)){
@@ -429,6 +453,7 @@ function cc(a) { //……全文コピー旧
 	try{
 		document.execCommand('copy');
 		mp("コピーしました" + a);
+		oo();
 		aj();
 	}catch(e){
 		alert("実行できませんでした\n" + e);
@@ -442,6 +467,7 @@ function c() { //……全文コピー
 		if (typeof navigator.clipboard === 'object'){
 			navigator.clipboard.writeText(p.value).then(function(){
 				mp("コピーしました");
+				oo();
 				aj();
 			}, function() {
 				cc(0);
@@ -784,7 +810,7 @@ function h() { //……プレビュー表示
 	s = s.replace(/</gm,"&lt;");
 	s = s.replace(/>/gm,"&gt;");
 	s = s.replace(/\n/gm,"<br>");
-	s = `<header><span>Preview[${al(s)}]</span><button type=button onclick="pc()">■</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd()"${pst}>${s}</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>`;
+	s = `<header><span>Preview[${al(s)}]</span><button type=button onclick="pc()">📑</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd()"${pst}>${s}</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>`;
 	w.innerHTML = s;
 	w.style.display = "block";
 	p.style.display = "none";
@@ -794,16 +820,17 @@ function h() { //……プレビュー表示
 
 function pcc(a) { //……プレビューコピー旧
 	p.style.display = "block";
-	var s = rg(), a = p.value, q = p.selectionEnd;
+	var s = rg(), t = p.value, q = p.selectionEnd;
 	p.value = s;
 	p.select();
 	try{
 		document.execCommand('copy');
 		mp("コピーしました" + a);
+		aj();
 	}catch(e){
 		alert("実行できませんでした\n" + e);
 	}
-	p.value = a;
+	p.value = t;
 	p.setSelectionRange(q,q);
 	p.blur();
 	p.style.display = "none";
@@ -815,6 +842,7 @@ function pc() { //……プレビューコピー
 		if (typeof navigator.clipboard === 'object'){
 			navigator.clipboard.writeText(rg()).then(function(){
 				mp("コピーしました");
+				aj();
 			}, function() {
 				pcc(0);
 			});
@@ -892,6 +920,113 @@ function bu() { //……自動バックアップ
 	s = al(s);
 	csp(s);
 }
+
+function hl(h) { //……セーブリストセット
+	if(h != "" && h != null){
+		h = h.replace(/^(\d+)%%(.+?)%%(.+?)%%(\d+)$/mg,'<dt><label><input type="radio" name="sl" value="$1">$2</label></dt><dd>$3 ($4)</dd>');
+		nkey = /^\d+$/m.exec(h)[0] - 0;
+		h = h.replace(/^\d+$/m,'<dt><label><input type="radio" name="sl" value="$&">新規セーブ</label></dt><dd>-</dd>');
+		h = h.replace(/<input/,"$& checked");
+	}else{
+		if(ls("dh",0)){
+			alert("セーブ機能は使用できません");
+			ah.style.visibility = "hidden";
+			return;
+		};
+		h = '<dt><label><input type="radio" name="sl" value="0" checked>新規セーブ</label></dt><dd>-</dd>';
+	}
+	dl.innerHTML = h;
+}
+
+document.getElementById("htab").addEventListener(
+  "submit", (e) => { //……セーブデータ操作
+	e.preventDefault();
+	var d = new FormData(document.getElementById("htab"));
+	var e = e.submitter.value - 0; //0:セーブ/1:ロード/9:削除
+	var k = d.get("sl") - 0;
+	if(e > 0 &&  k == nkey){
+		alert("新規セーブのロードおよび削除は無効です");
+		return;
+	}
+	if(e == 0) sv(k);
+	if(e == 1) ld(k);
+	if(e == 9) de(k);
+	
+}, false);
+
+function sv(k) { //……セーブ
+	var s = p.value; //	本文
+	var l = al(s); //文字数
+	var a = new Date();
+	var n = a.getFullYear() + "/"; //日時
+	n += ('0' + (a.getMonth() + 1)).slice(-2) + "/";
+	n += ('0' + a.getDate()).slice(-2) + " ";
+	n += ('0' + a.getHours()).slice(-2) + ":";
+	n += ('0' + a.getMinutes()).slice(-2);
+	var t = s.slice(0,30); //冒頭
+	t = /^.*?$/m.exec(t)[0];
+	
+	var h0 = localStorage.getItem("dh");
+	var h1 = h0.split("\n"); //h0は復元用
+	var a = new RegExp("^" + k + "%%.+$");
+	if(k == nkey){
+		h1.splice(-1,1,nkey + 1);
+		a = "新規セーブしますか？";
+	}else{
+		var r = h1.findIndex(c => a.test(c));
+		a = h1.splice(r,1);
+		a = "このデータに上書きしますか？\n【" + a[0].split("%%")[1] + "】";
+	}
+	
+	if(s == ""){
+		if(!window.confirm("内容がありません。\n" + a)) return;
+	}else{
+		if(!window.confirm(a)) return;
+	}
+	
+	h1.unshift(k + "%%" + t + "%%" + n + "%%" + l);
+	h1 = h1.join("\n");
+	if(ls("dh",h1)) return; //目次が保存できなければ中断
+	
+	try{
+		localStorage.setItem("h" + k,s);
+	}catch{
+		alert("保存できませんでした");
+		localStorage.setItem("dh",h0);
+		return; //本文保存に失敗したら目次を復元して中断
+	}
+	mp("セーブしました");
+	hl(h1); //セーブリストを更新して終わり
+}
+
+function ld(k) { //……ロード
+	var h = localStorage.getItem("dh").split("\n");
+	var a = new RegExp("^" + k + "%%.+$");
+	var r = h.findIndex(c => a.test(c));
+	h = h[r].split("%%")[1];
+	a = "本当にロードしますか？\n【" + h + "】";
+	if (!window.confirm(a)) return;
+	ur();
+	p.value = localStorage.getItem("h" + k);
+	mp("ロードしました");
+	o();
+}
+
+function de(k) { //……削除
+	var h = localStorage.getItem("dh").split("\n");
+	var a = new RegExp("^" + k + "%%.+$");
+	var r = h.findIndex(c => a.test(c));
+	a = h.splice(r,1);
+	a = a[0].split("%%")[1];
+	h = h.join("\n");
+	if (!window.confirm("本当に削除しますか？\n【" + a + "】")) return;
+	localStorage.removeItem("h" + k);
+	localStorage.setItem("dh",h);
+	mp("削除しました");
+	hl(h); //セーブリストを更新して終わり
+}
+
+
 
 /* ここから読込時処理 */
 
@@ -1025,3 +1160,5 @@ navigator.serviceWorker.addEventListener('message', e =>  {
 if(document.getElementById("rc").checked == 1){
 	z();
 }
+
+hl(localStorage.getItem("dh"));

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-#cssdate:after{content:"2022_0925_1425";}/* ＊＊＊更新日時＊＊＊
+#cssdate:after{content:"2022_1003_2004";}/* ＊＊＊更新日時＊＊＊
 */
 
 @font-face{font-family:"emj";src:local("Apple Color Emoji"),local("Noto Color Emoji");unicode-range:U+2600/*☀*/,U+263A/*☺*/,U+2764/*❤*/;}
@@ -24,14 +24,17 @@ button:focus,input:focus,select:focus{outline:solid 1px #a1f1a1;outline-offset:-
 #cm>button{width:25%}/* 最小ボタンセット */
 input[type="checkbox"]{width:19px;height:21px;margin:0 0 1px 1px;border:4px solid #216651;}
 input[type="checkbox"]:checked{background-color:white;}
+input[type="radio"]{width:16px;height:16px;margin:0 0 1px 1px;border:4px solid #216651;border-radius:50%;}/* 1003 */
+input[type="radio"]:checked{background-color:white;}/* 1003 */
 select,option{width:80%;padding:0 5px;}
 
 /* 設定パネル */
 form{padding:3em 10%;background-color:#313131;}
-#ptab,#atab{display:none;}
+#ptab,#atab,#htab{display:none;}
 img{width:50%;margin:0 25%;}
 button:disabled{background-color:#515151;}
-fieldset{border:solid 1px #a1a1a1;;margin:0 0 9px;}
+fieldset{border:solid 1px #a1a1a1;margin:0 0 9px;}
+input[type="url"]{width:100%;text-overflow:ellipsis;}/* 1003 */
 
 /* プレビュー */
 #vw{color:white;background-color:#313131;position:absolute;z-index:8;width:100%;max-width:340px;min-height:100vh;display:none;}
@@ -52,9 +55,14 @@ footer{bottom:0;}
 .hc.o{background-color:#717171;transition:all 150ms ease-out;}
 
 /* メニュー */
-.me{background-color:#717171;width:100%;height:0;margin:0;padding:0;position:absolute;top:-7px;z-index:7;transform-origin:0 0;transition:all 110ms ease-out;overflow:hidden;}
-li{color:white;background-color:#215121;text-align:center;list-style:none;height:26px;margin:1px 9px;padding:3px;}
-li:first-child{margin-top:9px;}
-li:last-child{margin-bottom:9px;}
+ul{background-color:#717171;margin:0;padding:8px;width:100%;position:absolute;visibility:hidden;z-index:2;top:-7px;}
+#mu li{text-align:right;}
+li{color:white;background-color:#215121;list-style:none;height:26px;margin:1px;padding:3px 13px;}
 li:hover{background-color:#313131;}
-.me.nu{height:151px;transition-timing-function:ease-in;}
+.nu{visibility:visible;}
+
+/* セーブパネル *//* 1003 */
+dt{border-top:solid 2px #717171;padding:9px 0 0;}
+dt:first-child{border:none;}
+dd{font-size:11px;color:#d1d1d1;margin:0 20px 9px;}
+dt label{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
