@@ -1,4 +1,4 @@
-s = "2022_1003_2005"; //＊＊＊更新日時＊＊＊
+s = "2022_1004_1930"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 /*
 0922 全文コピー後ジャンプ追加
@@ -8,6 +8,7 @@ document.getElementById("jsdate").textContent = s;
 1003 セーブ機能追加
 	 保存メニュー廃止
 	 プレビューコピーにもジャンプを設定
+1004 セーブのプレビューを追加
 
 	-- 予定 --
 	 複数テキスト保存 => セーブ機能
@@ -805,22 +806,31 @@ function d() { //……↓
 	}
 }
 
-function h() { //……プレビュー表示
-	var s = rg(1);
+function h(s) { //……プレビュー表示
+	var a = "";
+	if(s == "" || s == null){
+		s = p.value;
+		a++;
+	}
+	s = rg(s);
 	s = s.replace(/</gm,"&lt;");
 	s = s.replace(/>/gm,"&gt;");
 	s = s.replace(/\n/gm,"<br>");
-	s = `<header><span>Preview[${al(s)}]</span><button type=button onclick="pc()">📑</button><button type=button onclick="x()">×</button></header><p id="pid" onclick="pd()"${pst}>${s}</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>`;
+	s = `<header><span>Preview[${al(s)}]</span><button type=button onclick="pc()">📑</button><button type=button onclick="x(${a})">×</button></header><p id="pid" onclick="pd()"${pst}>${s}</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>`;
 	w.innerHTML = s;
+	if(a){
+		p.style.display = "none";
+		document.getElementById("cn").style.display = "none";
+		oo();
+	}else{
+		document.getElementById("pn").style.display = "none";
+	}
 	w.style.display = "block";
-	p.style.display = "none";
-	document.getElementById("cn").style.display = "none";
-	oo();
 }
 
 function pcc(a) { //……プレビューコピー旧
 	p.style.display = "block";
-	var s = rg(), t = p.value, q = p.selectionEnd;
+	var s = document.getElementById("pid").innerText, t = p.value, q = p.selectionEnd;
 	p.value = s;
 	p.select();
 	try{
@@ -840,7 +850,7 @@ function pcc(a) { //……プレビューコピー旧
 function pc() { //……プレビューコピー
 	if(window.confirm("プレビューをコピーしますか？")){
 		if (typeof navigator.clipboard === 'object'){
-			navigator.clipboard.writeText(rg()).then(function(){
+			navigator.clipboard.writeText(document.getElementById("pid").innerText).then(function(){
 				mp("コピーしました");
 				aj();
 			}, function() {
@@ -852,8 +862,7 @@ function pc() { //……プレビューコピー
 	}
 }
 
-function rg(u) { //……置換処理+エラー表示
-	var t = p.value;
+function rg(t) { //……置換処理+エラー表示
 	var s = localStorage.getItem('pps'); //プレビュー設定
 	if(s != "" && s != null){
 		s = s.split(":");
@@ -875,7 +884,7 @@ function rg(u) { //……置換処理+エラー表示
 					b = new RegExp(a[0],a[1]);
 					t = t.replace(b,a[2]);
 				}
-				if(c != "" && u == 1){
+				if(c != ""){
 					c = c.slice(0,-1);
 					alert(c + "行目をスキップしました。");
 				}
@@ -906,9 +915,13 @@ function ed() { //……プレビューend
 	window.scrollTo(0,s);
 }
 
-function x() { //……プレビューを閉じる
-	p.style.display = "block";
-	document.getElementById("cn").style.display = "block";
+function x(a) { //……プレビューを閉じる
+	if(a){
+		p.style.display = "block";
+		document.getElementById("cn").style.display = "block";
+	}else{
+		document.getElementById("pn").style.display = "block";
+	}
 	w.textContent = "";
 	w.style.display = "none";
 }
@@ -942,14 +955,18 @@ document.getElementById("htab").addEventListener(
   "submit", (e) => { //……セーブデータ操作
 	e.preventDefault();
 	var d = new FormData(document.getElementById("htab"));
-	var e = e.submitter.value - 0; //0:セーブ/1:ロード/9:削除
+	var e = e.submitter.value - 0;
 	var k = d.get("sl") - 0;
 	if(e > 0 &&  k == nkey){
-		alert("新規セーブのロードおよび削除は無効です");
+		alert("新規は保存のみ有効です");
 		return;
 	}
 	if(e == 0) sv(k);
 	if(e == 1) ld(k);
+	if(e == 2){
+		t = localStorage.getItem("h" + k);
+		h(t);
+	}
 	if(e == 9) de(k);
 	
 }, false);
