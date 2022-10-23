@@ -1,4 +1,4 @@
-s = "2022_1004_1930"; //＊＊＊更新日時＊＊＊
+s = "2022_1023_2019"; //＊＊＊更新日時＊＊＊
 document.getElementById("jsdate").textContent = s;
 /*
 0922 全文コピー後ジャンプ追加
@@ -35,7 +35,7 @@ uq = 0; //undo用ログ容量
 jf = false; //コピー後ジャンプフラグ
 nkey = 0; //新規セーブ用key
 
-function c1() { //……📑copy
+function c1() { //……����copy
 	p.focus();
 	var s = getSelection();
 	if(s == "") return;
@@ -63,7 +63,7 @@ function c2() { //……✂cut
 	});
 }
 
-function c3() { //……📋paste
+function c3() { //……����paste
 	var s = "";
 	navigator.clipboard.readText().then(function(s){
 		if(s == "") return;
@@ -397,7 +397,7 @@ function o(a) { //……設定画面
 	}
 }
 
-function si() { //……📁save
+function si() { //……����save
 	var s = p.value;
 	if(s == ""){
 		if(!window.confirm("内容がありません。\n本当に保存しますか？")) return;
@@ -816,7 +816,7 @@ function h(s) { //……プレビュー表示
 	s = s.replace(/</gm,"&lt;");
 	s = s.replace(/>/gm,"&gt;");
 	s = s.replace(/\n/gm,"<br>");
-	s = `<header><span>Preview[${al(s)}]</span><button type=button onclick="pc()">📑</button><button type=button onclick="x(${a})">×</button></header><p id="pid" onclick="pd()"${pst}>${s}</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>`;
+	s = `<header><span>Preview[${al(s)}]</span><button type=button onclick="pc()">����</button><button type=button onclick="x(${a})">×</button></header><p id="pid" onclick="pd()"${pst}>${s}</p><footer><button type=button onclick="hm()">「</button><button type=button onclick="pu()">↑</button><button type=button onclick="pd()">↓</button><button type=button onclick="ed()">」</button></footer>`;
 	w.innerHTML = s;
 	if(a){
 		p.style.display = "none";
@@ -864,32 +864,27 @@ function pc() { //……プレビューコピー
 
 function rg(t) { //……置換処理+エラー表示
 	var s = localStorage.getItem('pps'); //プレビュー設定
-	if(s != "" && s != null){
-		s = s.split(":");
-		if(s[6] == "true"){
-			s = localStorage.getItem('ppv'); ///置換ルール
-			var a = "", b = "", c = "", i = 0;
-			if(s != "" && s != null){ //置換処理
-				s = s.split("\n");
-				for(i in s){
-					if(/^\/\//.test(s[i]) || s[i] == ""){ //コメントと空行はスキップ
-						continue;
-					}
-					a = s[i].split("\t");
-					if(a.length < 3){ //要素不足は記録してスキップ
-						i -= 0;
-						c = c + (i + 1) + ",";
-						continue;
-					}
-					b = new RegExp(a[0],a[1]);
-					t = t.replace(b,a[2]);
-				}
-				if(c != ""){
-					c = c.slice(0,-1);
-					alert(c + "行目をスキップしました。");
-				}
-			}
+	if(s == "" || s == null) return(t);
+	s = s.split(":");
+	if(s[6] != "true") return(t);
+	s = localStorage.getItem('ppv'); ///置換ルール
+	if(s == "" || s == null) return(t);
+	var a = "", b = "", c = "", i = 0;
+	s = s.split("\n");
+	for(i in s){
+		if(/^\/\//.test(s[i]) || s[i] == "") continue; //コメントと空行はスキップ
+		a = s[i].split("\t");
+		if(a.length < 3){ //要素不足は記録してスキップ
+			i -= 0;
+			c = c + (i + 1) + ",";
+			continue;
 		}
+		b = new RegExp(a[0],a[1]);
+		t = t.replace(b,a[2]);
+	}
+	if(c != ""){
+		c = c.slice(0,-1);
+		alert(c + "行目をスキップしました。");
 	}
 	return(t);
 }
@@ -916,14 +911,14 @@ function ed() { //……プレビューend
 }
 
 function x(a) { //……プレビューを閉じる
+	w.textContent = "";
+	w.style.display = "none";
 	if(a){
 		p.style.display = "block";
 		document.getElementById("cn").style.display = "block";
 	}else{
 		document.getElementById("pn").style.display = "block";
 	}
-	w.textContent = "";
-	w.style.display = "none";
 }
 
 function bu() { //……自動バックアップ
@@ -936,7 +931,7 @@ function bu() { //……自動バックアップ
 
 function hl(h) { //……セーブリストセット
 	if(h != "" && h != null){
-		h = h.replace(/^(\d*)%%(.+?)%%(.+?)%%(\d+)$/mg,'<dt><label><input type="radio" name="sl" value="$1">$2</label></dt><dd>$3 ($4)</dd>');
+		h = h.replace(/^(\d+)%%(.*?)%%(.+?)%%(\d+)$/mg,'<dt><label><input type="radio" name="sl" value="$1">$2</label></dt><dd>$3 ($4)</dd>');
 		nkey = /^\d+$/m.exec(h)[0] - 0;
 		h = h.replace(/^\d+$/m,'<dt><label><input type="radio" name="sl" value="$&">新規セーブ</label></dt><dd>-</dd>');
 		h = h.replace(/<input/,"$& checked");
