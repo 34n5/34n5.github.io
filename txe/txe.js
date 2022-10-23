@@ -936,7 +936,7 @@ function bu() { //……自動バックアップ
 
 function hl(h) { //……セーブリストセット
 	if(h != "" && h != null){
-		h = h.replace(/^(\d+)%%(.+?)%%(.+?)%%(\d+)$/mg,'<dt><label><input type="radio" name="sl" value="$1">$2</label></dt><dd>$3 ($4)</dd>');
+		h = h.replace(/^(\d*)%%(.+?)%%(.+?)%%(\d+)$/mg,'<dt><label><input type="radio" name="sl" value="$1">$2</label></dt><dd>$3 ($4)</dd>');
 		nkey = /^\d+$/m.exec(h)[0] - 0;
 		h = h.replace(/^\d+$/m,'<dt><label><input type="radio" name="sl" value="$&">新規セーブ</label></dt><dd>-</dd>');
 		h = h.replace(/<input/,"$& checked");
